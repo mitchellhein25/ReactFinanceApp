@@ -36,12 +36,12 @@ const IncomeTable = ({ setCurrentId, date }) => {
     }
 
     return (
-        <TableContainer component={Paper}>
-            <Typography variant="h6" component="div">
+        <TableContainer>
+            <Typography className={classes.tableHeader} variant="h4" component="div">
                 Incomes
             </Typography>
-      <Table aria-label="simple table">
-        <TableHead>
+      <Table padding='none' aria-label="simple table">
+        <TableHead className={classes.head}>
           <TableRow>
             <Hidden only={['xs', 'sm', 'md', 'lg', 'xl']}>
                 <TableCell className={classes.tableColumn} >Id</TableCell>
@@ -49,6 +49,8 @@ const IncomeTable = ({ setCurrentId, date }) => {
             <TableCell className={classes.tableColumn} >Category</TableCell>
             <TableCell className={classes.tableColumn} >Amount</TableCell>
             <TableCell className={classes.tableColumn} >Date</TableCell>
+            <TableCell className={classes.tableColumn} ></TableCell>
+            <TableCell className={classes.tableColumn} ></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

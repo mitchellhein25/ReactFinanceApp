@@ -34,10 +34,10 @@ const IncomeCatForm = ({ currentId, setCurrentId }) => {
     }
 
     return (
-        <Paper className={classes.paper}>
+        <div className={classes.paper}>
             <form className={`${classes.root} ${classes.form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Enter' } an Income Category</Typography>
-                <TextField  name="name" variant="outlined" label="Name" type="name" fullWidth value={incomeCatData.name}
+                <TextField size="small" name="name" variant="outlined" label="Name" type="name" fullWidth value={incomeCatData.name}
                 //This ... spreads the data, only changing the property you specify and leaving the others as is
                 //Sets the state using an object
                 onChange={(e) => setIncomeCatData({ ...incomeCatData, name: e.target.value })}
@@ -47,7 +47,7 @@ const IncomeCatForm = ({ currentId, setCurrentId }) => {
                     <Button className={classes.formElement} variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button> 
                 </div>
             </form>
-        </Paper>
+        </div>
     );
 }
 

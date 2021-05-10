@@ -1,51 +1,35 @@
 import React from "react";
-import { Link, withRouter } from "react-router-dom";
+import { AppBar, Toolbar, Button, Typography, Icon, Box } from '@material-ui/core';
+// import HomeIcon from '@material-ui/icons/HomeIcon';
+import { Link } from "react-router-dom";
+import useStyles from './styles';
 
-function Navigation(props) {
+const NavBar = ({}) => {
+  const classes = useStyles();
+
   return (
-    <div className="navigation">
-      <nav class="navbar navbar-expand navbar-dark bg-dark">
-        <div class="container">
-          <Link class="navbar-brand" to="/">
-            React Multi-Page Website
+    <div>
+      <AppBar position="static">
+        <Toolbar className={classes.root}>
+          <Link className={classes.navLink} to="/">
+            <Icon fontSize="large">home</Icon>
           </Link>
-
-          <div>
-            <ul class="navbar-nav ml-auto">
-              <li
-                class={`nav-item  ${
-                  props.location.pathname === "/" ? "active" : ""
-                }`}
-              >
-                <Link class="nav-link" to="/">
-                  Home
-                  <span class="sr-only">(current)</span>
-                </Link>
-              </li>
-              <li
-                class={`nav-item  ${
-                  props.location.pathname === "/about" ? "active" : ""
-                }`}
-              >
-                <Link class="nav-link" to="/about">
-                  About
-                </Link>
-              </li>
-              <li
-                class={`nav-item  ${
-                  props.location.pathname === "/contact" ? "active" : ""
-                }`}
-              >
-                <Link class="nav-link" to="/contact">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+          <Typography className={classes.links} variant="h6">
+            <Link className={classes.navLink} to="/">
+            Home
+            </Link>
+            <Link className={classes.navLink} to="/accounts">
+              Accounts
+            </Link>
+          </Typography>
+          {/* <Typography className={classes.title} variant="h3">
+            Finance App
+          </Typography> */}
+          <Button style={{ fontSize: '20px' }} color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
     </div>
   );
 }
 
-export default withRouter(Navigation);
+export default NavBar;

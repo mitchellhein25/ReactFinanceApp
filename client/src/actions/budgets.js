@@ -1,5 +1,5 @@
 import * as api from '../api';
-import { FETCH_BUDGETS, CREATE_BUDGET, UPDATE_BUDGET, DELETE_BUDGET, FETCH_GROUPED_EXPENSES } from '../constants/actionTypes';
+import { FETCH_BUDGETS, CREATE_BUDGET, UPDATE_BUDGET, DELETE_BUDGET } from '../constants/actionTypes';
 
 // Action Creators (functions that return actions)
 export const getBudgets = () => async (dispatch) => {
@@ -36,14 +36,4 @@ export const deleteBudget = (id) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-}
-
-//Get the expenses grouped on category
-export const getGroupedExpenses = () => async (dispatch) => {
-    try {
-        const { data } = await api.fetchGroupedExpenses();
-        dispatch({ type: FETCH_GROUPED_EXPENSES, payload: data });
-    } catch (error) {
-        console.log(error);
-    }   
 }

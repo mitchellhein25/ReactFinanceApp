@@ -1,17 +1,23 @@
 import { makeStyles} from '@material-ui/core/styles';
 
 export default makeStyles(() => ({
-    tableRow: {
-    
-    },
+    head: {
+        backgroundColor: 'lightgray',
+      },
     tableColumn: {
-        padding: '0',
+        padding: '0px',
         paddingLeft: '15px',
     },
+    tableHeader: {
+        textAlign: "center",
+        padding: "5px"
+    },
     green: {
-        backgroundColor: 'green'
+        backgroundColor: 'green',
+        color: 'white',
+        fontWeight: '600'
     },
     red: {
-        backgroundColor: 'red'
+        backgroundColor: 'red',
     }
 }));

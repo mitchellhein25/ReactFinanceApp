@@ -1,3 +1,4 @@
+//Home Page constants
 export const CREATE_EXPENSE = 'CREATE_EXPENSE';
 export const CREATE_BUDGET = 'CREATE_BUDGET';
 export const CREATE_INCOME = 'CREATE_INCOME';
@@ -14,4 +15,9 @@ export const FETCH_EXPENSES = 'FETCH_EXPENSES';
 export const FETCH_INCOMES = 'FETCH_INCOMES';
 export const FETCH_BUDGETS = 'FETCH_BUDGETS';
 export const FETCH_INCOMECATS = 'FETCH_INCOMECATS';
-export const FETCH_GROUPED_EXPENSES = 'FETCH_GROUPED_EXPENSES';
+
+//Accounts Page constants
+export const FETCH_ACCOUNTS = 'FETCH_ACCOUNTS';
+export const CREATE_ACCOUNT = 'CREATE_ACCOUNT';
+export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
+export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';

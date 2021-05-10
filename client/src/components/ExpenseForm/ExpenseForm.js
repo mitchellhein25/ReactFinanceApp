@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Typography, Paper, Select, MenuItem, InputLabel, FormControl } from '@material-ui/core';
+import { TextField, Button, Typography, Container, Select, MenuItem, InputLabel, FormControl } from '@material-ui/core';
 import useStyles from './styles';
 
 import { useDispatch, useSelector  } from 'react-redux';
@@ -48,27 +48,27 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
     }
 
     return (
-        <Paper className={classes.paper}>
+        <Container className={classes.paper}>
             <form className={`${classes.root} ${classes.form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Enter' } an Expense</Typography>
-                <TextField  name="date" variant="outlined" type="date" fullWidth value={expenseData.date}
+                <TextField size="small"  name="date" variant="outlined" type="date" fullWidth value={expenseData.date}
                 //This ... spreads the data, only changing the property you specify and leaving the others as is
                 //Sets the state using an object
                 onChange={(e) => setExpenseData({ ...expenseData, date: e.target.value })}
                 />
                 {/* <FormControl> */}
                 {/* <InputLabel>Budget Category</InputLabel> */}
-                <Select name="category" variant="outlined" fullWidth value={expenseData.category} onChange={findBudgetId}>
+                <Select size="small" name="category" variant="outlined" fullWidth value={expenseData.category} onChange={findBudgetId}>
                     {budgetsToRender}
                 </Select>
                 {/* </FormControl> */}
-                <TextField name="amount" variant="outlined" type="number" label="Amount" fullWidth value={expenseData.amount}  onChange={(e) => setExpenseData({ ...expenseData, amount: e.target.value })} />
+                <TextField size="small" name="amount" variant="outlined" type="number" label="Amount" fullWidth value={expenseData.amount}  onChange={(e) => setExpenseData({ ...expenseData, amount: e.target.value })} />
                 <div>
                     <Button className={classes.formElement} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button> 
                     <Button className={classes.formElement} variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button> 
                 </div>
             </form>
-        </Paper>
+        </Container>
     );
 }
 

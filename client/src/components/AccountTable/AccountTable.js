@@ -9,9 +9,9 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { deleteExpense } from '../../actions/expenses';
 
-const ExpenseTable = ({ setCurrentId, date }) => {
+const AccountTable = ({ setCurrentId, date }) => {
     const budgets = useSelector((state) => state.budgets)
-    const expenses = useSelector((state) => state.expenses)
+    const accounts = useSelector((state) => state.accounts)
     const classes = useStyles();
     const dispatch = useDispatch();
     // console.log("BUDGETS: ", budgets);
@@ -26,20 +26,20 @@ const ExpenseTable = ({ setCurrentId, date }) => {
 
     const momentDate = moment(date);
 
-    const budgetFindName = (expense) => {
-        if (expense.category && expense) {
-            const budget = budgets.find(budget => budget._id === expense.category)
-            if (budget) {
-                return budget.name;
-            }
-        }
-        return ""
-    }
+    // const budgetFindName = (expense) => {
+    //     if (expense.category && expense) {
+    //         const budget = budgets.find(budget => budget._id === expense.category)
+    //         if (budget) {
+    //             return budget.name;
+    //         }
+    //     }
+    //     return ""
+    // }
 
     return (
         <TableContainer>
     <Typography className={classes.tableHeader} variant="h4" component="div">
-          Expenses
+          Accounts
     </Typography>
       <Table padding='none' aria-label="simple table">
         <TableHead className={classes.head}>
@@ -47,31 +47,31 @@ const ExpenseTable = ({ setCurrentId, date }) => {
             <Hidden only={['xs', 'sm', 'md', 'lg', 'xl']}>
                 <TableCell>Id</TableCell>
             </Hidden>
-            <TableCell>Category</TableCell>
-            <TableCell>Amount</TableCell>
-            <TableCell>Date</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Balance</TableCell>
+            <TableCell>Debt or Asset</TableCell>
             <TableCell></TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-            {expenses.filter(expense => moment(expense.date).month() === momentDate.month()).map((expense) => (
+            {accounts.map((account) => (
                 
-                <TableRow className={classes.tableRow} key={expense._id}>
+                <TableRow className={classes.tableRow} key={account._id}>
                     <Hidden only={['xs', 'sm', 'md', 'lg', 'xl']}>
-                        <TableCell component="th" scope="row" hidden>{expense._id}</TableCell>
+                        <TableCell component="th" scope="row" hidden>{account._id}</TableCell>
                     </Hidden>
-                    <TableCell >{budgetFindName(expense)}</TableCell>
-                    <TableCell >{expense.amount}</TableCell>
-                    <TableCell component="th" scope="row">{cleanDate(expense.date)}</TableCell>
+                    <TableCell >{account.name}</TableCell>
+                    <TableCell >{account.balance}</TableCell>
+                    <TableCell component="th" scope="row">{account.debtOrAsset}</TableCell>
                     <TableCell >
-                        <Button size="small" color="primary" onClick={() => dispatch(deleteExpense(expense._id))}>
+                        <Button size="small" color="primary" onClick={() => dispatch(deleteExpense(account._id))}>
                             <DeleteIcon fontSize="small" />
                             Delete
                         </Button>
                     </TableCell>
                     <TableCell >
-                        <Button size="small" color="primary" onClick={() => setCurrentId(expense._id)}>
+                        <Button size="small" color="primary" onClick={() => setCurrentId(account._id)}>
                             <EditIcon fontSize="small" />
                             Edit
                         </Button>
@@ -84,4 +84,4 @@ const ExpenseTable = ({ setCurrentId, date }) => {
     );
 }
 
-export default ExpenseTable;
+export default AccountTable;

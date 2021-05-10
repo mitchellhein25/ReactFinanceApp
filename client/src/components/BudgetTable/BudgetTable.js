@@ -38,7 +38,7 @@ const BudgetTable = ({ setCurrentId, date }) => {
                 total += expense.amount;
             }
         });
-        // console.log(total);
+
         return total;
     }
 
@@ -46,26 +46,13 @@ const BudgetTable = ({ setCurrentId, date }) => {
         return budgetAmount - expenseAmount;
 
     }
-    // currExpenses.forEach(expense => console.log(expense.amount));
-    // console.log("expenses", currExpenses);
-    // console.log("GROUPED EXPENSES IN BUDGETS TABLE: ", groupedExpenses);
-    // const getTotalSpent = (budget) => {
-    //     if (budget.name && budget) {
-    //         const expense = groupedExpenses.find(expense => expense._id === budget._id)
-    //         if (expense) {
-    //             return expense.amount;
-    //         }
-    //     }
-    //     return ""
-    // }
-
     return (
-        <TableContainer component={Paper}>
-            <Typography variant="h6" component="div">
+        <TableContainer>
+            <Typography className={classes.tableHeader} variant="h4" component="div">
                 Budgets
             </Typography>
-      <Table aria-label="simple table">
-        <TableHead>
+      <Table padding='none' aria-label="simple table">
+        <TableHead className={classes.head}>
           <TableRow>
             <Hidden only={['xs', 'sm', 'md', 'lg', 'xl']}>
                 <TableCell className={classes.tableColumn} >Id</TableCell>
@@ -74,6 +61,8 @@ const BudgetTable = ({ setCurrentId, date }) => {
             <TableCell className={classes.tableColumn} >Amount</TableCell>
             <TableCell className={classes.tableColumn} >Amount Spent</TableCell>
             <TableCell className={classes.tableColumn} >Remaining Budget</TableCell>
+            <TableCell className={classes.tableColumn} ></TableCell>
+            <TableCell className={classes.tableColumn} ></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -85,7 +74,7 @@ const BudgetTable = ({ setCurrentId, date }) => {
                     <TableCell  className={classes.tableColumn} component="th" scope="row">{budget.name}</TableCell>
                     <TableCell className={classes.tableColumn} >{budget.amount}</TableCell>
                     <TableCell className={classes.tableColumn} >{getExpenseAmount(budget.name)}</TableCell>
-                    <TableCell className={getOverUnder(budget.amount, getExpenseAmount(budget.name)) > 0 ? classes.green : classes.red} >{getOverUnder(budget.amount, getExpenseAmount(budget.name))}</TableCell>
+                    <TableCell color='white !important' className={getOverUnder(budget.amount, getExpenseAmount(budget.name)) > 0 ? classes.green : classes.red} >{getOverUnder(budget.amount, getExpenseAmount(budget.name))}</TableCell>
                     <TableCell className={classes.tableColumn} >
                         <Button size="small" color="primary" onClick={() => dispatch(deleteBudget(budget._id))}>
                             <DeleteIcon fontSize="small" />

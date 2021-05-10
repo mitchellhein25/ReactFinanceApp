@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const url = 'http://localhost:5000';
 
+//Home Api calls
 export const fetchExpenses = () => axios.get(`${url}/expenses`);
 export const createExpense = (newExpense) => axios.post(`${url}/expense`, newExpense);
 export const updateExpense = (id, updatedExpense) => axios.patch(`${url}/expense${id}`, updatedExpense);
@@ -18,4 +19,9 @@ export const fetchIncomeCats = () => axios.get(`${url}/incomecats`);
 export const createIncomeCat = (newIncomeCat) => axios.post(`${url}/incomecat`, newIncomeCat);
 export const updateIncomeCat = (id, updatedIncomeCat) => axios.patch(`${url}/incomecat${id}`, updatedIncomeCat);
 export const deleteIncomeCat = (id) => axios.delete(`${url}/incomecat${id}`);
-export const fetchGroupedExpenses = () => axios.get(`${url}/groupedexpenses`);
+
+//Accounts page Api calls
+export const fetchAccounts = () => axios.get(`${url}/accounts`);
+export const createAccount = (newAccount) => axios.post(`${url}/account`, newAccount);
+export const updateAccount = (id, updatedAccount) => axios.patch(`${url}/account${id}`, updatedAccount);
+export const deleteAccount = (id) => axios.delete(`${url}/account${id}`);
