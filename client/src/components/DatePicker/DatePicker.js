@@ -18,7 +18,7 @@ const HomeTotals = ({ date, setDate }) => {
                     {momentDate.format("MMMM YYYY")}
                 </Typography>
             <Grid item xs={12} md={4} margin="auto">
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                {/* <LocalizationProvider dateAdapter={AdapterDateFns}> */}
                 {/* <DatePicker
                     
                     views={['year', 'month']}
@@ -39,7 +39,7 @@ const HomeTotals = ({ date, setDate }) => {
                         />
                     )}
                 /> */}
-                </LocalizationProvider>
+                {/* </LocalizationProvider> */}
             </Grid>
         </>
     );
