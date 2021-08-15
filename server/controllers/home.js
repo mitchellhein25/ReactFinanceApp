@@ -6,8 +6,14 @@ import IncomeCat from '../models/incomecat.js';
 
 export const getExpensesHome = async (req, res) => {
     try {
+        if (!req.userId) {
+            expenses = null;
+            res.status(200).json(expenses);
+        }
+
         //Asynchronous call to Expense model, find gets all records
-        const expenses = await Expense.find();
+        const expenses = await Expense.find({ user: req.userId });
+    
         res.status(200).json(expenses);
     } catch (error){
         res.status(404).json({ message: error});
@@ -17,8 +23,8 @@ export const getExpensesHome = async (req, res) => {
 export const postExpenseHome = async (req, res) => {
     const expense = req.body;
 
-    const newExpense = new Expense(expense);
-
+    const newExpense = new Expense({ ...expense, user: req.userId });
+    // console.log(newExpense);
     try {
         await newExpense.save();
 
@@ -55,8 +61,12 @@ export const deleteExpenseHome = async (req, res) => {
 
  export const getIncomesHome = async (req, res) => {
     try {
+        if (!req.userId) {
+            incomes = null;
+            res.status(200).json(incomes);
+        }
         //Asynchronous call to Income model, find gets all records
-        const incomes = await Income.find();
+        const incomes = await Income.find({ user: req.userId });
         // console.log("INCOMES: ", incomes);
         res.status(200).json(incomes);
     } catch (error){
@@ -67,7 +77,7 @@ export const deleteExpenseHome = async (req, res) => {
 export const postIncomeHome = async (req, res) => {
     const income = req.body;
 
-    const newIncome = new Income(income);
+    const newIncome = new Income({ ...income, user: req.userId });
 
     try {
         await newIncome.save();
@@ -105,9 +115,12 @@ export const deleteIncomeHome = async (req, res) => {
 
  export const getBudgetsHome = async (req, res) => {
     try {
+        if (!req.userId) {
+            budgets = null;
+            res.status(200).json(budgets);
+        }
         //Asynchronous call to Budget model, find gets all records
-        const budgets = await Budget.find();
-        console.log("BUDGETS: ", budgets);
+        const budgets = await Budget.find({ user: req.userId });
         res.status(200).json(budgets);
     } catch (error){
         res.status(404).json({ message: error});
@@ -116,9 +129,9 @@ export const deleteIncomeHome = async (req, res) => {
 
 export const postBudgetHome = async (req, res) => {
     const budget = req.body;
-
-    const newBudget = new Budget(budget);
-
+    // console.log(budget);
+    const newBudget = new Budget({ ...budget, user: req.userId });
+    // console.log(newBudget);
     try {
         await newBudget.save();
 
@@ -173,8 +186,13 @@ export const deleteBudgetHome = async (req, res) => {
 
 export const getIncomeCatsHome = async (req, res) => {
     try {
+        if (!req.userId) {
+            incomeCats = null;
+            res.status(200).json(incomeCats);
+        }
+
         //Asynchronous call to Budget model, find gets all records
-        const incomeCats = await IncomeCat.find();
+        const incomeCats = await IncomeCat.find({ user: req.userId });
         // console.log("incomeCats: ", incomeCats);
         res.status(200).json(incomeCats);
     } catch (error){
@@ -185,7 +203,7 @@ export const getIncomeCatsHome = async (req, res) => {
 export const postIncomeCatHome = async (req, res) => {
     const incomeCat = req.body;
 
-    const newIncomeCat = new IncomeCat(incomeCat);
+    const newIncomeCat = new IncomeCat({ ...incomeCat, user: req.userId });
 
     try {
         await newIncomeCat.save();
@@ -223,14 +241,18 @@ export const deleteIncomeCatHome = async (req, res) => {
 
  export const getGroupedExpenses = async (req, res) => {
     try {
+        if (!req.userId) {
+            groupedExpenses = null;
+            res.status(200).json(groupedExpenses);
+        }
+
         //Asynchronous call to Expense model, find gets all records
         const groupedExpenses = await Expense.aggregate([
-            { $group : { _id : '$category', amount : { $sum : '$amount' } } }
+            { user: req.userId, $group : { _id : '$category', amount : { $sum : '$amount' } } }
         ])
         // console.log("EXPENSES: ", expenses);
         // const expenses = await Expense.find();
 
-       console.log("GROUPED EXPENSES: ", groupedExpenses);
         res.status(200).json(groupedExpenses);
     } catch (error){
         res.status(404).json({ message: error});

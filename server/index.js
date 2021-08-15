@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 
 //Import Routers
 import homeRoutes from './routes/home.js';
+import accountsRoutes from './routes/accounts.js';
+import userRoutes from './routes/users.js';
 
 const app = express();
 dotenv.config();
@@ -16,7 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use('/', homeRoutes);
-
+app.use('/accounts', accountsRoutes);
+app.use('/users', userRoutes);
 
 //http://www.mongodb.com/cloud/atlas
 

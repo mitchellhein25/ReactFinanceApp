@@ -14,6 +14,7 @@ export const getAccounts = () => async (dispatch) => {
 export const createAccount = (account) => async (dispatch) => {
     try {
         const { data } = await api.createAccount(account);
+        console.log(data);
         dispatch({ type: CREATE_ACCOUNT, payload: data });
     } catch (error) {
         console.log(error);

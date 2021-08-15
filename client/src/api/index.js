@@ -1,27 +1,43 @@
 import axios from 'axios';
 
-const url = 'http://localhost:5000';
+const API = axios.create({ baseURL: "http://localhost:5000" });
+
+API.interceptors.request.use((req) => {
+    if(localStorage.getItem('profile')) {
+        req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem("profile")).token}`;
+    }
+
+    return req;
+});
 
 //Home Api calls
-export const fetchExpenses = () => axios.get(`${url}/expenses`);
-export const createExpense = (newExpense) => axios.post(`${url}/expense`, newExpense);
-export const updateExpense = (id, updatedExpense) => axios.patch(`${url}/expense${id}`, updatedExpense);
-export const deleteExpense = (id) => axios.delete(`${url}/expense${id}`);
-export const fetchIncomes = () => axios.get(`${url}/incomes`);
-export const createIncome = (newIncome) => axios.post(`${url}/income`, newIncome);
-export const updateIncome = (id, updatedIncome) => axios.patch(`${url}/income${id}`, updatedIncome);
-export const deleteIncome = (id) => axios.delete(`${url}/income${id}`);
-export const fetchBudgets = () => axios.get(`${url}/budgets`);
-export const createBudget = (newBudget) => axios.post(`${url}/budget`, newBudget);
-export const updateBudget = (id, updatedBudget) => axios.patch(`${url}/budget${id}`, updatedBudget);
-export const deleteBudget = (id) => axios.delete(`${url}/budget${id}`);
-export const fetchIncomeCats = () => axios.get(`${url}/incomecats`);
-export const createIncomeCat = (newIncomeCat) => axios.post(`${url}/incomecat`, newIncomeCat);
-export const updateIncomeCat = (id, updatedIncomeCat) => axios.patch(`${url}/incomecat${id}`, updatedIncomeCat);
-export const deleteIncomeCat = (id) => axios.delete(`${url}/incomecat${id}`);
+export const fetchExpenses = () => API.get(`/expenses`);
+export const createExpense = (newExpense) => API.post(`/expense`, newExpense);
+export const updateExpense = (id, updatedExpense) => API.patch(`/expense${id}`, updatedExpense);
+export const deleteExpense = (id) => API.delete(`/expense${id}`);
+export const fetchIncomes = () => API.get(`/incomes`);
+export const createIncome = (newIncome) => API.post(`/income`, newIncome);
+export const updateIncome = (id, updatedIncome) => API.patch(`/income${id}`, updatedIncome);
+export const deleteIncome = (id) => API.delete(`/income${id}`);
+export const fetchBudgets = () => API.get(`/budgets`);
+export const createBudget = (newBudget) => API.post(`/budget`, newBudget);
+export const updateBudget = (id, updatedBudget) => API.patch(`/budget${id}`, updatedBudget);
+export const deleteBudget = (id) => API.delete(`/budget${id}`);
+export const fetchIncomeCats = () => API.get(`/incomecats`);
+export const createIncomeCat = (newIncomeCat) => API.post(`/incomecat`, newIncomeCat);
+export const updateIncomeCat = (id, updatedIncomeCat) => API.patch(`/incomecat${id}`, updatedIncomeCat);
+export const deleteIncomeCat = (id) => API.delete(`/incomecat${id}`);
 
 //Accounts page Api calls
-export const fetchAccounts = () => axios.get(`${url}/accounts`);
-export const createAccount = (newAccount) => axios.post(`${url}/account`, newAccount);
-export const updateAccount = (id, updatedAccount) => axios.patch(`${url}/account${id}`, updatedAccount);
-export const deleteAccount = (id) => axios.delete(`${url}/account${id}`);
+export const fetchAccounts = () => API.get(`/accounts/accounts`);
+export const createAccount = (newAccount) => API.post(`/accounts/account`, newAccount);
+export const updateAccount = (id, updatedAccount) => API.patch(`/accounts/account${id}`, updatedAccount);
+export const deleteAccount = (id) => API.delete(`/accounts/account${id}`);
+export const fetchAccountNames = () => API.get(`/accounts/accountnames`);
+export const createAccountName = (newAccountName) => API.post(`/accounts/accountname`, newAccountName);
+export const updateAccountName = (id, updatedAccountName) => API.patch(`/accounts/accountname${id}`, updatedAccountName);
+export const deleteAccountName = (id) => API.delete(`/accounts/accountname${id}`);
+
+//Auth page Api calls
+export const signin = (formData) => API.post('/users/signin', formData);
+export const signup = (formData) => API.post('/users/signup', formData);

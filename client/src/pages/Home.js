@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, AppBar, Typography, Grow, Grid, TextField, Paper } from '@material-ui/core';
-import DatePicker from '@material-ui/lab/DatePicker';
-import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
-import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+import { Container, Grid, Tab, Tabs, Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { HashLink as Link } from 'react-router-hash-link';
+import PropTypes from 'prop-types';
+import Box from '@material-ui/core/Box';
 
 import ExpenseForm from '../components/ExpenseForm/ExpenseForm';
 import ExpenseTable from '../components/ExpenseTable/ExpenseTable';
@@ -13,6 +11,10 @@ import IncomeTable from '../components/IncomeTable/IncomeTable';
 import BudgetForm from '../components/BudgetForm/BudgetForm';
 import BudgetTable from '../components/BudgetTable/BudgetTable';
 import IncomeCatForm from '../components/IncomeCatForm/IncomeCatForm';
+import HomeTotals from '../components/HomeTotals/HomeTotals';
+import DatePicker from '../components/DatePicker/DatePicker';
+import NetWorth from '../components/NetWorth/NetWorth';
+import BudgetTotals from '../components/BudgetTotals/BudgetTotals';
 
 import useStyles from '../styles';
 
@@ -21,105 +23,126 @@ import { getIncomes } from '../actions/incomes';
 import { getBudgets } from '../actions/budgets';
 import { getIncomeCats } from '../actions/incomeCats';
 
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`tabpanel-${index}`}
+        aria-labelledby={`tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box>
+            {children}
+          </Box>
+        )}
+      </div>
+    );
+  }
+  
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+  };
+  
+  function a11yProps(index) {
+    return {
+      id: `tab-${index}`,
+      'aria-controls': `tabpanel-${index}`,
+    };
+  }
+
 function Home() {
 
-    const [currentExpenseId, setCurrentExpenseId] = useState(null);
-    const [currentIncomeId, setCurrentIncomeId] = useState(null);
-    const [currentBudgetId, setCurrentBudgetId] = useState(null);
-    const [currentIncomeCatId, setCurrentIncomeCatId] = useState(null);
+    const [currentExpenseId, setCurrentExpenseId] = useState();
+    const [currentIncomeId, setCurrentIncomeId] = useState();
+    const [currentBudgetId, setCurrentBudgetId] = useState();
+    const [currentIncomeCatId, setCurrentIncomeCatId] = useState();
     const [date, setDate] = useState(new Date());
+    const [value, setValue] = React.useState(0);
     const classes = useStyles();
     const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem('profile'));
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+      };
 
     useEffect(() => {
-        dispatch(getExpenses())
+        dispatch(getExpenses());
+        dispatch(getIncomes());
+        dispatch(getBudgets());
+        dispatch(getIncomeCats());
     }, [currentExpenseId, dispatch]);
 
-    // useEffect(() => {
-    //     dispatch(getGroupedExpenses())
-    // }, [currentGroupedExpenseId, dispatch]);
-
-    useEffect(() => {
-        dispatch(getIncomes())
-    }, [currentIncomeId, dispatch]);
-
-    useEffect(() => {
-        dispatch(getBudgets())
-    }, [currentBudgetId, dispatch]);
-
-    useEffect(() => {
-        dispatch(getIncomeCats())
-    }, [currentIncomeCatId, dispatch]);
-
     return (
-        <Container maxWidth="none">
-            {/* <Grow in> */}
-                {/* <Container disableGutters='true'> */}
+        <Container maxWidth="none" className={classes.root}>
+            <Grid className={classes.appBar} container justify="space-between" alignItems="center" spacing={1}>
+                <Grid item xs={12} md={4}>
+                    <NetWorth />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <DatePicker date={date} setDate={setDate}/>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <HomeTotals date={date} setDate={setDate}/>
+                </Grid>
+                <Grid className={classes.tabGrid} container justify="space-between" alignItems="center" spacing={1}>
+                    <Grid xs={12} md={4}></Grid>
+                    <Grid xs={12} md={4}>
+                    {/* <AppBar position="static"> */}
+                        <Tabs className={classes.tabs} value={value} onChange={handleChange} centered>
+                            <Tab label="Expenses" {...a11yProps(0)} />
+                            <Tab label="Incomes" {...a11yProps(1)} />
+                            <Tab label="Budgets" {...a11yProps(2)} />
+                        </Tabs>
+                    {/* </AppBar> */}
+                    </Grid>
+                    <Grid xs={12} md={4}></Grid>
+                </Grid>
+                <TabPanel value={value} index={0}>
                     <Grid className={classes.appBar} container justify="space-between" alignItems="stretch" spacing={1}>
-                        <Grid lg={5}> 
-                            <Typography marginTop="20px" variant="h6">
-                                <Link to="/#budgets">
-                                    Go to Budgets
-                                </Link>
-                            </Typography> </Grid>
-                        <Grid marginBottom="20px" item xs={12} lg={2}>
-                            {/* <Typography textAlign="center" variant="h3">
-                                Finance App
-                            </Typography> */}
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DatePicker
-                                views={['year', 'month']}
-                                label="Year and Month"
-                                minDate={new Date('2000-01-01')}
-                                maxDate={new Date('2050-12-12')}
-                                value={date}
-                                onChange={(newDate) => {
-                                    setDate(newDate);
-                                    console.log(date);
-                                }}
-                                renderInput={(params) => (
-                                    <TextField
-                                    {...params}
-                                    margin="normal"
-                                    helperText={null}
-                                    variant="standard"
-                                    />
-                                )}
-                            />
-                            </LocalizationProvider>
-                        </Grid>
-                        <Grid lg={5}></Grid>
-                        <Grid item xs={12} sm={7}>
-                        </Grid>
-                        <Grid item xs={12} sm={7}>
+                        <Grid item xs={12} md={7}>
                             <ExpenseTable setCurrentId={setCurrentExpenseId} date={date}/>
                         </Grid>
-                        <Grid item xs={12} sm={3}>
+                        <Grid item xs={12} md={3}>
                             <ExpenseForm currentId={currentExpenseId} setCurrentId={setCurrentExpenseId} budgetID={currentBudgetId}/>
                         </Grid>
-                        <Grid id="budgets" item xs={12} sm={2}>
+                        <Grid id="budgets" item xs={12} md={2}>
                             <BudgetForm currentId={currentBudgetId} setCurrentId={setCurrentBudgetId} />
                         </Grid>
-                        <Grid item xs={12} sm={7}>
+                    </Grid>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <Grid className={classes.appBar} container justify="space-between" alignItems="stretch" spacing={1}>
+                        <Grid item xs={12} md={7}>
                             <IncomeTable setCurrentId={setCurrentIncomeId} date={date}/>
                         </Grid>
-                        <Grid item xs={12} sm={3}>
+                        <Grid item xs={12} md={3}>
                             <IncomeForm currentId={currentIncomeId} setCurrentId={setCurrentIncomeId} />
                         </Grid>
-                        <Grid item xs={12} sm={2}>
+                        <Grid item xs={12} md={2}>
                             <IncomeCatForm currentId={currentIncomeCatId} setCurrentId={setCurrentIncomeCatId} />
                         </Grid>
-                        <Grid lg={1}></Grid>
-                        <Grid item xs={12} lg={10}>
+                    </Grid>
+                </TabPanel>
+                <TabPanel className={classes.fullPanel} value={value} index={2}>
+                    <Grid className={classes.appBar} container justify="center" alignItems="stretch" spacing={2}>
+                        <Grid item xs={12} md={9}>
                             <BudgetTable setCurrentId={setCurrentBudgetId} date={date}/>
                         </Grid>
-                        <Grid lg={1}></Grid>
-                        {/* <Grid item xs={12} sm={5}>
-                             <IncomeCatTable setCurrentId={setCurrentIncomeCatId}/> 
-                        </Grid> */}
+                        <Grid item xs={12} md={3}>
+                            <BudgetForm currentId={currentBudgetId} setCurrentId={setCurrentBudgetId} />
+                            <BudgetTotals date={date}/>
+                        </Grid>
                     </Grid>
-                {/* </Container> */}
-            {/* </Grow> */}
+                </TabPanel>
+        
+            </Grid>
+                    
         </Container>
     )
 }

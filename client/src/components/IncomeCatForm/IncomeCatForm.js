@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Typography, Paper } from '@material-ui/core';
+import { TextField, Button, Typography, Container } from '@material-ui/core';
 import useStyles from './styles';
 
 import { useDispatch, useSelector  } from 'react-redux';
@@ -12,6 +12,7 @@ const IncomeCatForm = ({ currentId, setCurrentId }) => {
     const incomeCat = useSelector((state) => currentId ? state.incomeCats.find((x) => x._id === currentId) : null);
     const dispatch = useDispatch();
     const classes = useStyles();
+    const user = JSON.parse(localStorage.getItem('profile'));
 
     useEffect(() => {
         if(incomeCat) setIncomeCatData(incomeCat);
@@ -21,9 +22,9 @@ const IncomeCatForm = ({ currentId, setCurrentId }) => {
         e.preventDefault();
 
         if(currentId) {
-            dispatch(updateIncomeCat(currentId, incomeCatData));
+            dispatch(updateIncomeCat(currentId, { ...incomeCatData, user: user?.result?._id ? user?.result?._id : user?.result?.googleId }));
         } else {
-            dispatch(createIncomeCat(incomeCatData));
+            dispatch(createIncomeCat({ ...incomeCatData, user: user?.result?._id ? user?.result?._id : user?.result?.googleId }));
         }
         clear();
     }
@@ -42,9 +43,13 @@ const IncomeCatForm = ({ currentId, setCurrentId }) => {
                 //Sets the state using an object
                 onChange={(e) => setIncomeCatData({ ...incomeCatData, name: e.target.value })}
                 />
-                <div>
-                    <Button className={classes.formElement} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button> 
-                    <Button className={classes.formElement} variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button> 
+                <div className={classes.buttonRow} >
+                    <div className={classes.formElement} >
+                        <Button variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button> 
+                    </div>
+                    <div className={classes.formElement} >
+                        <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button> 
+                    </div>
                 </div>
             </form>
         </div>

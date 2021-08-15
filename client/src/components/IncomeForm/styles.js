@@ -1,5 +1,4 @@
 import { makeStyles} from '@material-ui/core/styles';
-import useStyles from './styles';
 
 export default makeStyles((theme) => ({
     root: {
@@ -9,6 +8,7 @@ export default makeStyles((theme) => ({
       },
     formElement: {
         margin: "3px",
+        minWidth: "200px"
     },
     paper: {
         padding: theme.spacing(1),
@@ -18,4 +18,10 @@ export default makeStyles((theme) => ({
         flexWrap: 'wrap',
         justifyContent: 'center',
     },
+    inputMargin: {
+        marginTop: "10px"
+    },
+    buttonRow: {
+        marginTop: "7px"
+    }
 }));

@@ -13,11 +13,18 @@ export default makeStyles(() => ({
         padding: "5px"
     },
     green: {
-        backgroundColor: 'green',
-        color: 'white',
+        backgroundColor: 'lightgreen',
         fontWeight: '600'
     },
     red: {
-        backgroundColor: 'red',
-    }
+        backgroundColor: 'lightcoral',
+    },
+    gold: {
+        backgroundColor: 'gold',
+    },
+    budgetTotal: {
+        backgroundColor: 'lightgreen',
+        fontSize: '20px',
+        fontWeight: '600'
+    },
 }));

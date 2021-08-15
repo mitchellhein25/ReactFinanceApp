@@ -1,20 +1,50 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Paper, Button, Hidden, Typography } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Container, Button, Hidden, Typography, RadioGroup, FormControlLabel, Radio } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './styles';
-import moment from 'moment';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { deleteExpense } from '../../actions/expenses';
+import { deleteAccount } from '../../actions/accounts';
 
 const AccountTable = ({ setCurrentId, date }) => {
-    const budgets = useSelector((state) => state.budgets)
-    const accounts = useSelector((state) => state.accounts)
     const classes = useStyles();
     const dispatch = useDispatch();
-    // console.log("BUDGETS: ", budgets);
+    const user = JSON.parse(localStorage.getItem('profile'));
+
+    const accountNames = useSelector((state) => state.accountNames)
+
+    const accounts = useSelector((state) => state.accounts);
+
+    const accountNameFindName = (account) => {
+        if (account.name && account) {
+            const accountName = accountNames.find(accountName => accountName._id === account.name)
+            if (accountName) {
+                return accountName.name;
+            }
+        }
+        return ""
+    }
+
+    let acctNames = [];
+    let accts = [];
+
+    accounts.forEach((account, index) => {
+        if (acctNames.includes(accountNameFindName(account))) {
+            accts.forEach((acct, indexInner) => {
+                if (accountNameFindName(acct) == accountNameFindName(account)) {
+                    if (account.date > acct.date) {
+                        accts[indexInner] = account;
+                        acctNames[indexInner] = accountNameFindName(account);
+                    } 
+                }
+            })
+        } else {
+            accts.push(account);
+            acctNames.push(accountNameFindName(account));
+        }
+    });
 
     const cleanDate = (date) => {
         if (date) {
@@ -24,63 +54,112 @@ const AccountTable = ({ setCurrentId, date }) => {
         }
     }
 
-    const momentDate = moment(date);
+    // Currency formatter.
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
 
-    // const budgetFindName = (expense) => {
-    //     if (expense.category && expense) {
-    //         const budget = budgets.find(budget => budget._id === expense.category)
-    //         if (budget) {
-    //             return budget.name;
-    //         }
+    const cleanDebtOrAsset = (debtOrAsset) => {
+        if (debtOrAsset == false) {
+            return "Debt";
+        } else if (debtOrAsset == true) {
+            return "Asset";
+        } else {
+            return "";
+        }
+    }
+    // console.log(accts)
+
+    ////sort accts by allocation, descending
+    // function sortByAllocation(a, b) {
+    //     // Use toUpperCase() to ignore character casing
+    //     const alloA = a.allocation;
+    //     const alloB = b.allocation;
+      
+    //     let comparison = 0;
+    //     if (alloA > alloB) {
+    //       comparison = 1;
+    //     } else if (alloA < alloB) {
+    //       comparison = -1;
     //     }
-    //     return ""
-    // }
+    //     return comparison * -1;
+    //   }
 
+   //  sort accts by balance, descending
+     function sortByBalance(a, b) {
+        // Use toUpperCase() to ignore character casing
+        const alloA = a.balance;
+        const alloB = b.balance;
+      
+        let comparison = 0;
+        if (alloA > alloB) {
+          comparison = 1;
+        } else if (alloA < alloB) {
+          comparison = -1;
+        }
+        return comparison * -1;
+      }
+      
+    // const sortAccounts = (value) => {
+    //     if (value == "balance") {
+    //         console.log("sortedbyBalacnce");
+    //         accts.sort(sortByBalance);
+    //     } else if (value == "allocation") {
+    //         accts.sort(sortByAllocation);
+    //     }
+        // accounts = accts;
+    // }
+    accts.sort(sortByBalance);  
     return (
         <TableContainer>
-    <Typography className={classes.tableHeader} variant="h4" component="div">
-          Accounts
-    </Typography>
-      <Table padding='none' aria-label="simple table">
-        <TableHead className={classes.head}>
-          <TableRow className={classes.tableRow}>
-            <Hidden only={['xs', 'sm', 'md', 'lg', 'xl']}>
-                <TableCell>Id</TableCell>
-            </Hidden>
-            <TableCell>Name</TableCell>
-            <TableCell>Balance</TableCell>
-            <TableCell>Debt or Asset</TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-            {accounts.map((account) => (
-                
-                <TableRow className={classes.tableRow} key={account._id}>
-                    <Hidden only={['xs', 'sm', 'md', 'lg', 'xl']}>
-                        <TableCell component="th" scope="row" hidden>{account._id}</TableCell>
-                    </Hidden>
-                    <TableCell >{account.name}</TableCell>
-                    <TableCell >{account.balance}</TableCell>
-                    <TableCell component="th" scope="row">{account.debtOrAsset}</TableCell>
-                    <TableCell >
-                        <Button size="small" color="primary" onClick={() => dispatch(deleteExpense(account._id))}>
-                            <DeleteIcon fontSize="small" />
-                            Delete
-                        </Button>
-                    </TableCell>
-                    <TableCell >
-                        <Button size="small" color="primary" onClick={() => setCurrentId(account._id)}>
-                            <EditIcon fontSize="small" />
-                            Edit
-                        </Button>
-                    </TableCell>
+            <Typography className={classes.tableHeader} variant="h4" component="div">
+                Accounts 
+            </Typography>
+            <Table padding='none' aria-label="simple table">
+                <TableHead className={classes.head}>
+                <TableRow className={classes.tableRow}>
+                    <div hidden>
+                        <TableCell>Id</TableCell>
+                    </div>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Balance</TableCell>
+                    <TableCell>Debt or Asset</TableCell>
+                    <TableCell>Last Updated</TableCell>
+                    <TableCell>Allocation</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
                 </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                </TableHead>
+                <TableBody>
+                    {accts.map((account) => (
+
+                        <TableRow className={classes.tableRow} key={account._id}>
+                            <div hidden>
+                                <TableCell>{account._id}</TableCell>
+                            </div>
+                            <TableCell >{accountNameFindName(account)}</TableCell>
+                            <TableCell >{formatter.format(account.balance)}</TableCell>
+                            <TableCell>{cleanDebtOrAsset(account.debtOrAsset)}</TableCell>
+                            <TableCell>{cleanDate(account.date)}</TableCell>
+                            <TableCell>{account.allocation}%</TableCell>
+                            <TableCell >
+                                <Button size="small" color="primary" onClick={() => dispatch(deleteAccount(account._id))}>
+                                    <DeleteIcon fontSize="small" />
+                                    Delete
+                                </Button>
+                            </TableCell>
+                            <TableCell >
+                                <Button size="small" color="primary" onClick={() => setCurrentId(account._id)}>
+                                    <EditIcon fontSize="small" />
+                                    Edit
+                                </Button>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 }
 

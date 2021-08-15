@@ -11,6 +11,22 @@ export default makeStyles(() => ({
     tableHeader: {
         textAlign: "center",
         padding: "5px"
+    },
+    root: {
+        width: '100%',
+    },
+    
+    container: {
+        maxHeight: 440,
+        overflowX: "auto",
+        marginRight: "auto",
+        marginLeft: "auto",
+        marginTop: "50px",
+        padding: "10px",
+        margin: "10px",
+    },
+    table: {
+        
     }
 
 }));
