@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Grid, Typography, TextField } from '@material-ui/core';
-import DatePicker from '@material-ui/lab/DatePicker';
+// import DatePicker from '@material-ui/pickers';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 
@@ -19,7 +19,7 @@ const HomeTotals = ({ date, setDate }) => {
                 </Typography>
             <Grid item xs={12} md={4} margin="auto">
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
+                {/* <DatePicker
                     
                     views={['year', 'month']}
                     label="Year and Month"
@@ -38,7 +38,7 @@ const HomeTotals = ({ date, setDate }) => {
                         variant="standard"
                         />
                     )}
-                />
+                /> */}
                 </LocalizationProvider>
             </Grid>
         </>
