@@ -17,6 +17,8 @@ export const createIncomeCat = (incomeCat) => async (dispatch) => {
         const { data } = await api.createIncomeCat(incomeCat);
         dispatch({ type: CREATE_INCOMECAT, payload: data });
     } catch (error) {
+        if (error.toString().includes("409"))
+            alert("There is already an income category with that name.");
         console.log(error);
     }
 }

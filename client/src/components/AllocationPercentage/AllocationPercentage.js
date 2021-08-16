@@ -8,7 +8,7 @@ import useStyles from './styles';
 import { getAccounts } from '../../actions/accounts';
 import { getAccountNames } from '../../actions/accountNames';
 
-const AllocationPercentage = ({ }) => {
+const AllocationPercentage = () => {
     const [ totalAllocations, setTotalAllocations ] = useState(null);
     const accounts = useSelector((state) => state.accounts);
     const accountNames = useSelector((state) => state.accountNames);
@@ -34,7 +34,7 @@ const AllocationPercentage = ({ }) => {
         await accounts.forEach((account, index) => {
             if (acctNames.includes(accountNameFindName(account))) {
                 accts.forEach((acct, indexInner) => {
-                    if (accountNameFindName(acct) == accountNameFindName(account)) {
+                    if (accountNameFindName(acct) === accountNameFindName(account)) {
                         if (account.date > acct.date) {
                             accts[indexInner] = account;
                             acctNames[indexInner] = accountNameFindName(account);
@@ -61,11 +61,11 @@ const AllocationPercentage = ({ }) => {
     return (
         <Grid>
             <div>
-                <Typography textAlign="center" variant="h2">
+                <Typography align="center" variant="h2">
                 Total Allocation Percentage:<br /> <b>{ totalAllocations }%</b>
                 </Typography>
             </div>
-            <Typography className={classes.red} textAlign="center" variant="h5">
+            <Typography className={classes.red} align="center" variant="h5">
                 {totalAllocations > 100 ? "Your allocations exceed 100% of your cash flow!" : ""}
             </Typography>
         </Grid>

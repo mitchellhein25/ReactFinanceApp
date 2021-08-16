@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Button, Typography, Icon, Avatar } from '@material-ui/core';
-import { Link, useHistory, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { AppBar, Toolbar, Button, Typography, Avatar } from '@material-ui/core';
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import decode from 'jwt-decode';
 import useStyles from './styles';
 
-const NavBar = ({}) => {
+const NavBar = () => {
   const classes = useStyles();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
 
-
-  const logout = () => {
+  const logout = useCallback(() => {
     dispatch({ type: 'LOGOUT' });
     history.push('/');
     setUser(null);
-  };
+  }, [dispatch, history]);
 
   useEffect(() => {
     const token = user?.token;
@@ -26,19 +24,17 @@ const NavBar = ({}) => {
       const decodedToken = decode(token);
       
       //Gets token expiration in ms and current time in ms
-      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+      if (decodedToken.exp * 1000 < new Date().getTime()) 
+        logout();
     }
 
     setUser(JSON.parse(localStorage.getItem('profile')));
-  }, [location]);
+  }, [user?.token, logout]);
 
   return (
     <div>
       <AppBar position="static">
         <Toolbar className={classes.root}>
-          {/* <Link className={classes.navLink} to="/">
-            <Icon fontSize="large">home</Icon>
-          </Link> */}
           <div className={classes.links}>
             <Typography component={Link} to="/" className={classes.navLink} variant="h6">Home</Typography>
             <Typography component={Link} to="/accounts" className={classes.navLink} variant="h6">Accounts</Typography>

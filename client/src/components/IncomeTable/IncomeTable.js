@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, TablePagination, Button, Hidden, Typography } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, TablePagination, Button, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './styles';
@@ -16,18 +15,12 @@ const columns = [
     { id: 'amount', label: 'Amount', minWidth: 100 },
     { id: 'date', label: 'Date', minWidth: 100, },
   ];
-  
-  function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-  }
 
 const IncomeTable = ({ setCurrentId, date }) => {
     const incomeCats = useSelector((state) => state.incomeCats)
     const incomes = useSelector((state) => state.incomes)
     const classes = useStyles();
     const dispatch = useDispatch();
-    const user = JSON.parse(localStorage.getItem('profile'));
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 

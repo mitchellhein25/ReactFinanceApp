@@ -11,20 +11,23 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
     const [category, setCategory] = React.useState('');
 
     let budgetsToRender;
-    console.log(Object.keys(budgets).length);
     if (budgets) {
         budgetsToRender = budgets.map(budget => {
             return <MenuItem value={budget.name}>{budget.name}</MenuItem>
         });
     }
-    Date.prototype.toDateInputValue = (function() {
-        var local = new Date(this);
-        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-        return local.toJSON().slice(0,10);
+    // eslint-disable-next-line no-extend-native
+    Date.prototype.toDateFormat = (function(format) {
+        format = format || "mm/yyyy";
+        return format.toLowerCase()
+        // var local = new Date(this);
+        // local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        // return local.toJSON().slice(0,10);
     });
     const [expenseData, setExpenseData] = useState({
-        date: new Date().toDateInputValue(), category: '', amount: '', description: ""
+        date: moment(Date.now()).format("yyyy-MM-DD"), category: '', amount: '', description: ""
     });
+    
     const expense = useSelector((state) => currentId ? state.expenses.find((x) => x._id === currentId) : null);
     const dispatch = useDispatch();
     const classes = useStyles();
@@ -37,7 +40,7 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
             setExpenseData(expense);
             setCategory(budget.name);
         }
-    }, [expense])
+    }, [expense, budgets])
 
     const findBudgetId = (e) => {
         const budget = budgets.find(budget => budget.name === e.target.value);
@@ -45,11 +48,11 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
         setCategory(e.target.value);
     }
 
-    const findBudgetIdByName = (name) => {
-        const budget = budgets.find(budget => budget.name === name);
-        setExpenseData({ ...expenseData, category: budget._id });
-        setCategory(name);
-    }
+    // const findBudgetIdByName = (name) => {
+    //     const budget = budgets.find(budget => budget.name === name);
+    //     setExpenseData({ ...expenseData, category: budget._id });
+    //     setCategory(name);
+    // }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -72,12 +75,12 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
         <Container className={classes.paper}>
             <form className={`${classes.root} ${classes.form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Enter' } an Expense</Typography>
-                <TextField paddingTop="10px" size="small"  name="date" variant="outlined" type="date" fullWidth value={expenseData.date}
+                <TextField size="small"  name="date" variant="outlined" type="date" fullWidth value={expenseData.date}
                 //This ... spreads the data, only changing the property you specify and leaving the others as is
                 //Sets the state using an object
                 onChange={(e) => setExpenseData({ ...expenseData, date: e.target.value })}
                 />
-                <FormControl size="small" fullWidth>
+                <FormControl className={classes.margin} size="small" fullWidth variant="outlined">
                         <InputLabel className={classes.inputMargin} id="categoryLabel">Category</InputLabel>
                         <Select className={classes.inputMargin} MenuProps={{disableScrollLock: true}}size="small" name="category" variant="outlined" fullWidth value={category} onChange={findBudgetId}>
                             {budgetsToRender}
@@ -89,7 +92,7 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
                     fullWidth value={expenseData.amount}  onChange={(e) => setExpenseData({ ...expenseData, amount: e.target.value })} />
                 </FormControl>  
                 <FormControl fullWidth className={classes.margin} variant="outlined">
-                    <InputLabel>Description</InputLabel>
+                    <InputLabel className={classes.inputMargin} >Description</InputLabel>
                     <OutlinedInput className={classes.inputMargin} size="small" name="description" variant="outlined" type="text" label="Description"
                     fullWidth value={expenseData.description}  onChange={(e) => setExpenseData({ ...expenseData, description: e.target.value })} />
                 </FormControl>   

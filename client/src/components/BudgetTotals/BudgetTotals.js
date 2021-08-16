@@ -1,14 +1,12 @@
 import React from 'react';
 import { Typography, Grid } from '@material-ui/core';
 
-import useStyles from './styles';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 
 const BudgetTotals = ({ date }) => {
     const budgets = useSelector((state) => state.budgets);
     const expenses = useSelector((state) => state.expenses);
-    const classes = useStyles();
     const momentDate = moment(date);
 
     // Currency formatter.
@@ -32,7 +30,7 @@ const BudgetTotals = ({ date }) => {
     const getExpenseAmount = (budgetName) => {
         var total = 0;
         currExpenses.forEach(expense => {
-            if (budgetFindName(expense) == budgetName) {
+            if (budgetFindName(expense) === budgetName) {
                 total += expense.amount;
             }
         });
@@ -52,9 +50,9 @@ const BudgetTotals = ({ date }) => {
 
     return (
         <Grid>
-            <Typography textAlign="center" marginTop="30px" variant="h6">Total Expenses in May: <b>{formatter.format(totalBudgets()[1])}</b></Typography>
-            <Typography textAlign="center" variant="h6">Total Budget for May: <b>{formatter.format(totalBudgets()[0])}</b></Typography>
-            <Typography textAlign="center" variant="h3">{
+            <Typography align="center" marginTop="30px" variant="h6">Total Expenses in May: <b>{formatter.format(totalBudgets()[1])}</b></Typography>
+            <Typography align="center" variant="h6">Total Budget for May: <b>{formatter.format(totalBudgets()[0])}</b></Typography>
+            <Typography align="center" variant="h3">{
                 (totalBudgets()[0] - totalBudgets()[1]) > 0 ? formatter.format(totalBudgets()[0] - totalBudgets()[1]) + " under budget" : 
                 formatter.format((totalBudgets()[0] - totalBudgets()[1]) * -1) + " over budget"
             }</Typography>

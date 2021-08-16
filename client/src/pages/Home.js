@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Tab, Tabs, Typography } from '@material-ui/core';
+import { Container, Grid, Tab, Tabs } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
@@ -66,7 +66,6 @@ function Home() {
     const [value, setValue] = React.useState(0);
     const classes = useStyles();
     const dispatch = useDispatch();
-    const user = JSON.parse(localStorage.getItem('profile'));
     const handleChange = (event, newValue) => {
         setValue(newValue);
       };
@@ -76,11 +75,11 @@ function Home() {
         dispatch(getIncomes());
         dispatch(getBudgets());
         dispatch(getIncomeCats());
-    }, [currentExpenseId, dispatch]);
+    }, [dispatch]);
 
     return (
-        <Container maxWidth="none" className={classes.root}>
-            <Grid className={classes.appBar} container justify="space-between" alignItems="center" spacing={1}>
+        <Container maxWidth="xl" className={classes.root}>
+            <Grid className={classes.appBar} container justifyContent="space-between" alignItems="center" spacing={1}>
                 <Grid item xs={12} md={4}>
                     <NetWorth />
                 </Grid>
@@ -90,9 +89,9 @@ function Home() {
                 <Grid item xs={12} md={4}>
                     <HomeTotals date={date} setDate={setDate}/>
                 </Grid>
-                <Grid className={classes.tabGrid} container justify="space-between" alignItems="center" spacing={1}>
-                    <Grid xs={12} md={4}></Grid>
-                    <Grid xs={12} md={4}>
+                <Grid className={classes.tabGrid} container justifyContent="space-between" alignItems="center" spacing={1}>
+                    <Grid item xs={12} md={4}></Grid>
+                    <Grid item xs={12} md={4}>
                     {/* <AppBar position="static"> */}
                         <Tabs className={classes.tabs} value={value} onChange={handleChange} centered>
                             <Tab label="Expenses" {...a11yProps(0)} />
@@ -101,10 +100,10 @@ function Home() {
                         </Tabs>
                     {/* </AppBar> */}
                     </Grid>
-                    <Grid xs={12} md={4}></Grid>
+                    <Grid item xs={12} md={4}></Grid>
                 </Grid>
                 <TabPanel value={value} index={0}>
-                    <Grid className={classes.appBar} container justify="space-between" alignItems="stretch" spacing={1}>
+                    <Grid className={classes.appBar} container justifyContent="space-between" alignItems="stretch" spacing={1}>
                         <Grid item xs={12} md={7}>
                             <ExpenseTable setCurrentId={setCurrentExpenseId} date={date}/>
                         </Grid>
@@ -117,7 +116,7 @@ function Home() {
                     </Grid>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <Grid className={classes.appBar} container justify="space-between" alignItems="stretch" spacing={1}>
+                    <Grid className={classes.appBar} container justifyContent="space-between" alignItems="stretch" spacing={1}>
                         <Grid item xs={12} md={7}>
                             <IncomeTable setCurrentId={setCurrentIncomeId} date={date}/>
                         </Grid>
@@ -130,7 +129,7 @@ function Home() {
                     </Grid>
                 </TabPanel>
                 <TabPanel className={classes.fullPanel} value={value} index={2}>
-                    <Grid className={classes.appBar} container justify="center" alignItems="stretch" spacing={2}>
+                    <Grid className={classes.appBar} container justifyContent="center" alignItems="stretch" spacing={2}>
                         <Grid item xs={12} md={9}>
                             <BudgetTable setCurrentId={setCurrentBudgetId} date={date}/>
                         </Grid>

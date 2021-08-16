@@ -2,7 +2,7 @@ import { FETCH_BUDGETS, CREATE_BUDGET, UPDATE_BUDGET, DELETE_BUDGET } from '../c
 //Reducer is a function that accepts the state and the action
 //Based on action type, it will do something.
 
-export default (budgets = [() => {}], action) => {
+const budgets = (budgets = [() => {}], action) => {
     switch (action.type) {
         case FETCH_BUDGETS:
             return  action.payload;
@@ -16,3 +16,5 @@ export default (budgets = [() => {}], action) => {
             return budgets;
     }
 }
+
+export default budgets;

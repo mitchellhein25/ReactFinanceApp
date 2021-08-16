@@ -16,6 +16,8 @@ export const createAccountName = (accountName) => async (dispatch) => {
         const { data } = await api.createAccountName(accountName);
         dispatch({ type: CREATE_ACCOUNTNAME, payload: data });
     } catch (error) {
+        if (error.toString().includes("409"))
+            alert("There is already an account with that name.");
         console.log(error);
     }
 }

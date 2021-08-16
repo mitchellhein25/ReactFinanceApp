@@ -19,7 +19,8 @@ export default makeStyles((theme) => ({
         justifyContent: 'center',
     },
     inputMargin: {
-        marginTop: "10px"
+        marginTop: "10px",
+        // padding: "0px 5px 10px 10px"
     },
     buttonRow: {
         marginTop: "7px"

@@ -8,7 +8,7 @@ import { createAccount, updateAccount } from '../../actions/accounts';
 const AccountForm = ({ currentId, setCurrentId }) => {
     const accountNames = useSelector((state) => state.accountNames)
     const [name, setName] = React.useState('');
-    const user = JSON.parse(localStorage.getItem('profile'));
+    // const user = JSON.parse(localStorage.getItem('profile'));
 
     let accountNamesToRender;
     if (accountNames) {
@@ -16,6 +16,7 @@ const AccountForm = ({ currentId, setCurrentId }) => {
             return <MenuItem value={accountName.name}>{accountName.name}</MenuItem>
         });
     }
+    // eslint-disable-next-line no-extend-native
     Date.prototype.toDateInputValue = (function() {
         var local = new Date(this);
         local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
@@ -69,14 +70,14 @@ const AccountForm = ({ currentId, setCurrentId }) => {
                 />
                 {/* <FormControl> */}
                 {/* <InputLabel>Budget Category</InputLabel> */}
-                <FormControl className={classes.margin} size="small" fullWidth>
+                <FormControl className={classes.margin} size="small" fullWidth variant="outlined">
                     <InputLabel className={classes.inputMargin} id="categoryLabel">Name</InputLabel>
                     <Select className={classes.inputMargin} size="small" name="name" variant="outlined" fullWidth value={name} onChange={findAccountNameId}>
                         {accountNamesToRender}
                     </Select>
                     </FormControl>
                 {/* </FormControl> */}
-                <FormControl className={classes.margin} fullWidth className={classes.margin} variant="outlined">
+                <FormControl className={classes.margin} fullWidth variant="outlined">
                     <InputLabel className={classes.inputMargin} >Balance</InputLabel>
                     <OutlinedInput className={classes.inputMargin} size="small" name="balance" variant="outlined" type="number" label="Balance" fullWidth value={accountData.balance}  
                     startAdornment={<InputAdornment position="start">$</InputAdornment>} onChange={(e) => setAccountData({ ...accountData, balance: e.target.value })} />
@@ -88,7 +89,7 @@ const AccountForm = ({ currentId, setCurrentId }) => {
                         <FormControlLabel fullwidth value="0" control={<Radio />} label="Debt" />
                     </RadioGroup>
                 </FormControl>
-                <FormControl className={classes.margin} size="small" fullWidth>
+                <FormControl className={classes.margin} size="small" fullWidth variant="outlined">
                     <InputLabel className={classes.inputMargin} >Allocation</InputLabel>
                     <OutlinedInput className={classes.inputMargin} size="small" name="allocation" variant="outlined" type="number" min="0" max="100" label="Allocation" fullWidth value={accountData.allocation}  
                     endAdornment={<InputAdornment position="end">%</InputAdornment>} onChange={(e) => setAccountData({ ...accountData, allocation: e.target.value })} />

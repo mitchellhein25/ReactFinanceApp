@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Grid, OutlinedInput, InputAdornment, Button, TextField } from '@material-ui/core';
+import { Typography, Grid, Button, TextField } from '@material-ui/core';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -15,15 +15,18 @@ import { updateAccount } from '../../actions/accounts';
 
 
 const AllocationPercentBoxes = ({ date }) => {
-    const [ totalAllocations, setTotalAllocations ] = useState(null);
+    // const [ totalAllocations, setTotalAllocations ] = useState(null);
     const [ id, setId ] = useState(null);
-    Date.prototype.toDateInputValue = (function() {
-        var local = new Date(this);
-        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-        return local.toJSON().slice(0,10);
+    // eslint-disable-next-line no-extend-native
+    Date.prototype.toDateFormat = (function(format) {
+        format = format || "mm/yyyy";
+        return format.toLowerCase()
+        // var local = new Date(this);
+        // local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        // return local.toJSON().slice(0,10);
     });
     const [accountData, setAccountData] = useState({
-        date: new Date().toDateInputValue(), name: "", balance: "", debtOrAsset: null, allocation: ""
+        date: new Date(), name: "", balance: "", debtOrAsset: null, allocation: ""
     });
     const expenses = useSelector((state) => state.expenses);
     const incomes = useSelector((state) => state.incomes);
@@ -64,11 +67,11 @@ const AllocationPercentBoxes = ({ date }) => {
     var totalCashFlowThisMonth = totalIncomesThisMonth - totalExpensesThisMonth;
 
     async function onLoad() {
-        var totalAlloc = 0;
+        // var totalAlloc = 0;
         await accounts.forEach((account, index) => {
             if (acctNames.includes(accountNameFindName(account))) {
                 accts.forEach((acct, indexInner) => {
-                    if (accountNameFindName(acct) == accountNameFindName(account)) {
+                    if (accountNameFindName(acct) === accountNameFindName(account)) {
                         if (account.date > acct.date) {
                             accts[indexInner] = account;
                             acctNames[indexInner] = accountNameFindName(account);
@@ -80,10 +83,10 @@ const AllocationPercentBoxes = ({ date }) => {
                 acctNames.push(accountNameFindName(account));
             }
         });
-        await accts.forEach((acct, index) => {
-            totalAlloc += acct.allocation;
-        });
-        setTotalAllocations(totalAlloc);
+        // await accts.forEach((acct, index) => {
+        //     totalAlloc += acct.allocation;
+        // });
+        // setTotalAllocations(totalAlloc);
     }
     onLoad();
 
@@ -111,7 +114,7 @@ const AllocationPercentBoxes = ({ date }) => {
         var splitIndex = -1;
         await accts.forEach((account, index) => {
             // console.log(index);
-            if (index % 6 == 0) {
+            if (index % 6 === 0) {
                 splitIndex++;
                 splitAccts.push([]);
             }
@@ -166,7 +169,7 @@ const AllocationPercentBoxes = ({ date }) => {
                     
                         {acct.map((account) => {
                             return (
-                                <Grid className={classes.paddingTop} xs={12} md={(6/acct.length)%6 != 0 ? 6/acct.length%6 + 1 : 2} item>
+                                <Grid className={classes.paddingTop} xs={12} md={(6/acct.length)%6 !== 0 ? 6/acct.length%6 + 1 : 2} item>
                             
                                 <div className={classes.accountBox} >
                                     <Typography margin="auto" className={classes.accountTitle} textAlign="center" variant="h6">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Container, Select, MenuItem, InputLabel, FormControl, OutlinedInput, InputAdornment } from '@material-ui/core';
 import useStyles from './styles';
+import moment from 'moment';
 
 import { useDispatch, useSelector  } from 'react-redux';
 import { createIncome, updateIncome } from '../../actions/incomes';
@@ -15,13 +16,15 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
             return <MenuItem value={incomeCat.name}>{incomeCat.name}</MenuItem>
         });
     }
-    Date.prototype.toDateInputValue = (function() {
-        var local = new Date(this);
-        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-        return local.toJSON().slice(0,10);
+    Date.prototype.toDateFormat = (function(format) {
+        format = format || "mm/yyyy";
+        return format.toLowerCase()
+        // var local = new Date(this);
+        // local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        // return local.toJSON().slice(0,10);
     });
     const [incomeData, setIncomeData] = useState({
-        date: new Date().toDateInputValue(), category: '', amount: '', description: ''
+        date: moment(Date.now()).format("yyyy-MM-DD"), category: '', amount: '', description: ''
     });
     const income = useSelector((state) => currentId ? state.incomes.find((x) => x._id === currentId) : null);
     const dispatch = useDispatch();
@@ -51,7 +54,7 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
 
     const clear = () => {
         setCurrentId(null);
-        setIncomeData({ date: new Date().toDateInputValue(), category: '', amount: '', description: '' });
+        setIncomeData({ date: moment(Date.now()).format("yyyy-MM-DD"), category: '', amount: '', description: '' });
         setCategory(null);
     }
 
@@ -64,7 +67,7 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
                 //Sets the state using an object
                 onChange={(e) => setIncomeData({ ...incomeData, date: e.target.value })}
                 />
-                <FormControl size="small" fullWidth>
+                <FormControl size="small" fullWidth variant="outlined">
                     <InputLabel className={classes.inputMargin} id="categoryLabel">Category</InputLabel>
                     <Select className={classes.inputMargin} labelId="categoryLabel" size="small" name="category" variant="outlined" fullWidth value={category} onChange={findIncomeCatId}>
                         {incomeCatsToRender}
@@ -76,7 +79,7 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
                     startAdornment={<InputAdornment position="start">$</InputAdornment>} value={incomeData.amount}  onChange={(e) => setIncomeData({ ...incomeData, amount: e.target.value })} />
                 </FormControl> 
                 <FormControl fullWidth className={classes.margin} variant="outlined">
-                    <InputLabel>Description</InputLabel>
+                    <InputLabel className={classes.inputMargin} >Description</InputLabel>
                     <OutlinedInput className={classes.inputMargin} size="small" name="amount" variant="outlined" type="text" label="Description" fullWidth 
                     value={incomeData.description}  onChange={(e) => setIncomeData({ ...incomeData, description: e.target.value })} />
                 </FormControl>   

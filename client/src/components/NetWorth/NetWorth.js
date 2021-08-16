@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import { Typography } from '@material-ui/core';
 
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import moment from 'moment';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { getAccounts } from '../../actions/accounts';
 import { getAccountNames } from '../../actions/accountNames';
@@ -16,7 +14,6 @@ const NetWorth = ({ date }) => {
     const accountNames = useSelector((state) => state.accountNames)
     const dispatch = useDispatch();
 
-    const momentDate = moment(date);
     const classes = useStyles();
 
     const accountNameFindName = (account) => {
@@ -35,7 +32,7 @@ const NetWorth = ({ date }) => {
     accounts.forEach((account, index) => {
         if (acctNames.includes(accountNameFindName(account))) {
             accts.forEach((acct, indexInner) => {
-                if (accountNameFindName(acct) == accountNameFindName(account)) {
+                if (accountNameFindName(acct) === accountNameFindName(account)) {
                     if (account.date > acct.date) {
                         accts[indexInner] = account;
                         acctNames[indexInner] = accountNameFindName(account);
@@ -56,7 +53,7 @@ const NetWorth = ({ date }) => {
 
         //Iterate through accounts if it is an asset add if debts delete
         accts.forEach((acct, index) => {
-            if (acct.debtOrAsset == true) {
+            if (acct.debtOrAsset === true) {
                 assets += acct.balance;
             } else {
                 debts += acct.balance;
@@ -83,7 +80,7 @@ const NetWorth = ({ date }) => {
 
     return (
 
-        <Typography textAlign="center" variant="h2">
+        <Typography align="center" variant="h2">
             Net Worth: <span className={classes.yellow}>{formatter.format(totalAssets())}</span>
         </Typography>
     

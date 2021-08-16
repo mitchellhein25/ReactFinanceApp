@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { Grid, Typography, TextField } from '@material-ui/core';
-// import DatePicker from '@material-ui/pickers';
-// import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
-// import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+import React from 'react';
+import { Grid, Typography } from '@material-ui/core';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
 
 import useStyles from './styles';
 import moment from 'moment';
@@ -14,32 +13,24 @@ const HomeTotals = ({ date, setDate }) => {
     return (
         <>
         
-                <Typography className={classes.totals} variant="h2">
+            <Typography className={classes.totals} variant="h2">
                     {momentDate.format("MMMM YYYY")}
-                </Typography>
-            <Grid item xs={12} md={4} margin="auto">
-                {/* <LocalizationProvider dateAdapter={AdapterDateFns}> */}
-                {/* <DatePicker
-                    
-                    views={['year', 'month']}
-                    label="Year and Month"
-                    minDate={new Date('2000-01-01')}
-                    maxDate={new Date('2050-12-12')}
-                    value={date}
-                    onChange={(newDate) => {
-                        setDate(newDate);
-                        // console.log(date);
-                    }}
-                    renderInput={(params) => (
-                        <TextField
-                        {...params}
-                        margin="normal"
-                        helperText={null}
-                        variant="standard"
+            </Typography>
+            <Grid container justifyContent="space-between" alignItems="center" spacing={1}>
+                <Grid item xs={12} md={4}></Grid>
+                <Grid item xs={12} md={4}>
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                        <DatePicker 
+                            value={date} 
+                            onChange={(newDate) => {setDate(newDate);}} 
+                            variant="inline"
+                            openTo="year"
+                            views={["year", "month"]}
+                            // label="Year and Month"
                         />
-                    )}
-                /> */}
-                {/* </LocalizationProvider> */}
+                    </MuiPickersUtilsProvider>
+                </Grid>
+                <Grid item xs={12} md={4}></Grid>
             </Grid>
         </>
     );

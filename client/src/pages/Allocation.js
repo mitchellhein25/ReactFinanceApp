@@ -11,11 +11,10 @@ function Allocation() {
     const [currentAccountId, setCurrentAccountId] = useState();
     const [date, setDate] = useState(new Date());
     const classes = useStyles();
-    const user = JSON.parse(localStorage.getItem('profile'));
 
     return (
         <Container maxWidth="none">
-            <Grid className={classes.appBar} container justify="space-between" alignItems="stretch" spacing={1}>
+            <Grid className={classes.appBar} container justifyContent="space-between" alignItems="stretch" spacing={1}>
                     <Grid sm={4}></Grid>
                     <Grid sm={4}>
                         <DatePicker date={date} setDate={setDate}/>
@@ -30,7 +29,7 @@ function Allocation() {
                     </Grid>
                     <Grid sm={4}></Grid>
                     <Grid sm={4}>
-                        <Typography  textAlign="center" variant="h4">
+                        <Typography  align="center" variant="h4">
                             Allocation Percentages
                         </Typography>
                     </Grid>

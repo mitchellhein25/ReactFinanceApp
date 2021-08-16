@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Container, Button, Hidden, Typography } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Button, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './styles';
@@ -16,8 +16,6 @@ const BudgetTable = ({ setCurrentId, date }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const momentDate = moment(date);
-    const user = JSON.parse(localStorage.getItem('profile'));
-    
 
     // Currency formatter.
     var formatter = new Intl.NumberFormat('en-US', {
@@ -40,7 +38,7 @@ const BudgetTable = ({ setCurrentId, date }) => {
     const getExpenseAmount = (budgetName) => {
         var total = 0;
         currExpenses.forEach(expense => {
-            if (budgetFindName(expense) == budgetName) {
+            if (budgetFindName(expense) === budgetName) {
                 total += expense.amount;
             }
         });
@@ -66,15 +64,15 @@ const BudgetTable = ({ setCurrentId, date }) => {
         
     }
 
-    const totalBudgets = () => {
-        var totalBudget = 0;
-        var totalExpense = 0;
-        budgets.forEach(budget => {
-            totalBudget += budget.amount;
-            totalExpense += getExpenseAmount(budget.name);
-        });
-        return [totalBudget, totalExpense];
-    }
+    // const totalBudgets = () => {
+    //     var totalBudget = 0;
+    //     var totalExpense = 0;
+    //     budgets.forEach(budget => {
+    //         totalBudget += budget.amount;
+    //         totalExpense += getExpenseAmount(budget.name);
+    //     });
+    //     return [totalBudget, totalExpense];
+    // }
 
     return (
         <TableContainer className={classes.tableContainerFull}>

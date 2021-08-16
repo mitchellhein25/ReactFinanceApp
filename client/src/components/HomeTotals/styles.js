@@ -22,6 +22,6 @@ export default makeStyles(() => ({
         marginTop: "5px"
     },
     divider: {
-        height: "10px"
+        height: "3px"
     }
 }));

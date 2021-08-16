@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
-import { GoogleLogin } from 'react-google-login';
+// import { GoogleLogin } from 'react-google-login';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { signin, signup } from '../../actions/auth';
@@ -9,11 +9,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import useStyles from './styles';
 import Input from './Input';
-import Icon from './Icon';
+// import Icon from './Icon';
 
 const initialState = { firstName: "", lastName: "", email: "", password: "", confirmPassword: "" }
 
-const Authentication = ({  }) => {
+const Authentication = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isSignUp, setIsSignUp] = useState(false);
     const [formData, setFormData] = useState(initialState);
@@ -44,32 +44,31 @@ const Authentication = ({  }) => {
         setShowPassword(false);
     }
 
-    const googleSuccess = async (res) => {
-        // ?. is Special optional chaining operator that will not throw error if res is not available
-        const result = res?.profileObj;
-        const token = res?.tokenId;
-        // console.log(result);
+    // const googleSuccess = async (res) => {
+    //     // ?. is Special optional chaining operator that will not throw error if res is not available
+    //     const result = res?.profileObj;
+    //     const token = res?.tokenId;
 
-        setFormData({ firstName: result.givenName, lastName: result.familyName, email: result.email, password: null, confirmPassword: null });
+    //     setFormData({ firstName: result.givenName, lastName: result.familyName, email: result.email, password: null, confirmPassword: null });
 
-        if(isSignUp) {
-            dispatch(signup(formData, history));
-        } else {    
-            dispatch(signin(formData, history));
-        }
+    //     if(isSignUp) {
+    //         dispatch(signup(formData, history));
+    //     } else {    
+    //         dispatch(signin(formData, history));
+    //     }
 
-        try {
-            dispatch({type: 'AUTH', data: {result, token}});
+    //     try {
+    //         dispatch({type: 'AUTH', data: {result, token}});
 
-            history.push('/');
-        } catch (error){
-            console.log(error);
-        }
-    };
+    //         history.push('/');
+    //     } catch (error){
+    //         console.log(error);
+    //     }
+    // };
 
-    const googleFailure = () => {
-        console.log("Google sign in was unsuccessful. Try again later.");
-    };
+    // const googleFailure = () => {
+    //     console.log("Google sign in was unsuccessful. Try again later.");
+    // };
             
     return (
         <Container component="main" maxWidth="xs">
@@ -111,7 +110,7 @@ const Authentication = ({  }) => {
                         onFailure={googleFailure}
                         cookiePolicy="single_host_origin"
                     /> */}
-                    <Grid container justify="flex-end">
+                    <Grid container justifyContent="flex-end">
                         <Grid item>
                             <Button onClick={switchMode}>
                                 { isSignUp ? "Already have an account? Sign In." : "Don't have an account? Sign Up."}

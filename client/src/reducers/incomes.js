@@ -2,7 +2,7 @@ import { FETCH_INCOMES, CREATE_INCOME, UPDATE_INCOME, DELETE_INCOME } from '../c
 //Reducer is a function that accepts the state and the action
 //Based on action type, it will do something.
 
-export default (incomes = [() => {}], action) => {
+const incomes = (incomes = [() => {}], action) => {
     switch (action.type) {
         case FETCH_INCOMES:
             return  action.payload;
@@ -16,3 +16,5 @@ export default (incomes = [() => {}], action) => {
             return incomes;
     }
 }
+
+export default incomes;

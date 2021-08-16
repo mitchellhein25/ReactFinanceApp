@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Container, Button, Hidden, Typography, RadioGroup, FormControlLabel, Radio } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Button, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './styles';
@@ -11,7 +11,7 @@ import { deleteAccount } from '../../actions/accounts';
 const AccountTable = ({ setCurrentId, date }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const user = JSON.parse(localStorage.getItem('profile'));
+    // const user = JSON.parse(localStorage.getItem('profile'));
 
     const accountNames = useSelector((state) => state.accountNames)
 
@@ -33,7 +33,7 @@ const AccountTable = ({ setCurrentId, date }) => {
     accounts.forEach((account, index) => {
         if (acctNames.includes(accountNameFindName(account))) {
             accts.forEach((acct, indexInner) => {
-                if (accountNameFindName(acct) == accountNameFindName(account)) {
+                if (accountNameFindName(acct) === accountNameFindName(account)) {
                     if (account.date > acct.date) {
                         accts[indexInner] = account;
                         acctNames[indexInner] = accountNameFindName(account);
@@ -61,9 +61,9 @@ const AccountTable = ({ setCurrentId, date }) => {
     });
 
     const cleanDebtOrAsset = (debtOrAsset) => {
-        if (debtOrAsset == false) {
+        if (debtOrAsset === false) {
             return "Debt";
-        } else if (debtOrAsset == true) {
+        } else if (debtOrAsset === true) {
             return "Asset";
         } else {
             return "";

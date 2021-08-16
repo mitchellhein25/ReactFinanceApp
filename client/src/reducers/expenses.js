@@ -2,7 +2,7 @@ import { FETCH_EXPENSES, CREATE_EXPENSE, UPDATE_EXPENSE, DELETE_EXPENSE } from '
 //Reducer is a function that accepts the state and the action
 //Based on action type, it will do something.
 
-export default (expenses = [() => {}], action) => {
+const expenses = (expenses = [() => {}], action) => {
     switch (action.type) {
         case FETCH_EXPENSES:
             return  action.payload;
@@ -16,3 +16,5 @@ export default (expenses = [() => {}], action) => {
             return expenses;
     }
 }
+
+export default expenses;

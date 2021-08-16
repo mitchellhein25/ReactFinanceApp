@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -97,7 +95,7 @@ const budgetFindName = (expense) => {
                 
                 <TableRow className={classes.tableRow} key={expense._id}>
                     <div hidden>
-                    <TableCell component="th" scope="row">{expense._id}</TableCell>
+                      <TableCell component="th" scope="row">{expense._id}</TableCell>
                     </div>
                     <TableCell >{budgetFindName(expense)}</TableCell>
                     <TableCell >{expense.description}</TableCell>
@@ -127,7 +125,7 @@ const budgetFindName = (expense) => {
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </>
   );

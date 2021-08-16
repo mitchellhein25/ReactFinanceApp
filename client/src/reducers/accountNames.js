@@ -2,7 +2,7 @@ import { FETCH_ACCOUNTNAMES, CREATE_ACCOUNTNAME, UPDATE_ACCOUNTNAME, DELETE_ACCO
 //Reducer is a function that accepts the state and the action
 //Based on action type, it will do something.
 
-export default (accountNames = [() => {}], action) => {
+const accountNames = (accountNames = [() => {}], action) => {
     switch (action.type) {
         case FETCH_ACCOUNTNAMES:
             return  action.payload;
@@ -16,3 +16,5 @@ export default (accountNames = [() => {}], action) => {
             return accountNames;
     }
 }
+
+export default accountNames;

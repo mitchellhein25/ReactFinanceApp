@@ -16,6 +16,8 @@ export const createBudget = (budget) => async (dispatch) => {
         const { data } = await api.createBudget(budget);
         dispatch({ type: CREATE_BUDGET, payload: data });
     } catch (error) {
+        if (error.toString().includes("409"))
+            alert("There is already a budget with that name.");
         console.log(error);
     }
 }

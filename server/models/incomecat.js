@@ -12,7 +12,7 @@ const incomeCatSchema = mongoose.Schema({
     }
 });
 
-//User can't have duplicate account names
+//User can't have duplicate income categories
 incomeCatSchema.index({user: 1, name: 1}, {unique: true});
 
 //Turn the schema into a model

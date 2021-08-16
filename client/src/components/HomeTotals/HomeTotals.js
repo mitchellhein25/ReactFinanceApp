@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Divider, Typography, Container } from '@material-ui/core';
 
 import { useSelector } from 'react-redux';
@@ -45,17 +45,17 @@ const HomeTotals = ({ date, setDate }) => {
     } 
     return (
         <div>
-            <Typography textAlign="center" variant="h4">
+            <Typography align="center" variant="h4">
             Totals in {momentDate.format("MMMM")}
             </Typography>
-            <Typography className={classes.totals} marginTop="10px" variant="h6">
+            <Typography className={classes.totals} variant="h6">
                 Total Income: <span className={classes.green}>{ formatter.format(totalIncomesThisMonth) } </span>
             </Typography>
-            <Typography className={classes.totals} marginTop="10px" variant="h6">
+            <Typography className={classes.totals} variant="h6">
                 Total Expenses: <span className={classes.red}>{ formatter.format(totalExpensesThisMonth) } </span>
             </Typography>
             <Divider className={classes.divider} variant="middle" />
-            <Typography className={classes.totals} marginTop="10px" variant="h6">
+            <Typography className={classes.totals} variant="h6">
                 Cash Flow: <span className={totalCashFlowThisMonth > 0 ? classes.green : classes.red}>{ formatter.format(totalCashFlowThisMonth) } </span>
             </Typography>
         </div>
