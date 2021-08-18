@@ -41,11 +41,11 @@ if(!user?.result?._id && !user?.result?.googleId) {
   return (
     <Container maxWidth="none">
       <Grid className={classes.appBar} container justifyContent="space-between" alignItems="stretch" spacing={1}>
-      <Grid item xs={12} md={4}></Grid>
-      <Grid item xs={12} md={4}>
-        <NetWorth />
-      </Grid>
-      <Grid item xs={12} md={4}></Grid>
+        <Grid item xs={12} md={4}></Grid>
+        <Grid item xs={12} md={4}>
+          <NetWorth />
+        </Grid>
+        <Grid item xs={12} md={4}></Grid>
         
       </Grid>
 

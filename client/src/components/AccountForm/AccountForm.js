@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Container, Select, MenuItem, RadioGroup, FormControl, FormLabel, Radio, FormControlLabel, InputLabel, InputAdornment, OutlinedInput } from '@material-ui/core';
 import useStyles from './styles';
+import moment from 'moment';
 
 import { useDispatch, useSelector  } from 'react-redux';
 import { createAccount, updateAccount } from '../../actions/accounts';
@@ -17,13 +18,15 @@ const AccountForm = ({ currentId, setCurrentId }) => {
         });
     }
     // eslint-disable-next-line no-extend-native
-    Date.prototype.toDateInputValue = (function() {
-        var local = new Date(this);
-        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-        return local.toJSON().slice(0,10);
+    Date.prototype.toDateFormat = (function(format) {
+        format = format || "mm/yyyy";
+        return format.toLowerCase();
+        // var local = new Date(this);
+        // local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        // return local.toJSON().slice(0,10);
     });
     const [accountData, setAccountData] = useState({
-        date: new Date().toDateInputValue(), name: '', balance: '', debtOrAsset: '', allocation: ''
+        date: moment(Date.now()).format("yyyy-MM-DD"), name: '', balance: '', debtOrAsset: '', allocation: ''
     });
     const account = useSelector((state) => currentId ? state.accounts.find((x) => x._id === currentId) : null);
     const dispatch = useDispatch();
@@ -55,7 +58,7 @@ const AccountForm = ({ currentId, setCurrentId }) => {
 
     const clear = () => {
         setCurrentId(null);
-        setAccountData({ date: new Date().toDateInputValue(), name: '', balance: '', debtOrAsset: '', allocation: '' });
+        setAccountData({ date: moment(Date.now()).format("yyyy-MM-DD"), name: '', balance: '', debtOrAsset: '', allocation: '' });
         setName(null);
     }
 

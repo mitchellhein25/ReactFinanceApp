@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Accounts from "./pages/Accounts";
 import Allocation from "./pages/Allocation";
 import Auth from "./pages/Auth";
+import Trends from "./pages/Trends";
 import NavBar from "./components/NavBar/NavBar";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/accounts" exact component={Accounts} />
           <Route path="/allocation" exact component={Allocation} />
           <Route path="/auth" exact component={Auth} />
+          <Route path="/trends" exact component={Trends} />
         </Switch>
       </Router>
     </div>

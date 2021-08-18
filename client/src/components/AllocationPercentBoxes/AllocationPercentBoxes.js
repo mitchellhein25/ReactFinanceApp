@@ -177,7 +177,7 @@ const AllocationPercentBoxes = ({ date }) => {
                                     </Typography>
                                 </div>
                                 <form className={classes.marginTop} onSubmit={handleSubmit}>
-                                    <Typography className={classes.red} textAlign="center" id={account.id} variant="h5">
+                                    <Typography className={classes.red} align="center" id={account.id} variant="h5">
                                         {formatter.format(account.allocation/100 * totalCashFlowThisMonth)}
                                     </Typography>
                                     <Typography variant="h6" className={classes.allo}>{account.allocation}%</Typography>
@@ -186,7 +186,7 @@ const AllocationPercentBoxes = ({ date }) => {
                                         label="Edit Allocation" fullWidth onChange={(e) => {handleChange(account, e)}} InputLabelProps={{ shrink: true }}/>
                                     </div>
                                     <div className={classes.buttonMarginTop}>
-                                        <Button className={classes.marginTop} variant="contained" color="primary" size="small" type="submit" fullWidth>Edit Allocation</Button>
+                                        <Button variant="contained" color="primary" size="small" type="submit" fullWidth>Edit Allocation</Button>
                                     </div>
                                 </form>
                         

@@ -39,6 +39,7 @@ const NavBar = () => {
             <Typography component={Link} to="/" className={classes.navLink} variant="h6">Home</Typography>
             <Typography component={Link} to="/accounts" className={classes.navLink} variant="h6">Accounts</Typography>
             <Typography component={Link} to="/allocation" className={classes.navLink} variant="h6">Allocation</Typography>
+            <Typography component={Link} to="/trends" className={classes.navLink} variant="h6">Trends</Typography>
           </div>
           <Toolbar className={classes.title}><Typography variant="h3">In Control Finance</Typography></Toolbar>
           <Toolbar>{user ? (

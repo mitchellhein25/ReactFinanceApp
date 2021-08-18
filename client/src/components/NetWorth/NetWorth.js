@@ -46,7 +46,7 @@ const NetWorth = ({ date }) => {
     }); 
 
     //Calculate Net Worth 
-    const totalAssets = () => {
+    const calculatedNetWorth = () => {
         var assets = 0;
         var debts = 0;
         var netWorth = 0;
@@ -81,7 +81,7 @@ const NetWorth = ({ date }) => {
     return (
 
         <Typography align="center" variant="h2">
-            Net Worth: <span className={classes.yellow}>{formatter.format(totalAssets())}</span>
+            Net Worth: <span className={classes.yellow}>{formatter.format(calculatedNetWorth())}</span>
         </Typography>
     
     );

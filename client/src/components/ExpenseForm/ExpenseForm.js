@@ -67,7 +67,7 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
 
     const clear = () => {
         setCurrentId(null);
-        setExpenseData({ date: new Date().toDateInputValue(), category: '', amount: '', description: "" });
+        setExpenseData({ date: moment(Date.now()).format("yyyy-MM-DD"), category: '', amount: '', description: "" });
         setCategory(null);
     }
 
