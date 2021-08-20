@@ -22,7 +22,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "redux": "^4.1.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "recharts": "^2.0.10"
   },
   "scripts": {
     "start": "react-scripts start",
