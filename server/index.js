@@ -3,6 +3,8 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+// const path = require('path');
 
 //Import Routers
 import homeRoutes from './routes/home.js';
