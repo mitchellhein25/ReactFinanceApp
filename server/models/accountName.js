@@ -9,6 +9,11 @@ const accountNameSchema = mongoose.Schema({
     },
     name: {
         type: String, 
+    },
+    allocation: {
+        type: Number,
+        min: 0,
+        max: 100
     }
 });
 

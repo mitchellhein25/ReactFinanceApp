@@ -26,7 +26,7 @@ router.patch('/budget:id', auth, updateBudgetHome);
 router.delete('/budget:id', auth, deleteBudgetHome);
 router.get('/incomecats', auth, getIncomeCatsHome);
 router.post('/incomecat', auth, postIncomeCatHome);
-router.patch('/incomecat:id', auth, updateIncomeCatHome);
-router.delete('/incomecat:id', auth, deleteIncomeCatHome);
+router.patch('/dincomecat:id', auth, updateIncomeCatHome);
+router.delete('/dincomecat:id', auth, deleteIncomeCatHome);
 
 export default router;

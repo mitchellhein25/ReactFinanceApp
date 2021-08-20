@@ -102,6 +102,7 @@ export const updateAccountName = async (req, res) => {
 }
 
 export const deleteAccountName = async (req, res) => {
+    console.log(req.params);
     const { id } = req.params;
 
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No accountName with that id');

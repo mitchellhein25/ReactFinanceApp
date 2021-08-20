@@ -9,6 +9,8 @@ import homeRoutes from './routes/home.js';
 import accountsRoutes from './routes/accounts.js';
 import userRoutes from './routes/users.js';
 
+
+
 const app = express();
 dotenv.config();
 

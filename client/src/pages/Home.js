@@ -15,6 +15,7 @@ import HomeTotals from '../components/HomeTotals/HomeTotals';
 import DatePicker from '../components/DatePicker/DatePicker';
 import NetWorth from '../components/NetWorth/NetWorth';
 import BudgetTotals from '../components/BudgetTotals/BudgetTotals';
+import IncomeDrawer from '../components/IncomeDrawer/IncomeDrawer';
 
 import useStyles from '../styles';
 
@@ -124,6 +125,7 @@ function Home() {
                             <IncomeForm currentId={currentIncomeId} setCurrentId={setCurrentIncomeId} />
                         </Grid>
                         <Grid item xs={12} md={2}>
+                            <IncomeDrawer></IncomeDrawer>
                             <IncomeCatForm currentId={currentIncomeCatId} setCurrentId={setCurrentIncomeCatId} />
                         </Grid>
                     </Grid>

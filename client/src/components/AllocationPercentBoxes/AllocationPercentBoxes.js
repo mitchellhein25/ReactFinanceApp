@@ -11,7 +11,7 @@ import { getExpenses } from '../../actions/expenses';
 import { getIncomes } from '../../actions/incomes';
 
 import useStyles from './styles';
-import { updateAccount } from '../../actions/accounts';
+import { updateAccountName } from '../../actions/accountNames';
 
 
 const AllocationPercentBoxes = ({ date }) => {
@@ -26,11 +26,12 @@ const AllocationPercentBoxes = ({ date }) => {
         // return local.toJSON().slice(0,10);
     });
     const [accountData, setAccountData] = useState({
-        date: new Date(), name: "", balance: "", debtOrAsset: null, allocation: ""
+        // date: new Date(), name: "", balance: "", debtOrAsset: null, allocation: ""
+        name: "", allocation: ""
     });
     const expenses = useSelector((state) => state.expenses);
     const incomes = useSelector((state) => state.incomes);
-    const accounts = useSelector((state) => state.accounts);
+    // const accounts = useSelector((state) => state.accounts);
     const accountNames = useSelector((state) => state.accountNames);
     const dispatch = useDispatch();
 
@@ -38,6 +39,7 @@ const AllocationPercentBoxes = ({ date }) => {
     const classes = useStyles();
 
     const accountNameFindName = (account) => {
+        console.log(account);
         if (account.name && account) {
             const accountName = accountNames.find(accountName => accountName._id === account.name)
             if (accountName) {
@@ -48,7 +50,7 @@ const AllocationPercentBoxes = ({ date }) => {
     }
 
     let acctNames = [];
-    let accts = [];
+    let accts = accountNames;
     
     var totalExpensesThisMonth = 0;
         expenses.forEach((expense, index) => {
@@ -66,29 +68,28 @@ const AllocationPercentBoxes = ({ date }) => {
 
     var totalCashFlowThisMonth = totalIncomesThisMonth - totalExpensesThisMonth;
 
-    async function onLoad() {
-        // var totalAlloc = 0;
-        await accounts.forEach((account, index) => {
-            if (acctNames.includes(accountNameFindName(account))) {
-                accts.forEach((acct, indexInner) => {
-                    if (accountNameFindName(acct) === accountNameFindName(account)) {
-                        if (account.date > acct.date) {
-                            accts[indexInner] = account;
-                            acctNames[indexInner] = accountNameFindName(account);
-                        } 
-                    }
-                })
-            } else {
-                accts.push(account);
-                acctNames.push(accountNameFindName(account));
-            }
-        });
-        // await accts.forEach((acct, index) => {
-        //     totalAlloc += acct.allocation;
-        // });
-        // setTotalAllocations(totalAlloc);
-    }
-    onLoad();
+    // async function onLoad() {
+    //     // var totalAlloc = 0;
+    //     await accountNames.forEach((account, index) => {
+    //         if (acctNames.includes(accountNameFindName(account))) {
+    //             accts.forEach((acct, indexInner) => {
+    //                 if (accountNameFindName(acct) === accountNameFindName(account)) {
+    //                         accts[indexInner] = account;
+    //                         acctNames[indexInner] = accountNameFindName(account);
+                    
+    //                 }
+    //             })
+    //         } else {
+    //             accts.push(account);
+    //             acctNames.push(accountNameFindName(account));
+    //         }
+    //     });
+    //     // await accts.forEach((acct, index) => {
+    //     //     totalAlloc += acct.allocation;
+    //     // });
+    //     // setTotalAllocations(totalAlloc);
+    // }
+    // onLoad();
 
     //sort accts by allocation, descending
     function sortByAllocation(a, b) {
@@ -106,7 +107,8 @@ const AllocationPercentBoxes = ({ date }) => {
       }
       
     accts.sort(sortByAllocation); 
-
+    
+    console.log(accts);
     var splitAccts = [];
     async function splitAcctsUp() {
         //Split into groups of 6
@@ -131,7 +133,7 @@ const AllocationPercentBoxes = ({ date }) => {
     });
 
     useEffect(() => {
-        dispatch(getAccounts())
+        // dispatch(getAccounts())
         dispatch(getAccountNames())
         dispatch(getExpenses())
         dispatch(getIncomes())
@@ -139,7 +141,7 @@ const AllocationPercentBoxes = ({ date }) => {
 
     const handleChange = (account, e) => {
         setId(account._id);
-        setAccountData({user: account.user, date: account.date, name: account.name, balance: account.balance, debtOrAsset: account.debtOrAsset, allocation: parseFloat(e.target.value)});
+        setAccountData({user: account.user,  name: account.name, allocation: parseFloat(e.target.value)});
     }
 
     const handleSubmit = (e) => {
@@ -148,13 +150,13 @@ const AllocationPercentBoxes = ({ date }) => {
             alert("Allocation must have a value.");
             
         } else {
-            dispatch(updateAccount(id, accountData));
+            dispatch(updateAccountName(id, accountData));
             clear(id);
         }
     }
 
     const clear = (id) => {
-        setAccountData({ date: new Date().toDateInputValue(), name: "", balance: "", debtOrAsset: null, allocation: "" });
+        setAccountData({ name: "", allocation: "" });
         var allo = document.getElementById("allocation" + id);
         allo.value = 0;
         setId(null);
@@ -173,7 +175,7 @@ const AllocationPercentBoxes = ({ date }) => {
                             
                                 <div className={classes.accountBox} >
                                     <Typography margin="auto" className={classes.accountTitle} textAlign="center" variant="h6">
-                                        { accountNameFindName(account) }
+                                        { account.name }
                                     </Typography>
                                 </div>
                                 <form className={classes.marginTop} onSubmit={handleSubmit}>

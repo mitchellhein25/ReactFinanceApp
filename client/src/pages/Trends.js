@@ -37,7 +37,7 @@ function Trends() {
     //Find all unique months in the user's accounts list
     accounts.forEach((account, index) => {
         var alreadyPresent = false;
-        var currMonth = moment(account.date).month()
+        var currMonth = moment(account.date).month() + 1
         var currYear = moment(account.date).year()
         uniqueMonthYearPairs.forEach((pair, index) => {
             if (pair[0] === currMonth && pair[1] === currYear) {
@@ -53,11 +53,12 @@ function Trends() {
     uniqueMonthYearPairs.forEach((pair, index) => {
         accountsEachMonth.set(`${pair[0]}, ${pair[1]}`, []);
     })
+    console.log(accounts);
 
     uniqueMonthYearPairs.forEach((pair, index) => {
         acctNames = []
         accounts.forEach((account, index) => {
-            if (`${moment(account.date).month()}, ${moment(account.date).year()}` === `${pair[0]}, ${pair[1]}`){
+            if (`${moment(account.date).month() + 1}, ${moment(account.date).year()}` === `${pair[0]}, ${pair[1]}`){
                 if (acctNames.includes(accountNameFindName(account))) {
                     accts.forEach((acct, indexInner) => {
                         if (accountNameFindName(acct) === accountNameFindName(account)) {
@@ -83,7 +84,7 @@ function Trends() {
 
     // Sort the Months from earliest to most recent
     var accountsEachMonthAscending = new Map([...accountsEachMonth.entries()].sort((a,b) => {
-        console.log(a[0]);
+        // console.log(a[0]);
         var aDate = moment().set({month: a[0].match("(.*?),")[1], year: a[0].match(", (.*)")[1]});
         var bDate = moment().set({month: b[0].match("(.*?),")[1], year: b[0].match(", (.*)")[1]});
         return bDate < aDate ?  1 
@@ -175,7 +176,7 @@ function Trends() {
             </TableContainer>
             <Grid container justifyContent="space-between" alignItems="stretch" spacing={1}>
                 <Grid item xs={12} md={4}></Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={4} align="center">
                     <LineChart
                         width={400}
                         height={400}

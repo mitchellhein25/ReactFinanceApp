@@ -26,7 +26,7 @@ const AccountForm = ({ currentId, setCurrentId }) => {
         // return local.toJSON().slice(0,10);
     });
     const [accountData, setAccountData] = useState({
-        date: moment(Date.now()).format("yyyy-MM-DD"), name: '', balance: '', debtOrAsset: '', allocation: ''
+        date: moment(Date.now()).format("yyyy-MM-DD"), name: '', balance: '', debtOrAsset: ''
     });
     const account = useSelector((state) => currentId ? state.accounts.find((x) => x._id === currentId) : null);
     const dispatch = useDispatch();
@@ -58,7 +58,7 @@ const AccountForm = ({ currentId, setCurrentId }) => {
 
     const clear = () => {
         setCurrentId(null);
-        setAccountData({ date: moment(Date.now()).format("yyyy-MM-DD"), name: '', balance: '', debtOrAsset: '', allocation: '' });
+        setAccountData({ date: moment(Date.now()).format("yyyy-MM-DD"), name: '', balance: '', debtOrAsset: ''});
         setName(null);
     }
 
@@ -93,18 +93,15 @@ const AccountForm = ({ currentId, setCurrentId }) => {
                     </RadioGroup>
                 </FormControl>
                 <FormControl className={classes.margin} size="small" fullWidth variant="outlined">
-                    <InputLabel className={classes.inputMargin} >Allocation</InputLabel>
-                    <OutlinedInput className={classes.inputMargin} size="small" name="allocation" variant="outlined" type="number" min="0" max="100" label="Allocation" fullWidth value={accountData.allocation}  
-                    endAdornment={<InputAdornment position="end">%</InputAdornment>} onChange={(e) => setAccountData({ ...accountData, allocation: e.target.value })} />
+                    <div className={classes.buttonRow} >
+                        <div className={classes.formElement}>
+                            <Button variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button> 
+                        </div>
+                        <div className={classes.formElement}>
+                            <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button> 
+                        </div>
+                    </div>
                 </FormControl>
-                <div className={classes.buttonRow} >
-                    <div className={classes.formElement}>
-                        <Button variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button> 
-                    </div>
-                    <div className={classes.formElement}>
-                        <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button> 
-                    </div>
-                </div>
             </form>
         </Container>
     );

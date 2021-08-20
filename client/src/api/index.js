@@ -25,8 +25,8 @@ export const updateBudget = (id, updatedBudget) => API.patch(`/budget${id}`, upd
 export const deleteBudget = (id) => API.delete(`/budget${id}`);
 export const fetchIncomeCats = () => API.get(`/incomecats`);
 export const createIncomeCat = (newIncomeCat) => API.post(`/incomecat`, newIncomeCat);
-export const updateIncomeCat = (id, updatedIncomeCat) => API.patch(`/incomecat${id}`, updatedIncomeCat);
-export const deleteIncomeCat = (id) => API.delete(`/incomecat${id}`);
+export const updateIncomeCat = (id, updatedIncomeCat) => API.patch(`/dincomecat${id}`, updatedIncomeCat);
+export const deleteIncomeCat = (id) => API.delete(`/dincomecat${id}`);
 
 //Accounts page Api calls
 export const fetchAccounts = () => API.get(`/accounts/accounts`);
@@ -35,8 +35,8 @@ export const updateAccount = (id, updatedAccount) => API.patch(`/accounts/accoun
 export const deleteAccount = (id) => API.delete(`/accounts/account${id}`);
 export const fetchAccountNames = () => API.get(`/accounts/accountnames`);
 export const createAccountName = (newAccountName) => API.post(`/accounts/accountname`, newAccountName);
-export const updateAccountName = (id, updatedAccountName) => API.patch(`/accounts/accountname${id}`, updatedAccountName);
-export const deleteAccountName = (id) => API.delete(`/accounts/accountname${id}`);
+export const updateAccountName = (id, updatedAccountName) => API.patch(`/accounts/daccountname${id}`, updatedAccountName);
+export const deleteAccountName = (id) => API.delete(`/accounts/daccountname${id}`);
 
 //Auth page Api calls
 export const signin = (formData) => API.post('/users/signin', formData);

@@ -13,12 +13,7 @@ const accountSchema = mongoose.Schema({
         ref: "AccountName",
     },
     balance: Number,
-    debtOrAsset: Boolean,
-    allocation: {
-        type: Number,
-        min: 0,
-        max: 100
-    }
+    debtOrAsset: Boolean
 });
 
 //Turn the schema into a model

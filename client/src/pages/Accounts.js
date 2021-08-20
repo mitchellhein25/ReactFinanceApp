@@ -6,6 +6,8 @@ import AccountTable from '../components/AccountTable/AccountTable';
 import AccountForm from '../components/AccountForm/AccountForm';
 import AccountNameForm from '../components/AccountNameForm/AccountNameForm';
 import NetWorth from '../components/NetWorth/NetWorth';
+import AccountDrawer from '../components/AccountDrawer/AccountDrawer';
+import DatePicker from '../components/DatePicker/DatePicker';
 
 import useStyles from '../styles';
 
@@ -41,11 +43,12 @@ if(!user?.result?._id && !user?.result?.googleId) {
   return (
     <Container maxWidth="none">
       <Grid className={classes.appBar} container justifyContent="space-between" alignItems="stretch" spacing={1}>
-        <Grid item xs={12} md={4}></Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={6}>
+          <DatePicker date={date} setDate={setDate}/>
+        </Grid>
+        <Grid item xs={12} md={6}>
           <NetWorth />
         </Grid>
-        <Grid item xs={12} md={4}></Grid>
         
       </Grid>
 
@@ -57,6 +60,7 @@ if(!user?.result?._id && !user?.result?.googleId) {
             <AccountForm currentId={currentAccountId} setCurrentId={setCurrentAccountId} accountNameID={currentAccountNameId} setAccountNameID={setCurrentAccountNameId}/>
         </Grid>
         <Grid item xs={12} sm={2}>
+            <AccountDrawer />
             <AccountNameForm currentId={currentAccountId} setCurrentId={setCurrentAccountId} accountNameID={currentAccountNameId} setAccountNameID={setCurrentAccountNameId}/>
         </Grid>
       </Grid>

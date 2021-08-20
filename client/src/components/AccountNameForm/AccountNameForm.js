@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Typography, Container } from '@material-ui/core';
+import { TextField, Button, Typography, Container, FormControl, InputLabel, OutlinedInput, InputAdornment } from '@material-ui/core';
 import useStyles from './styles';
 
 import { useDispatch, useSelector  } from 'react-redux';
@@ -7,7 +7,7 @@ import { createAccountName, updateAccountName } from '../../actions/accountNames
 
 const AccountNameForm = ({ currentId, setCurrentId }) => {
     const [accountNameData, setAccountNameData] = useState({
-        name: ''
+        name: '', allocation: ''
     });
     const accountName = useSelector((state) => currentId ? state.accountNames.find((x) => x._id === currentId) : null);
     const dispatch = useDispatch();
@@ -30,8 +30,8 @@ const AccountNameForm = ({ currentId, setCurrentId }) => {
     }
 
     const clear = () => {
+        setAccountNameData({ name: '', allocation: ''});
         setCurrentId(null);
-        setAccountNameData({ name: '' });
     }
 
     if(!user?.result?._id && !user?.result?.googleId) {
@@ -53,6 +53,11 @@ const AccountNameForm = ({ currentId, setCurrentId }) => {
                 //Sets the state using an object
                 onChange={(e) => setAccountNameData({ ...accountNameData, name: e.target.value })}
                 />
+                <FormControl className={classes.margin} size="small" fullWidth variant="outlined">
+                    <InputLabel className={classes.inputMargin} >Allocation</InputLabel>
+                    <OutlinedInput className={classes.inputMargin} size="small" name="allocation" variant="outlined" type="number" min="0" max="100" label="Allocation" fullWidth value={accountNameData.allocation}  
+                    endAdornment={<InputAdornment position="end">%</InputAdornment>} onChange={(e) => setAccountNameData({ ...accountNameData, allocation: e.target.value })} />
+                </FormControl>
                 <div className={classes.buttonRow} >
                     <div className={classes.formElement}>
                         <Button variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button> 

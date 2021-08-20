@@ -33,9 +33,10 @@ export const updateAccountName = (id, accountName) => async (dispatch) => {
 
 export const deleteAccountName = (id) => async (dispatch) => {
     try {
+        console.log("Action ID: ", id);
         await api.deleteAccountName(id);
         dispatch({ type: DELETE_ACCOUNTNAME, payload: id });
     } catch (error) {
-        console.log(error);
+        console.log("ACTION ERROR", error);
     }
 }

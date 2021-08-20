@@ -15,7 +15,7 @@ router.patch('/account:id', auth, updateAccount);
 router.delete('/account:id', auth, deleteAccount);
 router.get('/accountNames', auth, getAccountNames);
 router.post('/accountName', auth, postAccountName);
-router.patch('/accountName:id', auth, updateAccountName);
-router.delete('/accountName:id', auth, deleteAccountName);
+router.patch('/daccountName:id', auth, updateAccountName);
+router.delete('/daccountname:id', auth, deleteAccountName);
 
 export default router;

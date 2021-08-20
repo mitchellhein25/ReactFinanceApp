@@ -3,9 +3,8 @@ import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Butto
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './styles';
-
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import moment from 'moment';
+import { useSelector, useDispatch } from 'react-redux';
 import { deleteAccount } from '../../actions/accounts';
 
 const AccountTable = ({ setCurrentId, date }) => {
@@ -31,18 +30,20 @@ const AccountTable = ({ setCurrentId, date }) => {
     let accts = [];
 
     accounts.forEach((account, index) => {
-        if (acctNames.includes(accountNameFindName(account))) {
-            accts.forEach((acct, indexInner) => {
-                if (accountNameFindName(acct) === accountNameFindName(account)) {
-                    if (account.date > acct.date) {
-                        accts[indexInner] = account;
-                        acctNames[indexInner] = accountNameFindName(account);
-                    } 
-                }
-            })
-        } else {
-            accts.push(account);
-            acctNames.push(accountNameFindName(account));
+        if (moment(account.date).month() == moment(date).month()) {
+            if (acctNames.includes(accountNameFindName(account))) {
+                accts.forEach((acct, indexInner) => {
+                    if (accountNameFindName(acct) === accountNameFindName(account)) {
+                        if (account.date > acct.date) {
+                            accts[indexInner] = account;
+                            acctNames[indexInner] = accountNameFindName(account);
+                        } 
+                    }
+                })
+            } else {
+                accts.push(account);
+                acctNames.push(accountNameFindName(account));
+            }
         }
     });
 
@@ -126,7 +127,7 @@ const AccountTable = ({ setCurrentId, date }) => {
                     <TableCell>Balance</TableCell>
                     <TableCell>Debt or Asset</TableCell>
                     <TableCell>Last Updated</TableCell>
-                    <TableCell>Allocation</TableCell>
+                    {/* <TableCell>Allocation</TableCell> */}
                     <TableCell></TableCell>
                     <TableCell></TableCell>
                 </TableRow>
@@ -142,7 +143,7 @@ const AccountTable = ({ setCurrentId, date }) => {
                             <TableCell >{formatter.format(account.balance)}</TableCell>
                             <TableCell>{cleanDebtOrAsset(account.debtOrAsset)}</TableCell>
                             <TableCell>{cleanDate(account.date)}</TableCell>
-                            <TableCell>{account.allocation}%</TableCell>
+                            {/* <TableCell>{account.allocation}%</TableCell> */}
                             <TableCell >
                                 <Button size="small" color="primary" onClick={() => dispatch(deleteAccount(account._id))}>
                                     <DeleteIcon fontSize="small" />
