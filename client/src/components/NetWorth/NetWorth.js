@@ -1,52 +1,40 @@
 import React, { useEffect } from 'react';
 import { Typography } from '@material-ui/core';
-
 import { useSelector, useDispatch } from 'react-redux';
-
-import { getAccounts } from '../../actions/accounts';
-import { getAccountNames } from '../../actions/accountNames';
-
 import useStyles from './styles';
 
+import { getAccounts } from '../../actions/accounts';
 
-const NetWorth = ({ date }) => {
+const NetWorth = () => {
     const accounts = useSelector((state) => state.accounts);
-    const accountNames = useSelector((state) => state.accountNames)
-    const dispatch = useDispatch();
-
-    const classes = useStyles();
-
-    const accountNameFindName = (account) => {
-        if (account.name && account) {
-            const accountName = accountNames.find(accountName => accountName._id === account.name)
-            if (accountName) {
-                return accountName.name;
-            }
-        }
-        return ""
-    }
-
     let acctNames = [];
     let accts = [];
+    const dispatch = useDispatch();
+    const classes = useStyles();
 
-    accounts.forEach((account, index) => {
-        if (acctNames.includes(accountNameFindName(account))) {
-            accts.forEach((acct, indexInner) => {
-                if (accountNameFindName(acct) === accountNameFindName(account)) {
-                    if (account.date > acct.date) {
-                        accts[indexInner] = account;
-                        acctNames[indexInner] = accountNameFindName(account);
-                    } 
-                }
-            })
-        } else {
-            accts.push(account);
-            acctNames.push(accountNameFindName(account));
-        }
-    }); 
+    const getCurrentAccounts = () => {
+        accounts.forEach((account, index) => {
+            console.log(index);
+            if (acctNames.includes(account.name)) {
+                accts.forEach((acct, indexInner) => {
+                    if (acct.name === account.name) {
+                        if (account.date > acct.date) {
+                            accts[indexInner] = account;
+                            acctNames[indexInner] = account.name;
+                        } 
+                    }
+                })
+            } else {
+                accts.push(account);
+                acctNames.push(account.name);
+            }
+        }); 
+        return accts;
+    }
 
     //Calculate Net Worth 
     const calculatedNetWorth = () => {
+        var accts = getCurrentAccounts();
         var assets = 0;
         var debts = 0;
         var netWorth = 0;
@@ -63,7 +51,6 @@ const NetWorth = ({ date }) => {
         return netWorth;
     }
 
-
     // Currency formatter.
     var formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -72,10 +59,6 @@ const NetWorth = ({ date }) => {
 
     useEffect(() => {
         dispatch(getAccounts())
-    }, [dispatch]);
-
-    useEffect(() => {
-        dispatch(getAccountNames())
     }, [dispatch]);
 
     return (

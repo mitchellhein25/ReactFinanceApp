@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Tab, Tabs } from '@material-ui/core';
+import { Container, Grid, Tab, Tabs, Box } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import Box from '@material-ui/core/Box';
+import useStyles from '../styles';
 
 import ExpenseForm from '../components/ExpenseForm/ExpenseForm';
 import ExpenseTable from '../components/ExpenseTable/ExpenseTable';
@@ -16,8 +16,6 @@ import DatePicker from '../components/DatePicker/DatePicker';
 import NetWorth from '../components/NetWorth/NetWorth';
 import BudgetTotals from '../components/BudgetTotals/BudgetTotals';
 import IncomeDrawer from '../components/IncomeDrawer/IncomeDrawer';
-
-import useStyles from '../styles';
 
 import { getExpenses } from '../actions/expenses';
 import { getIncomes } from '../actions/incomes';
@@ -93,13 +91,11 @@ function Home() {
                 <Grid className={classes.tabGrid} container justifyContent="space-between" alignItems="center" spacing={1}>
                     <Grid item xs={12} md={4}></Grid>
                     <Grid item xs={12} md={4}>
-                    {/* <AppBar position="static"> */}
                         <Tabs className={classes.tabs} value={value} onChange={handleChange} centered>
                             <Tab label="Expenses" {...a11yProps(0)} />
                             <Tab label="Incomes" {...a11yProps(1)} />
                             <Tab label="Budgets" {...a11yProps(2)} />
                         </Tabs>
-                    {/* </AppBar> */}
                     </Grid>
                     <Grid item xs={12} md={4}></Grid>
                 </Grid>
@@ -141,9 +137,7 @@ function Home() {
                         </Grid>
                     </Grid>
                 </TabPanel>
-        
             </Grid>
-                    
         </Container>
     )
 }
