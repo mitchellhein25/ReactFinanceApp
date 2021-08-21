@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-var baseUrl = process.env.NODE_ENV === 'production' ? 'https://murmuring-coast-12450.herokuapp.com/' : 'http://localhost:5000';
+var baseUrl = process.env.NODE_ENV === 'production' ? 'https://incontrolfinance.herokuapp.com/' : 'http://localhost:5000';
 
 const API = axios.create({ baseURL: baseUrl });
 
