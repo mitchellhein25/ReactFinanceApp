@@ -28,12 +28,11 @@ const HomeTotals = ({ date }) => {
             </Typography>
             <Divider className={classes.divider} variant="middle" />
             <Typography className={classes.totals} variant="h6">
-                Cash Flow: <span className={totalCashFlowThisMonth > 0 ? classes.green : classes.red}>{ formatter.format(totalCashFlowThisMonth) } </span>
+                Cash Flow: <span className={totalCashFlowThisMonth > 0 ? classes.green : classes.red}>
+                    { formatter.format(totalCashFlowThisMonth) } </span>
             </Typography>
         </div>
-    
     );
-
 }
 
 export default HomeTotals;

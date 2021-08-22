@@ -14,7 +14,6 @@ const NetWorth = () => {
 
     const getCurrentAccounts = () => {
         accounts.forEach((account, index) => {
-            console.log(index);
             if (acctNames.includes(account.name)) {
                 accts.forEach((acct, indexInner) => {
                     if (acct.name === account.name) {

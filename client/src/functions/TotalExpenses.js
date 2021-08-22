@@ -7,5 +7,6 @@ export function totalExpenses(expenses, date) {
         if (moment(expense.date).month() === momentDate.month()) {
             totalExpensesThisMonth += expense.amount; 
         }
-    })
+    });
+    return totalExpensesThisMonth;
 }

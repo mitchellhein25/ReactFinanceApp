@@ -8,4 +8,5 @@ export function totalIncome(incomes, date) {
             totalIncomeThisMonth += income.amount; 
         }
     })
+    return totalIncomeThisMonth;
 }
