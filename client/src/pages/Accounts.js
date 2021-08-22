@@ -20,7 +20,6 @@ function Accounts() {
   const [date, setDate] = useState(new Date());
   const classes = useStyles();
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem('profile'));
 
   useEffect(() => {
     dispatch(getAccounts())
@@ -30,15 +29,17 @@ function Accounts() {
     dispatch(getAccountNames())
   }, [currentAccountNameId, dispatch]);
 
-if(!user?.result?._id && !user?.result?.googleId) {
-  return (
-      <Container>
-          <Typography variant="h6" align="center">
-              Sign in to view your accounts.
-          </Typography>
-      </Container>
-  )
-} 
+  const user = JSON.parse(localStorage.getItem('profile'));
+
+  if(!user?.result?._id && !user?.result?.googleId) {
+      return (
+          <Container>
+              <Typography variant="h6" align="center">
+                  Sign in to view your Accounts.
+              </Typography>
+          </Container>
+      )
+  } 
 
   return (
     <Container maxWidth="none">

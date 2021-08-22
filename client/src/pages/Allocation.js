@@ -12,6 +12,18 @@ function Allocation() {
     const [date, setDate] = useState(new Date());
     const classes = useStyles();
 
+    const user = JSON.parse(localStorage.getItem('profile'));
+
+    if(!user?.result?._id && !user?.result?.googleId) {
+        return (
+            <Container>
+                <Typography variant="h6" align="center">
+                    Sign in to view your Allocation.
+                </Typography>
+            </Container>
+        )
+    } 
+
     return (
         <Container maxWidth="none">
             <Grid className={classes.appBar} container justifyContent="space-between" alignItems="stretch" spacing={1}>

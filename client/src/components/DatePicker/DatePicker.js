@@ -12,7 +12,6 @@ const HomeTotals = ({ date, setDate }) => {
             
     return (
         <>
-        
             <Typography className={classes.totals} variant="h2">
                     {momentDate.format("MMMM YYYY")}
             </Typography>

@@ -7,7 +7,6 @@ import { getAccounts } from '../actions/accounts';
 import { getAccountNames } from '../actions/accountNames';
 
 function Trends() {
-    const user = JSON.parse(localStorage.getItem('profile'));
     const dispatch = useDispatch();
     const accounts = useSelector((state) => state.accounts);
     const accountNames = useSelector((state) => state.accountNames)
@@ -137,15 +136,17 @@ function Trends() {
         dispatch(getAccountNames())
     }, [dispatch]);
 
+    const user = JSON.parse(localStorage.getItem('profile'));
+
     if(!user?.result?._id && !user?.result?.googleId) {
         return (
             <Container>
                 <Typography variant="h6" align="center">
-                    Sign in to view your accounts.
+                    Sign in to view your trends.
                 </Typography>
             </Container>
         )
-    } 
+    }  
 
     return (
         <Container maxWidth="none">

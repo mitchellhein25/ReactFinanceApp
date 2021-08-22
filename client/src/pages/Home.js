@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Tab, Tabs, Box } from '@material-ui/core';
+import { Container, Grid, Tab, Tabs, Box, Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import useStyles from '../styles';
@@ -56,7 +56,6 @@ function TabPanel(props) {
   }
 
 function Home() {
-
     const [currentExpenseId, setCurrentExpenseId] = useState();
     const [currentIncomeId, setCurrentIncomeId] = useState();
     const [currentBudgetId, setCurrentBudgetId] = useState();
@@ -76,6 +75,18 @@ function Home() {
         dispatch(getIncomeCats());
     }, [dispatch]);
 
+    const user = JSON.parse(localStorage.getItem('profile'));
+
+    if(!user?.result?._id && !user?.result?.googleId) {
+        return (
+            <Container>
+                <Typography variant="h6" align="center">
+                    Sign in to view your expenses, incomes, and budgets.
+                </Typography>
+            </Container>
+        )
+    } 
+
     return (
         <Container maxWidth="xl" className={classes.root}>
             <Grid className={classes.appBar} container justifyContent="space-between" alignItems="center" spacing={1}>
@@ -86,7 +97,7 @@ function Home() {
                     <DatePicker date={date} setDate={setDate}/>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <HomeTotals date={date} setDate={setDate}/>
+                    <HomeTotals date={date}/>
                 </Grid>
                 <Grid className={classes.tabGrid} container justifyContent="space-between" alignItems="center" spacing={1}>
                     <Grid item xs={12} md={4}></Grid>
