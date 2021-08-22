@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector  } from 'react-redux';
 import { TextField, Button, Typography, Container, FormControl, InputLabel, OutlinedInput, InputAdornment } from '@material-ui/core';
 import useStyles from './styles';
-
-import { useDispatch, useSelector  } from 'react-redux';
 import { createAccountName, updateAccountName } from '../../actions/accountNames';
 
 const AccountNameForm = ({ currentId, setCurrentId }) => {
@@ -49,14 +48,14 @@ const AccountNameForm = ({ currentId, setCurrentId }) => {
             <form className={`${classes.root} ${classes.form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Enter' } an Account Name</Typography>
                 <TextField size="small" name="name" variant="outlined" label="Name" type="name" fullWidth value={accountNameData.name}
-                //This ... spreads the data, only changing the property you specify and leaving the others as is
-                //Sets the state using an object
                 onChange={(e) => setAccountNameData({ ...accountNameData, name: e.target.value })}
                 />
                 <FormControl className={classes.margin} size="small" fullWidth variant="outlined">
                     <InputLabel className={classes.inputMargin} >Allocation</InputLabel>
-                    <OutlinedInput className={classes.inputMargin} size="small" name="allocation" variant="outlined" type="number" min="0" max="100" label="Allocation" fullWidth value={accountNameData.allocation}  
-                    endAdornment={<InputAdornment position="end">%</InputAdornment>} onChange={(e) => setAccountNameData({ ...accountNameData, allocation: e.target.value })} />
+                    <OutlinedInput className={classes.inputMargin} size="small" name="allocation"
+                     variant="outlined" type="number" min="0" max="100" label="Allocation" fullWidth value={accountNameData.allocation}  
+                    endAdornment={<InputAdornment position="end">%</InputAdornment>} 
+                    onChange={(e) => setAccountNameData({ ...accountNameData, allocation: e.target.value })} />
                 </FormControl>
                 <div className={classes.buttonRow} >
                     <div className={classes.formElement}>

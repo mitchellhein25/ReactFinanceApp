@@ -23,11 +23,8 @@ function Accounts() {
 
   useEffect(() => {
     dispatch(getAccounts())
-  }, [currentAccountId, dispatch]);
-
-  useEffect(() => {
     dispatch(getAccountNames())
-  }, [currentAccountNameId, dispatch]);
+  }, [currentAccountId, dispatch]);
 
   const user = JSON.parse(localStorage.getItem('profile'));
 
@@ -55,7 +52,7 @@ function Accounts() {
 
       <Grid className={classes.appBar} container justifyContent="space-between" alignItems="stretch" spacing={1}>
         <Grid item xs={12} md={7}>
-          <AccountTable currentId={currentAccountId} setCurrentId={setCurrentAccountId} date={date} setDate={setDate}/>
+          <AccountTable currentId={currentAccountId} date={date}/>
         </Grid>
         <Grid item xs={12} sm={3}>
             <AccountForm currentId={currentAccountId} setCurrentId={setCurrentAccountId} accountNameID={currentAccountNameId} setAccountNameID={setCurrentAccountNameId}/>

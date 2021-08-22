@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector  } from 'react-redux';
 import { TextField, Button, Typography, Container, Select, MenuItem, RadioGroup, FormControl, FormLabel, Radio, FormControlLabel, InputLabel, InputAdornment, OutlinedInput } from '@material-ui/core';
 import useStyles from './styles';
 import moment from 'moment';
-
-import { useDispatch, useSelector  } from 'react-redux';
 import { createAccount, updateAccount } from '../../actions/accounts';
 
 const AccountForm = ({ currentId, setCurrentId }) => {
     const accountNames = useSelector((state) => state.accountNames)
     const [name, setName] = React.useState('');
-    // const user = JSON.parse(localStorage.getItem('profile'));
+    const [accountData, setAccountData] = useState({
+        date: moment(Date.now()).format("yyyy-MM-DD"), name: '', balance: '', debtOrAsset: ''
+    });
+    const account = useSelector((state) => currentId ? state.accounts.find((x) => x._id === currentId) : null);
+    const dispatch = useDispatch();
+    const classes = useStyles();
 
     let accountNamesToRender;
     if (accountNames) {
@@ -21,25 +25,14 @@ const AccountForm = ({ currentId, setCurrentId }) => {
     Date.prototype.toDateFormat = (function(format) {
         format = format || "mm/yyyy";
         return format.toLowerCase();
-        // var local = new Date(this);
-        // local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-        // return local.toJSON().slice(0,10);
     });
-    const [accountData, setAccountData] = useState({
-        date: moment(Date.now()).format("yyyy-MM-DD"), name: '', balance: '', debtOrAsset: ''
-    });
-    const account = useSelector((state) => currentId ? state.accounts.find((x) => x._id === currentId) : null);
-    const dispatch = useDispatch();
-    const classes = useStyles();
 
     useEffect(() => {
         if(account) setAccountData(account);
     }, [account])
 
     const findAccountNameId = (e) => {
-        console.log(e.target.value);
         const accountName = accountNames.find(accountName => accountName.name === e.target.value);
-        console.log(accountName._id);
         setAccountData({ ...accountData, name: accountName._id });
         setName(e.target.value);
     }
@@ -75,19 +68,23 @@ const AccountForm = ({ currentId, setCurrentId }) => {
                 {/* <InputLabel>Budget Category</InputLabel> */}
                 <FormControl className={classes.margin} size="small" fullWidth variant="outlined">
                     <InputLabel className={classes.inputMargin} id="categoryLabel">Name</InputLabel>
-                    <Select className={classes.inputMargin} size="small" name="name" variant="outlined" fullWidth value={name} onChange={findAccountNameId}>
+                    <Select className={classes.inputMargin} size="small" name="name" 
+                    variant="outlined" fullWidth value={name} onChange={findAccountNameId}>
                         {accountNamesToRender}
                     </Select>
                     </FormControl>
                 {/* </FormControl> */}
                 <FormControl className={classes.margin} fullWidth variant="outlined">
                     <InputLabel className={classes.inputMargin} >Balance</InputLabel>
-                    <OutlinedInput className={classes.inputMargin} size="small" name="balance" variant="outlined" type="number" label="Balance" fullWidth value={accountData.balance}  
-                    startAdornment={<InputAdornment position="start">$</InputAdornment>} onChange={(e) => setAccountData({ ...accountData, balance: e.target.value })} />
+                    <OutlinedInput className={classes.inputMargin} size="small" name="balance" 
+                    variant="outlined" type="number" label="Balance" fullWidth value={accountData.balance}  
+                    startAdornment={<InputAdornment position="start">$</InputAdornment>} 
+                    onChange={(e) => setAccountData({ ...accountData, balance: e.target.value })} />
                 </FormControl>
                 <FormControl className={classes.margin} component="fieldset">
                     <FormLabel className={classes.inputMargin} component="legend">Debt or Asset?</FormLabel>
-                    <RadioGroup className={classes.inputMargin} aria-label="debtOrAsset" name="debtOrAsset" value={accountData.debtOrAsset} onChange={(e) => setAccountData({ ...accountData, debtOrAsset: e.target.value })}>
+                    <RadioGroup className={classes.inputMargin} aria-label="debtOrAsset" name="debtOrAsset" 
+                    value={accountData.debtOrAsset} onChange={(e) => setAccountData({ ...accountData, debtOrAsset: e.target.value })}>
                         <FormControlLabel fullwidth value="1" control={<Radio />} label="Asset" />
                         <FormControlLabel fullwidth value="0" control={<Radio />} label="Debt" />
                     </RadioGroup>

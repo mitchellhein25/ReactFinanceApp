@@ -6,15 +6,16 @@ import useStyles from './styles';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteAccount } from '../../actions/accounts';
+import { cleanDate } from '../../functions/CleanDate';
+import { formatter } from '../../functions/Formatter';
 
 const AccountTable = ({ setCurrentId, date }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    // const user = JSON.parse(localStorage.getItem('profile'));
-
     const accountNames = useSelector((state) => state.accountNames)
-
     const accounts = useSelector((state) => state.accounts);
+    let acctNames = [];
+    let accts = [];
 
     const accountNameFindName = (account) => {
         if (account.name && account) {
@@ -26,39 +27,23 @@ const AccountTable = ({ setCurrentId, date }) => {
         return ""
     }
 
-    let acctNames = [];
-    let accts = [];
-
+    //Get most recent accounts for current month, 
     accounts.forEach((account, index) => {
         if (moment(account.date).month() == moment(date).month()) {
-            if (acctNames.includes(accountNameFindName(account))) {
+            if (acctNames.includes(account.name)) {
                 accts.forEach((acct, indexInner) => {
-                    if (accountNameFindName(acct) === accountNameFindName(account)) {
+                    if (acct.name === account.name) {
                         if (account.date > acct.date) {
                             accts[indexInner] = account;
-                            acctNames[indexInner] = accountNameFindName(account);
+                            acctNames[indexInner] = account.name;
                         } 
                     }
                 })
             } else {
                 accts.push(account);
-                acctNames.push(accountNameFindName(account));
+                acctNames.push(account.name);
             }
         }
-    });
-
-    const cleanDate = (date) => {
-        if (date) {
-            return date.substring(0, 10);
-        } else {
-            return "";
-        }
-    }
-
-    // Currency formatter.
-    var formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
     });
 
     const cleanDebtOrAsset = (debtOrAsset) => {
@@ -70,29 +55,11 @@ const AccountTable = ({ setCurrentId, date }) => {
             return "";
         }
     }
-    // console.log(accts)
-
-    ////sort accts by allocation, descending
-    // function sortByAllocation(a, b) {
-    //     // Use toUpperCase() to ignore character casing
-    //     const alloA = a.allocation;
-    //     const alloB = b.allocation;
-      
-    //     let comparison = 0;
-    //     if (alloA > alloB) {
-    //       comparison = 1;
-    //     } else if (alloA < alloB) {
-    //       comparison = -1;
-    //     }
-    //     return comparison * -1;
-    //   }
 
    //  sort accts by balance, descending
      function sortByBalance(a, b) {
-        // Use toUpperCase() to ignore character casing
         const alloA = a.balance;
         const alloB = b.balance;
-      
         let comparison = 0;
         if (alloA > alloB) {
           comparison = 1;
@@ -102,16 +69,8 @@ const AccountTable = ({ setCurrentId, date }) => {
         return comparison * -1;
       }
       
-    // const sortAccounts = (value) => {
-    //     if (value == "balance") {
-    //         console.log("sortedbyBalacnce");
-    //         accts.sort(sortByBalance);
-    //     } else if (value == "allocation") {
-    //         accts.sort(sortByAllocation);
-    //     }
-        // accounts = accts;
-    // }
     accts.sort(sortByBalance);  
+
     return (
         <TableContainer>
             <Typography className={classes.tableHeader} variant="h4" component="div">
@@ -127,14 +86,12 @@ const AccountTable = ({ setCurrentId, date }) => {
                     <TableCell>Balance</TableCell>
                     <TableCell>Debt or Asset</TableCell>
                     <TableCell>Last Updated</TableCell>
-                    {/* <TableCell>Allocation</TableCell> */}
                     <TableCell></TableCell>
                     <TableCell></TableCell>
                 </TableRow>
                 </TableHead>
                 <TableBody>
                     {accts.map((account) => (
-
                         <TableRow className={classes.tableRow} key={account._id}>
                             <div hidden>
                                 <TableCell>{account._id}</TableCell>
@@ -143,7 +100,6 @@ const AccountTable = ({ setCurrentId, date }) => {
                             <TableCell >{formatter.format(account.balance)}</TableCell>
                             <TableCell>{cleanDebtOrAsset(account.debtOrAsset)}</TableCell>
                             <TableCell>{cleanDate(account.date)}</TableCell>
-                            {/* <TableCell>{account.allocation}%</TableCell> */}
                             <TableCell >
                                 <Button size="small" color="primary" onClick={() => dispatch(deleteAccount(account._id))}>
                                     <DeleteIcon fontSize="small" />

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteExpense } from '../../actions/expenses';
 import { formatter } from '../../functions/Formatter';
 import { cleanDate } from '../../functions/CleanDate';
+import { sortByDate } from '../../functions/SortByDate';
 
 export default function ExpenseTable({ setCurrentId, date }) {
   const classes = useStyles();
@@ -34,15 +35,17 @@ export default function ExpenseTable({ setCurrentId, date }) {
     setPage(0);
   };
 
-const budgetFindName = (expense) => {
-    if (expense.category && expense) {
-        const budget = budgets.find(budget => budget._id === expense.category)
-        if (budget) {
-            return budget.name;
-        }
-    }
-    return ""
-}
+  const budgetFindName = (expense) => {
+      if (expense.category && expense) {
+          const budget = budgets.find(budget => budget._id === expense.category)
+          if (budget) {
+              return budget.name;
+          }
+      }
+      return ""
+  }
+
+  expenses.sort(sortByDate); 
 
   return (
     <>

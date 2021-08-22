@@ -4,7 +4,6 @@ import { Container } from '@material-ui/core';
 import Authentication from '../components/Authentication/Authentication'
 
 function Auth() {
-    
 
     return (
         <Container maxWidth="none">

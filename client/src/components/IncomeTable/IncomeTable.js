@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, TablePagination, Button, Typography } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './styles';
 import moment from 'moment';
-
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 import { deleteIncome } from '../../actions/incomes';
+import { formatter } from '../../functions/Formatter';
+import { cleanDate } from '../../functions/CleanDate';
+import { sortByDate } from '../../functions/SortByDate';
 
 const columns = [
     { id: 'category', label: 'Category', minWidth: 170 },
@@ -23,6 +24,7 @@ const IncomeTable = ({ setCurrentId, date }) => {
     const dispatch = useDispatch();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const momentDate = moment(date);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -34,22 +36,6 @@ const IncomeTable = ({ setCurrentId, date }) => {
         setPage(0);
     };
 
-    // Currency formatter.
-    var formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    });
-
-    const cleanDate = (date) => {
-        if (date) {
-            return date.substring(0, 10)
-        } else {
-            return "";
-        }
-    }
-
-    const momentDate = moment(date);
-
     const incomeCatFindName = (income) => {
         if (income.category && income) {
             const incomeCat = incomeCats.find(incomeCat => incomeCat._id === income.category)
@@ -60,22 +46,7 @@ const IncomeTable = ({ setCurrentId, date }) => {
         return ""
     }
 
-    //sort incomes by date, descending
-    function sortByDate(a, b) {
-        // Use toUpperCase() to ignore character casing
-        const sortA = a.date;
-        const sortB = b.date;
-      
-        let comparison = 0;
-        if (sortA > sortB) {
-          comparison = 1;
-        } else if (sortA < sortB) {
-          comparison = -1;
-        }
-        return comparison;
-      }
-
-      incomes.sort(sortByDate); 
+    incomes.sort(sortByDate); 
 
     return (
       <>
@@ -83,58 +54,58 @@ const IncomeTable = ({ setCurrentId, date }) => {
             <Typography className={classes.tableHeader} variant="h4" component="div">
                 Incomes
             </Typography>
-      <Table padding='none' aria-label="simple table">
-        <TableHead className={classes.head}>
-          <TableRow>
-          {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
+        <Table padding='none' aria-label="simple table">
+          <TableHead className={classes.head}>
+            <TableRow>
+            {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+              {incomes.filter(income => moment(income.date).month() === momentDate.month()).map((income) => (
+                  <TableRow key={income._id}>
+                    <div hidden>
+                      <TableCell className={classes.tableColumn} component="th" scope="row" hidden>{income._id}</TableCell>
+                    </div>
+                      <TableCell className={classes.tableColumn} >{incomeCatFindName(income)}</TableCell>
+                      <TableCell className={classes.tableColumn} >{income.description}</TableCell>
+                      <TableCell className={classes.tableColumn} >{formatter.format(income.amount)}</TableCell>
+                      <TableCell  className={classes.tableColumn} component="th" scope="row">{cleanDate(income.date)}</TableCell>
+                      <TableCell className={classes.tableColumn} >
+                          <Button size="small" color="primary" onClick={() => dispatch(deleteIncome(income._id))}>
+                              <DeleteIcon fontSize="small" />
+                              Delete
+                          </Button>
+                      </TableCell>
+                      <TableCell className={classes.tableColumn} >
+                          <Button size="small" color="primary" onClick={() => setCurrentId(income._id)}>
+                              <EditIcon fontSize="small" />
+                              Edit
+                          </Button>
+                      </TableCell>
+                  </TableRow>
               ))}
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-            {incomes.filter(income => moment(income.date).month() === momentDate.month()).map((income) => (
-                <TableRow key={income._id}>
-                  <div hidden>
-                    <TableCell className={classes.tableColumn} component="th" scope="row" hidden>{income._id}</TableCell>
-                  </div>
-                    <TableCell className={classes.tableColumn} >{incomeCatFindName(income)}</TableCell>
-                    <TableCell className={classes.tableColumn} >{income.description}</TableCell>
-                    <TableCell className={classes.tableColumn} >{formatter.format(income.amount)}</TableCell>
-                    <TableCell  className={classes.tableColumn} component="th" scope="row">{cleanDate(income.date)}</TableCell>
-                    <TableCell className={classes.tableColumn} >
-                        <Button size="small" color="primary" onClick={() => dispatch(deleteIncome(income._id))}>
-                            <DeleteIcon fontSize="small" />
-                            Delete
-                        </Button>
-                    </TableCell>
-                    <TableCell className={classes.tableColumn} >
-                        <Button size="small" color="primary" onClick={() => setCurrentId(income._id)}>
-                            <EditIcon fontSize="small" />
-                            Edit
-                        </Button>
-                    </TableCell>
-                </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    <TablePagination
-      rowsPerPageOptions={[10]}
-      component="div"
-      count={incomes.length}
-      rowsPerPage={rowsPerPage}
-      page={page}
-      onPageChange={handleChangePage}
-      onChangeRowsPerPage={handleChangeRowsPerPage}
-    />
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10]}
+        component="div"
+        count={incomes.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </>
     );
 }

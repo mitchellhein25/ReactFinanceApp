@@ -1,19 +1,13 @@
 import React from 'react';
-import { Typography, Grid } from '@material-ui/core';
-
-import moment from 'moment';
 import { useSelector } from 'react-redux';
+import { Typography, Grid } from '@material-ui/core';
+import moment from 'moment';
+import { formatter } from '../../functions/Formatter';
 
 const BudgetTotals = ({ date }) => {
     const budgets = useSelector((state) => state.budgets);
     const expenses = useSelector((state) => state.expenses);
     const momentDate = moment(date);
-
-    // Currency formatter.
-    var formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    });
 
     const budgetFindName = (expense) => {
         if (expense.category && expense) {

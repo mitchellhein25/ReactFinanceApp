@@ -1,27 +1,19 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Button, Typography } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './styles';
 import moment from 'moment';
-
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 import { deleteBudget } from '../../actions/budgets';
+import { formatter } from '../../functions/Formatter';
 
 const BudgetTable = ({ setCurrentId, date }) => {
     const budgets = useSelector((state) => state.budgets);
     const expenses = useSelector((state) => state.expenses);
-    // const groupedExpenses = useSelector((state) => state.groupedExpenses);
     const classes = useStyles();
     const dispatch = useDispatch();
     const momentDate = moment(date);
-
-    // Currency formatter.
-    var formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    });
     
     const budgetFindName = (expense) => {
         if (expense.category && expense) {
@@ -42,13 +34,11 @@ const BudgetTable = ({ setCurrentId, date }) => {
                 total += expense.amount;
             }
         });
-
         return total;
     }
 
     const getOverUnder = (budgetAmount, expenseAmount) => {
         return budgetAmount - expenseAmount;
-
     }
 
     const getBudgetColor = (budget) => {
@@ -60,19 +50,8 @@ const BudgetTable = ({ setCurrentId, date }) => {
             return classes.green;
         } else {
             return classes.red;
-        }
-        
+        }  
     }
-
-    // const totalBudgets = () => {
-    //     var totalBudget = 0;
-    //     var totalExpense = 0;
-    //     budgets.forEach(budget => {
-    //         totalBudget += budget.amount;
-    //         totalExpense += getExpenseAmount(budget.name);
-    //     });
-    //     return [totalBudget, totalExpense];
-    // }
 
     return (
         <TableContainer className={classes.tableContainerFull}>
@@ -119,7 +98,6 @@ const BudgetTable = ({ setCurrentId, date }) => {
                     </TableCell>
                 </TableRow>
             ))}
-            
         </TableBody>
       </Table>
     </TableContainer>
