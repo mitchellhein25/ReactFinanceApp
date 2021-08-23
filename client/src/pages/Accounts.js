@@ -52,14 +52,14 @@ function Accounts() {
 
       <Grid className={classes.appBar} container justifyContent="space-between" alignItems="stretch" spacing={1}>
         <Grid item xs={12} md={7}>
-          <AccountTable currentId={currentAccountId} date={date}/>
+          <AccountTable setCurrentId={setCurrentAccountId} date={date}/>
         </Grid>
         <Grid item xs={12} sm={3}>
-            <AccountForm currentId={currentAccountId} setCurrentId={setCurrentAccountId} accountNameID={currentAccountNameId} setAccountNameID={setCurrentAccountNameId}/>
+            <AccountForm currentId={currentAccountId} setCurrentId={setCurrentAccountId}/>
         </Grid>
         <Grid item xs={12} sm={2}>
             <AccountDrawer />
-            <AccountNameForm currentId={currentAccountId} setCurrentId={setCurrentAccountId} accountNameID={currentAccountNameId} setAccountNameID={setCurrentAccountNameId}/>
+            <AccountNameForm currentId={currentAccountNameId} setCurrentId={setCurrentAccountNameId}/>
         </Grid>
       </Grid>
       

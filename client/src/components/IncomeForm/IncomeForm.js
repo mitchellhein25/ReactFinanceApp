@@ -28,7 +28,14 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
     });
 
     useEffect(() => {
-        if(income) setIncomeData(income);
+        if(income) {
+            var incomeCat = incomeCats.find(incomeCat => incomeCat._id === income.category);
+            var incomeDate = moment(income.date);
+            incomeDate.date(incomeDate.date() + 1);
+            var incomeDateFormatted = incomeDate.format("YYYY-MM-DD");
+            setIncomeData({ date: incomeDateFormatted, category: incomeCat, amount: income.amount, description: income.description });
+            setCategory(incomeCat.name);
+        } 
     }, [income])
 
     const findIncomeCatId = (e) => {

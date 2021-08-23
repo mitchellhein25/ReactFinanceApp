@@ -7,7 +7,7 @@ import { createAccount, updateAccount } from '../../actions/accounts';
 
 const AccountForm = ({ currentId, setCurrentId }) => {
     const accountNames = useSelector((state) => state.accountNames)
-    const [name, setName] = React.useState('');
+    const [name, setName] = useState('');
     const [accountData, setAccountData] = useState({
         date: moment(Date.now()).format("yyyy-MM-DD"), name: '', balance: '', debtOrAsset: ''
     });
@@ -28,7 +28,16 @@ const AccountForm = ({ currentId, setCurrentId }) => {
     });
 
     useEffect(() => {
-        if(account) setAccountData(account);
+        if(account) {
+            var accountName = accountNames.find(accountName => accountName._id === account.name);
+            var accountDate = moment(account.date);
+            accountDate.date(accountDate.date() + 1);
+            var accountDateFormatted = accountDate.format("YYYY-MM-DD");
+            console.log(account.debtOrAsset);
+            setAccountData({ date: accountDateFormatted, name: accountName, balance: account.balance, debtOrAsset: account.debtOrAsset === true ? 1 : 0 });
+            console.log(accountData)
+            setName(accountName.name);
+        };
     }, [account])
 
     const findAccountNameId = (e) => {
@@ -60,12 +69,8 @@ const AccountForm = ({ currentId, setCurrentId }) => {
             <form className={`${classes.root} ${classes.form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Enter' } an Account</Typography>
                 <TextField size="small"  name="date" variant="outlined" type="date" fullWidth value={accountData.date}
-                //This ... spreads the data, only changing the property you specify and leaving the others as is
-                //Sets the state using an object
                 onChange={(e) => setAccountData({ ...accountData, date: e.target.value })}
                 />
-                {/* <FormControl> */}
-                {/* <InputLabel>Budget Category</InputLabel> */}
                 <FormControl className={classes.margin} size="small" fullWidth variant="outlined">
                     <InputLabel className={classes.inputMargin} id="categoryLabel">Name</InputLabel>
                     <Select className={classes.inputMargin} size="small" name="name" 
@@ -73,7 +78,6 @@ const AccountForm = ({ currentId, setCurrentId }) => {
                         {accountNamesToRender}
                     </Select>
                     </FormControl>
-                {/* </FormControl> */}
                 <FormControl className={classes.margin} fullWidth variant="outlined">
                     <InputLabel className={classes.inputMargin} >Balance</InputLabel>
                     <OutlinedInput className={classes.inputMargin} size="small" name="balance" 
@@ -85,8 +89,10 @@ const AccountForm = ({ currentId, setCurrentId }) => {
                     <FormLabel className={classes.inputMargin} component="legend">Debt or Asset?</FormLabel>
                     <RadioGroup className={classes.inputMargin} aria-label="debtOrAsset" name="debtOrAsset" 
                     value={accountData.debtOrAsset} onChange={(e) => setAccountData({ ...accountData, debtOrAsset: e.target.value })}>
-                        <FormControlLabel fullwidth value="1" control={<Radio />} label="Asset" />
-                        <FormControlLabel fullwidth value="0" control={<Radio />} label="Debt" />
+                        <FormControlLabel fullwidth checked={accountData.debtOrAsset === 1 ? true : false}
+                        value="1" control={<Radio />} label="Asset" />
+                        <FormControlLabel fullwidth checked={accountData.debtOrAsset === 0 ? true : false}
+                        value="0" control={<Radio />} label="Debt" />
                     </RadioGroup>
                 </FormControl>
                 <FormControl className={classes.margin} size="small" fullWidth variant="outlined">

@@ -24,8 +24,8 @@ const AccountDrawer = ({}) => {
         <div align="center">
             <Button size="small" variant="contained" color="primary" onClick={toggleDrawer("right", true)}>Edit Account Names</Button>
         </div>
-        <div >
-        <Drawer anchor="right" open={state["right"]} onClose={toggleDrawer("right", false)}>
+        <div>
+            <Drawer anchor="right" open={state["right"]} onClose={toggleDrawer("right", false)}>
             <TableContainer className={classes.padding}>
                 <Typography align="center" variant="h4">
                     Account Names 
@@ -37,7 +37,7 @@ const AccountDrawer = ({}) => {
                                 <div hidden>
                                     <TableCell>{accountName._id}</TableCell>
                                 </div>
-                                <TableCell >{accountName.name}</TableCell>
+                                <TableCell>{accountName.name}</TableCell>
                                 <TableCell>{accountName.allocation}%</TableCell>
                                 <TableCell >
                                     <Button size="small" color="primary" onClick={() => dispatch(deleteAccountName(accountName._id))}>

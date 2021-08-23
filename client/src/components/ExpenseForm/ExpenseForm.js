@@ -33,8 +33,10 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
     useEffect(() => {
         if(expense) {
             var budget = budgets.find(budget => budget._id === expense.category);
-            var expenseDate = moment(expense.date).format("YYYY-MM-DD");
-            setExpenseData({ date: expenseDate, category: budget, amount: expense.amount, description: expense.description });
+            var expenseDate = moment(expense.date);
+            expenseDate.date(expenseDate.date() + 1);
+            var expenseDateFormatted = expenseDate.format("YYYY-MM-DD");
+            setExpenseData({ date: expenseDateFormatted, category: budget, amount: expense.amount, description: expense.description });
             setCategory(budget.name);
         }
     }, [expense, budgets])
