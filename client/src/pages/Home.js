@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Tab, Tabs, Box, Typography } from '@material-ui/core';
+import { Container, Grid, Tab, Tabs, Box, Typography, useMediaQuery } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import useStyles from '../styles';
@@ -64,6 +64,8 @@ function Home() {
     const [value, setValue] = React.useState(0);
     const classes = useStyles();
     const dispatch = useDispatch();
+    const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
       };
@@ -88,30 +90,30 @@ function Home() {
     } 
 
     return (
-        <Container maxWidth="xl" className={classes.root}>
+        <Container style={{ margin: 'auto' }} className={classes.root}>
             <Grid className={classes.appBar} container justifyContent="space-between" alignItems="center" spacing={1}>
                 <Grid item xs={12} md={4}>
                     <NetWorth />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid style={isMobile ? {padding:'15px 0'} : {}} item xs={12} md={4}>
                     <DatePicker date={date} setDate={setDate}/>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid style={isMobile ? {borderBottom: 'solid black 2px', padding:'15px 0'} : {}} item xs={12} md={4}>
                     <HomeTotals date={date}/>
                 </Grid>
                 <Grid className={classes.tabGrid} container justifyContent="space-between" alignItems="center" spacing={1}>
-                    <Grid item xs={12} md={4}></Grid>
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={2}></Grid>
+                    <Grid item xs={12} md={8}>
                         <Tabs className={classes.tabs} value={value} onChange={handleChange} centered>
                             <Tab label="Expenses" {...a11yProps(0)} />
                             <Tab label="Incomes" {...a11yProps(1)} />
                             <Tab label="Budgets" {...a11yProps(2)} />
                         </Tabs>
                     </Grid>
-                    <Grid item xs={12} md={4}></Grid>
+                    <Grid item xs={12} md={2}></Grid>
                 </Grid>
                 <TabPanel value={value} index={0}>
-                    <Grid className={classes.appBar} container justifyContent="space-between" alignItems="stretch" spacing={1}>
+                    <Grid className={classes.appBar} container direction={isMobile ? 'column-reverse' : 'row'} justifyContent="space-between" alignItems="stretch" spacing={1}>
                         <Grid item xs={12} md={7}>
                             <ExpenseTable setCurrentId={setCurrentExpenseId} date={date}/>
                         </Grid>

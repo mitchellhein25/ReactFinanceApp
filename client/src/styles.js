@@ -29,6 +29,7 @@ export default makeStyles((theme) => ({
     },
     root: {
         flexGrow: 1,
+        padding: 0
         // backgroundColor: theme.palette.background.paper,
       },
     budgetGrid: {
@@ -41,8 +42,4 @@ export default makeStyles((theme) => ({
     fullPanel: {
         flexGrow: 1,
     },
-    // tabGrid: {
-    //     backgroundColor: "black",
-    //     color: "white"
-    // }
 }));

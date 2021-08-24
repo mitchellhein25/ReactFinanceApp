@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
+import { Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, useMediaQuery } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './styles';
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteExpense } from '../../actions/expenses';
 import { formatter } from '../../functions/Formatter';
 import { cleanDate } from '../../functions/CleanDate';
-import { sortByDate } from '../../functions/SortByDate';
+import { sortBy } from '../../functions/SortBy';
 
 export default function ExpenseTable({ setCurrentId, date }) {
   const classes = useStyles();
@@ -18,12 +18,20 @@ export default function ExpenseTable({ setCurrentId, date }) {
   const expenses = useSelector((state) => state.expenses);
   const budgets = useSelector((state) => state.budgets);
   const momentDate = moment(date);
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const columns = [
     { id: 'category', label: 'Category', minWidth: 170 },
     { id: 'description', label: 'Description', minWidth: 190 },
     { id: 'amount', label: 'Amount', minWidth: 100 },
     { id: 'date', label: 'Date', minWidth: 100, },
+  ];
+
+  const mobileColumns = [
+    { id: 'category', label: 'Category', maxWidth: 30 },
+    // { id: 'description', label: 'Description', maxWidth: 30 },
+    { id: 'amount', label: 'Amount', maxWidth: 30 },
+    // { id: 'date', label: 'Date', maxWidth: 30, },
   ];
 
   const handleChangePage = (event, newPage) => {
@@ -45,7 +53,7 @@ export default function ExpenseTable({ setCurrentId, date }) {
       return ""
   }
 
-  expenses.sort(sortByDate); 
+  expenses.sort(sortBy("date")); 
 
   return (
     <>
@@ -55,43 +63,71 @@ export default function ExpenseTable({ setCurrentId, date }) {
       <TableContainer className={classes.container}>
         <Table className={classes.table} padding='none' aria-label="sticky table">
           <TableHead>
-            <TableRow className={classes.head}>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-            </TableRow>
+            {isMobile ? 
+            (
+              <TableRow className={classes.head}>
+                {mobileColumns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ maxWidth: column.maxWidth, overflowWrap: 'break-word' }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            ): (
+              <TableRow className={classes.head}>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            ) 
+            }
+            
           </TableHead>
           <TableBody>
             {expenses.filter(expense => moment(expense.date).month() === momentDate.month()).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((expense) => (
-                
-                <TableRow className={classes.tableRow} key={expense._id}>
-                    <div hidden>
-                      <TableCell component="th" scope="row">{expense._id}</TableCell>
-                    </div>
-                    <TableCell >{budgetFindName(expense)}</TableCell>
-                    <TableCell >{expense.description}</TableCell>
-                    <TableCell >{formatter.format(expense.amount)}</TableCell>
-                    <TableCell component="th" scope="row">{cleanDate(expense.date)}</TableCell>
-                    <TableCell >
-                        <Button size="small" color="primary" onClick={() => dispatch(deleteExpense(expense._id))}>
-                            <DeleteIcon fontSize="small" />
-                            Delete
-                        </Button>
-                    </TableCell>
-                    <TableCell >
-                        <Button size="small" color="primary" onClick={() => setCurrentId(expense._id)}>
-                            <EditIcon fontSize="small" />
-                            Edit
-                        </Button>
-                    </TableCell>
+              <TableRow className={classes.tableRow} key={expense._id}>
+                <div hidden>
+                  <TableCell component="th" scope="row">{expense._id}</TableCell>
+                </div>
+                {isMobile ? 
+                  (
+                    <>
+                      <TableCell >{budgetFindName(expense)}</TableCell>
+                      <TableCell >{formatter.format(expense.amount)}</TableCell>
+                    </>
+                  ) : (
+                    <>
+                      <TableCell >{budgetFindName(expense)}</TableCell>
+                      <TableCell >{expense.description}</TableCell>
+                      <TableCell >{formatter.format(expense.amount)}</TableCell>
+                      <TableCell component="th" scope="row">{cleanDate(expense.date)}</TableCell>
+                    </>
+                  )}
+                  <TableCell >
+                      <Button size="small" color="primary" onClick={() => dispatch(deleteExpense(expense._id))}>
+                          <DeleteIcon fontSize="small" />
+                          Delete
+                      </Button>
+                  </TableCell>
+                  <TableCell >
+                      <Button size="small" color="primary" onClick={() => setCurrentId(expense._id)}>
+                          <EditIcon fontSize="small" />
+                          Edit
+                      </Button>
+                  </TableCell>
                 </TableRow>
             ))}
           </TableBody>

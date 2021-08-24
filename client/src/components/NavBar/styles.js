@@ -1,4 +1,4 @@
-import { makeStyles} from '@material-ui/core/styles';
+import { useTheme , makeStyles} from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
     root: {
@@ -18,8 +18,8 @@ export default makeStyles((theme) => ({
     navLink: {
         color: 'white',
         textDecoration: 'none',
-        paddingLeft: '30px',
-        display: 'flex'
+        padding: '0 30px',
+        display: 'flex',
     },
     margin: {
       display: 'flex',
@@ -28,6 +28,19 @@ export default makeStyles((theme) => ({
     },
     title: {
       flexGrow: 1,
+      [theme.breakpoints.down('md')]: {
+        fontSize: '1.5rem',
+        textAlign: 'center'
+      },
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '1rem',
+        textAlign: 'center'
+      },
+    },
+    mobileTitle: {
+      flexGrow: 1,
+      fontSize: '1.7rem',
+      textAlign: 'center'
     },
     userName: {
       display: 'flex',
@@ -36,4 +49,45 @@ export default makeStyles((theme) => ({
       marginRight: '15px',
       paddingRight: '15px',
     },
+    button: {
+      fontSize: '20px',
+      maxHeight: '24px',
+      display: 'flex',
+      padding: '20px',
+      margin: 'auto'
+    },
+    mobileToolbar: {
+      display: 'flex',
+      justifyContent: "flex-end",
+    },
+    paper: {
+      background: '#3f51b5'
+    },
+    mobileAvatar: {
+      margin: 'auto',
+      marginTop: '10px'
+    }, 
+    mobileUserName: {
+      textAlign: 'center',
+      marginTop: '10px',
+      color: 'white'
+    },
+    mobileButton: {
+      margin: 'auto',
+      marginTop: '10px',
+      color: 'white',
+      backgroundColor: 'LightCoral'
+    },
+    userDiv: {
+      margin: 'auto',
+      textAlign: 'center',
+    },
+    mobileDiv: {
+      margin: '0 auto',
+    },
+    backArrow: {
+      color: 'white',
+      fontSize: '30px',
+    }
+
 }));

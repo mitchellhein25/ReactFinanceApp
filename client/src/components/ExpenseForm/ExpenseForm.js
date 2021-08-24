@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector  } from 'react-redux';
-import { TextField, Button, Typography, Container, Select, MenuItem, InputLabel, FormControl, InputAdornment, OutlinedInput } from '@material-ui/core';
+import { TextField, Button, Typography, Container, Select, MenuItem, InputLabel, FormControl, InputAdornment, OutlinedInput, useMediaQuery } from '@material-ui/core';
 import useStyles from './styles';
 import moment from 'moment';
 import { createExpense, updateExpense } from '../../actions/expenses';
@@ -16,6 +16,7 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const user = JSON.parse(localStorage.getItem('profile'));
+    const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
     let budgetsToRender;
     if (budgets) {
@@ -64,7 +65,7 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
     }
 
     return (
-        <Container className={classes.paper}>
+        <Container className={classes.paper} style={isMobile ? {paddingLeft: '0'} : {paddingLeft: '2rem'}}>
             <form className={`${classes.root} ${classes.form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Enter' } an Expense</Typography>
                 <TextField size="small"  name="date" variant="outlined" type="date" fullWidth value={expenseData.date}

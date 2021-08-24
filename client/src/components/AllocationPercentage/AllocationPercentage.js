@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Typography, Grid } from '@material-ui/core';
-
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 import useStyles from './styles';
-
 import { getAccountNames } from '../../actions/accountNames';
 
 const AllocationPercentage = () => {
     const [ totalAllocations, setTotalAllocations ] = useState(null);
     const accountNames = useSelector((state) => state.accountNames);
-
     const classes = useStyles();
     const dispatch = useDispatch();
 

@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { Typography, Grid } from '@material-ui/core';
-
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import useStyles from './styles';
 import moment from 'moment';
-
 import { getExpenses } from '../../actions/expenses';
 import { getIncomes } from '../../actions/incomes';
+import { formatter } from '../../functions/Formatter';
+import { totalExpenses } from '../../functions/TotalExpenses';
+import { totalIncome } from '../../functions/TotalIncome';
 
-const CashFlow = ({ date, setDate }) => {
+const CashFlow = ({ date }) => {
 
     const expenses = useSelector((state) => state.expenses)
     const incomes = useSelector((state) => state.incomes)
@@ -17,33 +17,14 @@ const CashFlow = ({ date, setDate }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    // Currency formatter.
-    var formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    });
+    var totalExpensesThisMonth = totalExpenses(expenses, date);
 
-    var totalExpensesThisMonth = 0;
-        expenses.forEach((expense, index) => {
-        if (moment(expense.date).month() === momentDate.month()) {
-            totalExpensesThisMonth += expense.amount; 
-        }
-    });
-
-    var totalIncomesThisMonth = 0;
-        incomes.forEach((income, index) => {
-        if (moment(income.date).month() === momentDate.month()) {
-            totalIncomesThisMonth += income.amount; 
-        }
-    });
+    var totalIncomesThisMonth = totalIncome(incomes, date);
 
     var totalCashFlowThisMonth = totalIncomesThisMonth - totalExpensesThisMonth;
 
     useEffect(() => {
         dispatch(getExpenses())
-    }, [dispatch]);
-
-    useEffect(() => {
         dispatch(getIncomes())
     }, [dispatch]);
 

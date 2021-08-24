@@ -1,121 +1,42 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Typography, Grid, Button, TextField } from '@material-ui/core';
-
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import moment from 'moment';
-
-import { getAccounts } from '../../actions/accounts';
 import { getAccountNames } from '../../actions/accountNames';
 import { getExpenses } from '../../actions/expenses';
 import { getIncomes } from '../../actions/incomes';
-
-import useStyles from './styles';
 import { updateAccountName } from '../../actions/accountNames';
-
+import useStyles from './styles';
+import { formatter } from '../../functions/Formatter';
+import { totalExpenses } from '../../functions/TotalExpenses';
+import { totalIncome } from '../../functions/TotalIncome';
+import { sortBy } from '../../functions/SortBy';
 
 const AllocationPercentBoxes = ({ date }) => {
-    // const [ totalAllocations, setTotalAllocations ] = useState(null);
+    const expenses = useSelector((state) => state.expenses);
+    const incomes = useSelector((state) => state.incomes);
+    const accountNames = useSelector((state) => state.accountNames);
+    const [accountData, setAccountData] = useState({ name: "", allocation: "" });
     const [ id, setId ] = useState(null);
+    const dispatch = useDispatch();
+    const classes = useStyles();
+
     // eslint-disable-next-line no-extend-native
     Date.prototype.toDateFormat = (function(format) {
         format = format || "mm/yyyy";
         return format.toLowerCase()
-        // var local = new Date(this);
-        // local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-        // return local.toJSON().slice(0,10);
     });
-    const [accountData, setAccountData] = useState({
-        // date: new Date(), name: "", balance: "", debtOrAsset: null, allocation: ""
-        name: "", allocation: ""
-    });
-    const expenses = useSelector((state) => state.expenses);
-    const incomes = useSelector((state) => state.incomes);
-    // const accounts = useSelector((state) => state.accounts);
-    const accountNames = useSelector((state) => state.accountNames);
-    const dispatch = useDispatch();
-
-    const momentDate = moment(date);
-    const classes = useStyles();
-
-    const accountNameFindName = (account) => {
-        console.log(account);
-        if (account.name && account) {
-            const accountName = accountNames.find(accountName => accountName._id === account.name)
-            if (accountName) {
-                return accountName.name;
-            }
-        }
-        return ""
-    }
-
-    let acctNames = [];
-    let accts = accountNames;
     
-    var totalExpensesThisMonth = 0;
-        expenses.forEach((expense, index) => {
-        if (moment(expense.date).month() === momentDate.month()) {
-            totalExpensesThisMonth += expense.amount; 
-        }
-    });
-
-    var totalIncomesThisMonth = 0;
-        incomes.forEach((income, index) => {
-        if (moment(income.date).month() === momentDate.month()) {
-            totalIncomesThisMonth += income.amount; 
-        }
-    });
-
+    var totalExpensesThisMonth = totalExpenses(expenses, date);
+    var totalIncomesThisMonth = totalIncome(incomes, date);
     var totalCashFlowThisMonth = totalIncomesThisMonth - totalExpensesThisMonth;
-
-    // async function onLoad() {
-    //     // var totalAlloc = 0;
-    //     await accountNames.forEach((account, index) => {
-    //         if (acctNames.includes(accountNameFindName(account))) {
-    //             accts.forEach((acct, indexInner) => {
-    //                 if (accountNameFindName(acct) === accountNameFindName(account)) {
-    //                         accts[indexInner] = account;
-    //                         acctNames[indexInner] = accountNameFindName(account);
-                    
-    //                 }
-    //             })
-    //         } else {
-    //             accts.push(account);
-    //             acctNames.push(accountNameFindName(account));
-    //         }
-    //     });
-    //     // await accts.forEach((acct, index) => {
-    //     //     totalAlloc += acct.allocation;
-    //     // });
-    //     // setTotalAllocations(totalAlloc);
-    // }
-    // onLoad();
-
-    //sort accts by allocation, descending
-    function sortByAllocation(a, b) {
-        // Use toUpperCase() to ignore character casing
-        const alloA = a.allocation;
-        const alloB = b.allocation;
       
-        let comparison = 0;
-        if (alloA > alloB) {
-          comparison = 1;
-        } else if (alloA < alloB) {
-          comparison = -1;
-        }
-        return comparison * -1;
-      }
-      
-    accts.sort(sortByAllocation); 
+    accountNames.sort(sortBy("allocation")); 
     
-    console.log(accts);
     var splitAccts = [];
     async function splitAcctsUp() {
         //Split into groups of 6
-        
         var splitIndex = -1;
-        await accts.forEach((account, index) => {
-            // console.log(index);
+        await accountNames.forEach((account, index) => {
             if (index % 6 === 0) {
                 splitIndex++;
                 splitAccts.push([]);
@@ -124,20 +45,6 @@ const AllocationPercentBoxes = ({ date }) => {
         });
     }
     splitAcctsUp();
-
-
-    // Currency formatter.
-    var formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    });
-
-    useEffect(() => {
-        // dispatch(getAccounts())
-        dispatch(getAccountNames())
-        dispatch(getExpenses())
-        dispatch(getIncomes())
-    }, [dispatch]);
 
     const handleChange = (account, e) => {
         setId(account._id);
@@ -148,7 +55,6 @@ const AllocationPercentBoxes = ({ date }) => {
         e.preventDefault();
         if (id == null) {
             alert("Allocation must have a value.");
-            
         } else {
             dispatch(updateAccountName(id, accountData));
             clear(id);
@@ -162,6 +68,12 @@ const AllocationPercentBoxes = ({ date }) => {
         setId(null);
     }
 
+    useEffect(() => {
+        dispatch(getAccountNames())
+        dispatch(getExpenses())
+        dispatch(getIncomes())
+    }, [dispatch]);
+
     return (
         <Grid xs={12}>
             
@@ -171,8 +83,7 @@ const AllocationPercentBoxes = ({ date }) => {
                     
                         {acct.map((account) => {
                             return (
-                                <Grid className={classes.paddingTop} xs={12} md={(6/acct.length)%6 !== 0 ? 6/acct.length%6 + 1 : 2} item>
-                            
+                                <Grid className={classes.paddingTop, classes.marginAuto} xs={12} md={(6/acct.length)%6 !== 0 ? 6/acct.length%6 + 1 : 2} item>
                                 <div className={classes.accountBox} >
                                     <Typography margin="auto" className={classes.accountTitle} textAlign="center" variant="h6">
                                         { account.name }
@@ -184,7 +95,8 @@ const AllocationPercentBoxes = ({ date }) => {
                                     </Typography>
                                     <Typography variant="h6" className={classes.allo}>{account.allocation}%</Typography>
                                     <div className={classes.buttonMarginTop}>
-                                        <TextField variant="outlined" style={{ fontSize: '24px' }} id={"allocation" + account._id} size="small" name="allocation" type="number" InputProps={{ inputProps: { min: 0, max: 100, step: 0.01} }} 
+                                        <TextField variant="outlined" style={{ fontSize: '24px' }} id={"allocation" + account._id} size="small" name="allocation" 
+                                        type="number" InputProps={{ inputProps: { min: 0, max: 100, step: 0.01} }} 
                                         label="Edit Allocation" fullWidth onChange={(e) => {handleChange(account, e)}} InputLabelProps={{ shrink: true }}/>
                                     </div>
                                     <div className={classes.buttonMarginTop}>

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { Container, Grid, Typography } from '@material-ui/core';
+import useStyles from '../styles';
 import DatePicker from '../components/DatePicker/DatePicker'
 import CashFlow from '../components/CashFlow/CashFlow'
+import AllocationPercentage from '../components/AllocationPercentage/AllocationPercentage';
 import AllocationPercentBoxes from '../components/AllocationPercentBoxes/AllocationPercentBoxes'
 
-import useStyles from '../styles';
-import AllocationPercentage from '../components/AllocationPercentage/AllocationPercentage';
-
 function Allocation() {
-    const [currentAccountId, setCurrentAccountId] = useState();
     const [date, setDate] = useState(new Date());
     const classes = useStyles();
 
@@ -33,7 +31,7 @@ function Allocation() {
                     </Grid>
                     <Grid sm={4}></Grid>
                     <Grid sm={12} md={5}>
-                        <CashFlow date={date} setDate={setDate}/>
+                        <CashFlow date={date}/>
                     </Grid>
                     <Grid sm={12} md={2}></Grid>
                     <Grid sm={12} md={5}>
@@ -46,7 +44,7 @@ function Allocation() {
                         </Typography>
                     </Grid>
                     <Grid sm={4}></Grid>
-                        <AllocationPercentBoxes setCurrentId={setCurrentAccountId} currentId={currentAccountId} date={date} setDate={setDate}/>
+                        <AllocationPercentBoxes date={date} />
                     </Grid>
             
         </Container>

@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { deleteAccount } from '../../actions/accounts';
 import { cleanDate } from '../../functions/CleanDate';
 import { formatter } from '../../functions/Formatter';
+import { sortBy } from '../../functions/SortBy';
 
 const AccountTable = ({ setCurrentId, date }) => {
     const classes = useStyles();
@@ -55,21 +56,8 @@ const AccountTable = ({ setCurrentId, date }) => {
             return "";
         }
     }
-
-   //  sort accts by balance, descending
-     function sortByBalance(a, b) {
-        const alloA = a.balance;
-        const alloB = b.balance;
-        let comparison = 0;
-        if (alloA > alloB) {
-          comparison = 1;
-        } else if (alloA < alloB) {
-          comparison = -1;
-        }
-        return comparison * -1;
-      }
       
-    accts.sort(sortByBalance);  
+    accts.sort(sortBy("balance"));  
 
     return (
         <TableContainer>

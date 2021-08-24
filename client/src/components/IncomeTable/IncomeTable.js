@@ -8,7 +8,7 @@ import moment from 'moment';
 import { deleteIncome } from '../../actions/incomes';
 import { formatter } from '../../functions/Formatter';
 import { cleanDate } from '../../functions/CleanDate';
-import { sortByDate } from '../../functions/SortByDate';
+import { sortBy } from '../../functions/SortBy';
 
 const columns = [
     { id: 'category', label: 'Category', minWidth: 170 },
@@ -46,7 +46,7 @@ const IncomeTable = ({ setCurrentId, date }) => {
         return ""
     }
 
-    incomes.sort(sortByDate); 
+    incomes.sort(sortBy("date")); 
 
     return (
       <>

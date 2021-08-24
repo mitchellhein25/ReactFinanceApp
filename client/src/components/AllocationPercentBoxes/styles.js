@@ -10,6 +10,9 @@ export default makeStyles((theme) => ({
     paddingTop: {
         paddingTop: '10px'
     },
+    marginAuto: {
+        margin: 'auto'
+    },
     marginTop: {
         marginTop: "20px"
     },
