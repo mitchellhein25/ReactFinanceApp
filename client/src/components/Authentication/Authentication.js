@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 // import { GoogleLogin } from 'react-google-login';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import {createBrowserHistory} from 'history';
 import { signin, signup } from '../../actions/auth';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -18,7 +18,7 @@ const Authentication = () => {
     const [isSignUp, setIsSignUp] = useState(false);
     const [formData, setFormData] = useState(initialState);
     const dispatch = useDispatch();
-    const history = useHistory();
+    const history = createBrowserHistory({forceRefresh:true});
 
     const classes = useStyles();
 

@@ -10,7 +10,6 @@ export const signin = (formData, history) => async (dispatch) => {
         
         //redirect to home page
         history.push('/');
-        
     } catch (error) {
         console.log(error);
     }   

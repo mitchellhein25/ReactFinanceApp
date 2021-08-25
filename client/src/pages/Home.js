@@ -90,7 +90,7 @@ function Home() {
     } 
 
     return (
-        <Container style={{ margin: 'auto' }} className={classes.root}>
+        <Container style={{ margin: 'auto' }} maxWidth="none">
             <Grid className={classes.appBar} container justifyContent="space-between" alignItems="center" spacing={1}>
                 <Grid item xs={12} md={4}>
                     <NetWorth />

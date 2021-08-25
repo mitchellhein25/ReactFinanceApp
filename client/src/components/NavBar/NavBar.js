@@ -14,7 +14,6 @@ const NavBar = ({}) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const dispatch = useDispatch();
   const history = useHistory();
-
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const logout = useCallback(() => {
@@ -45,6 +44,7 @@ const NavBar = ({}) => {
     setState({ ...state, [anchor]: open });
 };
 
+console.log(user);
   return (
     <div>
       <AppBar position="static">
@@ -86,7 +86,7 @@ const NavBar = ({}) => {
             <div className={classes.userLinks}>
               <Avatar className={classes.margin} alt={user?.result.name} src={user?.result.ImageUrl}>{user?.result.name.charAt(0)}</Avatar> 
               <Typography className={classes.userName} variant="h6">{user?.result.name}</Typography>
-              <Button className={classes.button} variant="contained" color="inherit" onClick={logout}>Logout</Button>
+              <Button className={classes.logoutButton} variant="contained" color="inherit" onClick={logout}>Logout</Button>
             </div>
           ) : (
             <Button className={classes.button} color="secondary" component={Link} to="/auth" variant="contained">Login/Sign-Up</Button>

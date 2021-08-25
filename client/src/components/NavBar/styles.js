@@ -78,6 +78,14 @@ export default makeStyles((theme) => ({
       color: 'white',
       backgroundColor: 'LightCoral'
     },
+    logoutButton: {
+      backgroundColor: 'LightCoral',
+      fontSize: '20px',
+      maxHeight: '24px',
+      display: 'flex',
+      padding: '20px',
+      margin: 'auto'
+    },
     userDiv: {
       margin: 'auto',
       textAlign: 'center',
