@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector  } from 'react-redux';
-import { TextField, Button, Typography, Container, FormControl, InputLabel, OutlinedInput, InputAdornment } from '@material-ui/core';
+import { TextField, Button, Typography, Container, FormControl, InputLabel, OutlinedInput, InputAdornment, useMediaQuery } from '@material-ui/core';
 import useStyles from './styles';
 import { createBudget, updateBudget } from '../../actions/budgets';
 
@@ -12,6 +12,7 @@ const BudgetForm = ({ currentId, setCurrentId }) => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const user = JSON.parse(localStorage.getItem('profile'));
+    const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
     useEffect(() => {
         if(budget) setBudgetData(budget);
@@ -34,7 +35,7 @@ const BudgetForm = ({ currentId, setCurrentId }) => {
     }
 
     return (
-        <Container className={classes.paper}>
+        <Container className={classes.paper} style={isMobile ? {paddingLeft: '.5rem'} : {paddingLeft: '2rem'}}>
             <form className={`${classes.root} ${classes.form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Enter' } a Budget</Typography>
                 <TextField size="small" name="name" variant="outlined" label="Name" type="name" fullWidth value={budgetData.name}

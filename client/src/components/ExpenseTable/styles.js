@@ -24,9 +24,7 @@ export default makeStyles(() => ({
         // marginTop: "50px",
         padding: "10px",
         margin: "10px",
-    },
-    table: {
-        
+        // maxWidth: '90%'
     }
 
 }));

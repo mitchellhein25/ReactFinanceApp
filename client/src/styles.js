@@ -41,5 +41,5 @@ export default makeStyles((theme) => ({
     },
     fullPanel: {
         flexGrow: 1,
-    },
+    }
 }));

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Drawer, Table, TableBody, TableCell, TableContainer ,TableRow, Typography } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
+import { Button, Drawer, Table, TableBody, TableCell, TableContainer ,TableRow, Typography } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { deleteIncomeCat } from '../../actions/incomeCats';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -27,6 +28,7 @@ const IncomeDrawer = ({}) => {
         </div>
         <div >
         <Drawer anchor="right" open={state["right"]} onClose={toggleDrawer("right", false)}>
+            <ArrowBackIcon className={classes.backArrow} onClick={toggleDrawer("right", false)}></ArrowBackIcon>
             <TableContainer className={classes.padding}>
                 <Typography align="center" variant="h4">
                     Income Categories 

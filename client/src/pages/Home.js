@@ -126,7 +126,7 @@ function Home() {
                     </Grid>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <Grid className={classes.appBar} container justifyContent="space-between" alignItems="stretch" spacing={1}>
+                    <Grid className={classes.appBar} container direction={isMobile ? 'column-reverse' : 'row'} justifyContent="space-between" alignItems="stretch" spacing={1}>
                         <Grid item xs={12} md={7}>
                             <IncomeTable setCurrentId={setCurrentIncomeId} date={date}/>
                         </Grid>
@@ -140,7 +140,7 @@ function Home() {
                     </Grid>
                 </TabPanel>
                 <TabPanel className={classes.fullPanel} value={value} index={2}>
-                    <Grid className={classes.appBar} container justifyContent="center" alignItems="stretch" spacing={2}>
+                    <Grid className={classes.appBar} container direction={isMobile ? 'column-reverse' : 'row'} justifyContent="center" alignItems="stretch" spacing={2}>
                         <Grid item xs={12} md={9}>
                             <BudgetTable setCurrentId={setCurrentBudgetId} date={date}/>
                         </Grid>

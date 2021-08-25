@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Button, Typography } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Button, Typography, useMediaQuery } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -14,7 +14,8 @@ const BudgetTable = ({ setCurrentId, date }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const momentDate = moment(date);
-    
+    const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
     const budgetFindName = (expense) => {
         if (expense.category && expense) {
             const budget = budgets.find(budget => budget._id === expense.category)
@@ -60,14 +61,25 @@ const BudgetTable = ({ setCurrentId, date }) => {
             </Typography>
       <Table padding='none' aria-label="simple table">
         <TableHead className={classes.head}>
-          <TableRow>
-            <div hidden>
-                <TableCell className={classes.tableColumn} hidden>Id</TableCell>
-            </div>
-            <TableCell className={classes.tableColumn} >Name</TableCell>
-            <TableCell className={classes.tableColumn} >Amount</TableCell>
-            <TableCell className={classes.tableColumn} >Amount Spent</TableCell>
-            <TableCell className={classes.tableColumn} >Remaining Budget</TableCell>
+            <TableRow>
+                <div hidden>
+                    <TableCell className={classes.tableColumn} hidden>Id</TableCell>
+                </div>
+            {isMobile ? 
+                (
+                <>
+                    <TableCell style={{ width: '100px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Name</TableCell>
+                    <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Amount Spent</TableCell>
+                    <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Remaining Budget</TableCell>
+                </>
+            ): (
+                <>
+                    <TableCell className={classes.tableColumn} >Name</TableCell>
+                    <TableCell className={classes.tableColumn} >Amount</TableCell>
+                    <TableCell className={classes.tableColumn} >Amount Spent</TableCell>
+                    <TableCell className={classes.tableColumn} >Remaining Budget</TableCell>
+                </>
+            )}
             <TableCell className={classes.tableColumn} ></TableCell>
             <TableCell className={classes.tableColumn} ></TableCell>
           </TableRow>
@@ -78,12 +90,24 @@ const BudgetTable = ({ setCurrentId, date }) => {
                     <div hidden>
                         <TableCell className={classes.tableColumn} component="th" scope="row" hidden>{budget._id}</TableCell>
                     </div>
-                    <TableCell  className={classes.tableColumn} component="th" scope="row">{budget.name}</TableCell>
-                    <TableCell className={classes.tableColumn} >{formatter.format(budget.amount)}</TableCell>
-                    <TableCell className={classes.tableColumn} >{formatter.format(getExpenseAmount(budget.name))}</TableCell>
-                    <TableCell  className={getBudgetColor(budget)} >
-                        <b>{formatter.format(getOverUnder(budget.amount, getExpenseAmount(budget.name)))}</b>
-                    </TableCell>
+                    {isMobile ? 
+                  (
+                    <>
+                        <TableCell style={{ width: '100px', overflowWrap: 'break-word' }} className={classes.tableColumn} component="th" scope="row">{budget.name}</TableCell>
+                        <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >{formatter.format(getExpenseAmount(budget.name))}</TableCell>
+                        <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={getBudgetColor(budget)} >
+                            <b>{formatter.format(getOverUnder(budget.amount, getExpenseAmount(budget.name)))}</b>
+                        </TableCell>
+                    </>
+                  ) : (
+                    <>
+                        <TableCell  className={classes.tableColumn} component="th" scope="row">{budget.name}</TableCell>
+                        <TableCell className={classes.tableColumn} >{formatter.format(budget.amount)}</TableCell>
+                        <TableCell  className={getBudgetColor(budget)} >
+                            <b>{formatter.format(getOverUnder(budget.amount, getExpenseAmount(budget.name)))}</b>
+                        </TableCell>
+                    </>
+                  )}
                     <TableCell className={classes.tableColumn} >
                         <Button size="small" color="primary" onClick={() => dispatch(deleteBudget(budget._id))}>
                             <DeleteIcon fontSize="small" />

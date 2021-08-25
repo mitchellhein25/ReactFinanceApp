@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector  } from 'react-redux';
-import { TextField, Button, Typography, Container, Select, MenuItem, InputLabel, FormControl, OutlinedInput, InputAdornment } from '@material-ui/core';
+import { TextField, Button, Typography, Container, Select, MenuItem, InputLabel, FormControl, OutlinedInput, InputAdornment, useMediaQuery } from '@material-ui/core';
 import useStyles from './styles';
 import moment from 'moment';
 import { createIncome, updateIncome } from '../../actions/incomes';
@@ -15,6 +15,7 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const user = JSON.parse(localStorage.getItem('profile'));
+    const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
     let incomeCatsToRender;
     if (incomeCats) {
@@ -61,7 +62,7 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
     }
 
     return (
-        <Container className={classes.paper}>
+        <Container className={classes.paper} style={isMobile ? {paddingLeft: '.5rem'} : {paddingLeft: '2rem'}}>
             <form className={`${classes.root} ${classes.form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Enter' } an Income</Typography>
                 <TextField size="small" name="date" variant="outlined" type="date" fullWidth value={incomeData.date}

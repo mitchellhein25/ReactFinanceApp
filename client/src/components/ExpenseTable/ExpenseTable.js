@@ -60,7 +60,7 @@ export default function ExpenseTable({ setCurrentId, date }) {
       <Typography className={classes.tableHeader} variant="h4" component="div">
           Expenses
       </Typography>
-      <TableContainer className={classes.container}>
+      <TableContainer style={isMobile ? {maxWidth: '90%'} : {}} className={classes.container}>
         <Table className={classes.table} padding='none' aria-label="sticky table">
           <TableHead>
             {isMobile ? 
@@ -92,9 +92,7 @@ export default function ExpenseTable({ setCurrentId, date }) {
                 <TableCell></TableCell>
                 <TableCell></TableCell>
               </TableRow>
-            ) 
-            }
-            
+            )}
           </TableHead>
           <TableBody>
             {expenses.filter(expense => moment(expense.date).month() === momentDate.month()).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((expense) => (
