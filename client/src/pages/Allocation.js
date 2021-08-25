@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Grid, Typography } from '@material-ui/core';
+import { Container, Grid, Typography, useMediaQuery } from '@material-ui/core';
 import useStyles from '../styles';
 import DatePicker from '../components/DatePicker/DatePicker'
 import CashFlow from '../components/CashFlow/CashFlow'
@@ -9,6 +9,7 @@ import AllocationPercentBoxes from '../components/AllocationPercentBoxes/Allocat
 function Allocation() {
     const [date, setDate] = useState(new Date());
     const classes = useStyles();
+    const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
     const user = JSON.parse(localStorage.getItem('profile'));
 
@@ -30,16 +31,16 @@ function Allocation() {
                         <DatePicker date={date} setDate={setDate}/>
                     </Grid>
                     <Grid sm={4}></Grid>
-                    <Grid sm={12} md={5}>
+                    <Grid style={isMobile ? {borderBottom: 'solid black 2px', padding:'15px 0'} : {}} sm={12} md={5}>
                         <CashFlow date={date}/>
                     </Grid>
                     <Grid sm={12} md={2}></Grid>
-                    <Grid sm={12} md={5}>
+                    <Grid style={isMobile ? {borderBottom: 'solid black 2px', padding:'15px 0'} : {}} sm={12} md={5}>
                         <AllocationPercentage />
                     </Grid>
                     <Grid sm={4}></Grid>
                     <Grid sm={4}>
-                        <Typography  align="center" variant="h4">
+                        <Typography style={isMobile ? {padding:'15px 0'} : {}} align="center" variant="h4">
                             Allocation Percentages
                         </Typography>
                     </Grid>

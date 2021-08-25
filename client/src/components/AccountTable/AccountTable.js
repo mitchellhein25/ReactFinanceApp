@@ -1,10 +1,10 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Button, Typography } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Button, Typography, useMediaQuery } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './styles';
 import moment from 'moment';
-import { useSelector, useDispatch } from 'react-redux';
 import { deleteAccount } from '../../actions/accounts';
 import { cleanDate } from '../../functions/CleanDate';
 import { formatter } from '../../functions/Formatter';
@@ -17,6 +17,7 @@ const AccountTable = ({ setCurrentId, date }) => {
     const accounts = useSelector((state) => state.accounts);
     let acctNames = [];
     let accts = [];
+    const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
     const accountNameFindName = (account) => {
         if (account.name && account) {
@@ -70,10 +71,21 @@ const AccountTable = ({ setCurrentId, date }) => {
                     <div hidden>
                         <TableCell>Id</TableCell>
                     </div>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Balance</TableCell>
-                    <TableCell>Debt or Asset</TableCell>
-                    <TableCell>Last Updated</TableCell>
+                    {isMobile ? 
+                    (
+                        <>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Balance</TableCell>
+                            <TableCell style={{textAlign: 'center'}}>Debt or Asset</TableCell>
+                        </>
+                    ) : (
+                        <>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Balance</TableCell>
+                            <TableCell>Debt or Asset</TableCell>
+                            <TableCell>Last Updated</TableCell>
+                        </>
+                    )}
                     <TableCell></TableCell>
                     <TableCell></TableCell>
                 </TableRow>
@@ -84,10 +96,21 @@ const AccountTable = ({ setCurrentId, date }) => {
                             <div hidden>
                                 <TableCell>{account._id}</TableCell>
                             </div>
-                            <TableCell >{accountNameFindName(account)}</TableCell>
-                            <TableCell >{formatter.format(account.balance)}</TableCell>
-                            <TableCell>{cleanDebtOrAsset(account.debtOrAsset)}</TableCell>
-                            <TableCell>{cleanDate(account.date)}</TableCell>
+                            {isMobile ? 
+                            (
+                                <>
+                                    <TableCell>{accountNameFindName(account)}</TableCell>
+                                    <TableCell>{formatter.format(account.balance)}</TableCell>
+                                    <TableCell style={{textAlign: 'center'}}>{cleanDebtOrAsset(account.debtOrAsset)}</TableCell>
+                                </>
+                            ) : (
+                                <>
+                                    <TableCell >{accountNameFindName(account)}</TableCell>
+                                    <TableCell >{formatter.format(account.balance)}</TableCell>
+                                    <TableCell>{cleanDebtOrAsset(account.debtOrAsset)}</TableCell>
+                                    <TableCell>{cleanDate(account.date)}</TableCell>  
+                                </>
+                            )}
                             <TableCell >
                                 <Button size="small" color="primary" onClick={() => dispatch(deleteAccount(account._id))}>
                                     <DeleteIcon fontSize="small" />

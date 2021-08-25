@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Typography, Grid, Button, TextField } from '@material-ui/core';
+import { Typography, Grid, Button, TextField, useMediaQuery } from '@material-ui/core';
 import { getAccountNames } from '../../actions/accountNames';
 import { getExpenses } from '../../actions/expenses';
 import { getIncomes } from '../../actions/incomes';
@@ -19,6 +19,7 @@ const AllocationPercentBoxes = ({ date }) => {
     const [ id, setId ] = useState(null);
     const dispatch = useDispatch();
     const classes = useStyles();
+    const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
     // eslint-disable-next-line no-extend-native
     Date.prototype.toDateFormat = (function(format) {
@@ -89,7 +90,7 @@ const AllocationPercentBoxes = ({ date }) => {
                                         { account.name }
                                     </Typography>
                                 </div>
-                                <form className={classes.marginTop} onSubmit={handleSubmit}>
+                                <form style={isMobile ? {margin:'0'} : {}} className={classes.marginTop} onSubmit={handleSubmit}>
                                     <Typography className={classes.red} align="center" id={account.id} variant="h5">
                                         {formatter.format(account.allocation/100 * totalCashFlowThisMonth)}
                                     </Typography>

@@ -55,76 +55,76 @@ const BudgetTable = ({ setCurrentId, date }) => {
     }
 
     return (
-        <TableContainer className={classes.tableContainerFull}>
+        <TableContainer style={isMobile ? {maxWidth: '95%', margin: 'auto'} : {}}>
             <Typography className={classes.tableHeader} variant="h4" component="div">
                 Budgets
             </Typography>
-      <Table padding='none' aria-label="simple table">
-        <TableHead className={classes.head}>
-            <TableRow>
-                <div hidden>
-                    <TableCell className={classes.tableColumn} hidden>Id</TableCell>
-                </div>
-            {isMobile ? 
-                (
-                <>
-                    <TableCell style={{ width: '100px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Name</TableCell>
-                    <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Amount Spent</TableCell>
-                    <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Remaining Budget</TableCell>
-                </>
-            ): (
-                <>
-                    <TableCell className={classes.tableColumn} >Name</TableCell>
-                    <TableCell className={classes.tableColumn} >Amount</TableCell>
-                    <TableCell className={classes.tableColumn} >Amount Spent</TableCell>
-                    <TableCell className={classes.tableColumn} >Remaining Budget</TableCell>
-                </>
-            )}
-            <TableCell className={classes.tableColumn} ></TableCell>
-            <TableCell className={classes.tableColumn} ></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-            {budgets.map((budget) => (
-                <TableRow key={budget._id}>
-                    <div hidden>
-                        <TableCell className={classes.tableColumn} component="th" scope="row" hidden>{budget._id}</TableCell>
-                    </div>
+            <Table padding='none' aria-label="simple table">
+                <TableHead className={classes.head}>
+                    <TableRow>
+                        <div hidden>
+                            <TableCell className={classes.tableColumn} hidden>Id</TableCell>
+                        </div>
                     {isMobile ? 
-                  (
-                    <>
-                        <TableCell style={{ width: '100px', overflowWrap: 'break-word' }} className={classes.tableColumn} component="th" scope="row">{budget.name}</TableCell>
-                        <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >{formatter.format(getExpenseAmount(budget.name))}</TableCell>
-                        <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={getBudgetColor(budget)} >
-                            <b>{formatter.format(getOverUnder(budget.amount, getExpenseAmount(budget.name)))}</b>
-                        </TableCell>
-                    </>
-                  ) : (
-                    <>
-                        <TableCell  className={classes.tableColumn} component="th" scope="row">{budget.name}</TableCell>
-                        <TableCell className={classes.tableColumn} >{formatter.format(budget.amount)}</TableCell>
-                        <TableCell  className={getBudgetColor(budget)} >
-                            <b>{formatter.format(getOverUnder(budget.amount, getExpenseAmount(budget.name)))}</b>
-                        </TableCell>
-                    </>
-                  )}
-                    <TableCell className={classes.tableColumn} >
-                        <Button size="small" color="primary" onClick={() => dispatch(deleteBudget(budget._id))}>
-                            <DeleteIcon fontSize="small" />
-                            Delete
-                        </Button>
-                    </TableCell>
-                    <TableCell className={classes.tableColumn} >
-                        <Button size="small" color="primary" onClick={() => setCurrentId(budget._id)}>
-                            <EditIcon fontSize="small" />
-                            Edit
-                        </Button>
-                    </TableCell>
+                        (
+                        <>
+                            <TableCell style={{ width: '100px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Name</TableCell>
+                            <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Amount Spent</TableCell>
+                            <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Remaining Budget</TableCell>
+                        </>
+                    ): (
+                        <>
+                            <TableCell className={classes.tableColumn} >Name</TableCell>
+                            <TableCell className={classes.tableColumn} >Amount</TableCell>
+                            <TableCell className={classes.tableColumn} >Amount Spent</TableCell>
+                            <TableCell className={classes.tableColumn} >Remaining Budget</TableCell>
+                        </>
+                    )}
+                    <TableCell className={classes.tableColumn} ></TableCell>
+                    <TableCell className={classes.tableColumn} ></TableCell>
                 </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                </TableHead>
+                <TableBody>
+                    {budgets.map((budget) => (
+                        <TableRow key={budget._id}>
+                            <div hidden>
+                                <TableCell className={classes.tableColumn} component="th" scope="row" hidden>{budget._id}</TableCell>
+                            </div>
+                            {isMobile ? 
+                        (
+                            <>
+                                <TableCell style={{ width: '100px', overflowWrap: 'break-word' }} className={classes.tableColumn} component="th" scope="row">{budget.name}</TableCell>
+                                <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >{formatter.format(getExpenseAmount(budget.name))}</TableCell>
+                                <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={getBudgetColor(budget)} >
+                                    <b>{formatter.format(getOverUnder(budget.amount, getExpenseAmount(budget.name)))}</b>
+                                </TableCell>
+                            </>
+                        ) : (
+                            <>
+                                <TableCell  className={classes.tableColumn} component="th" scope="row">{budget.name}</TableCell>
+                                <TableCell className={classes.tableColumn} >{formatter.format(budget.amount)}</TableCell>
+                                <TableCell  className={getBudgetColor(budget)} >
+                                    <b>{formatter.format(getOverUnder(budget.amount, getExpenseAmount(budget.name)))}</b>
+                                </TableCell>
+                            </>
+                        )}
+                            <TableCell className={classes.tableColumn} >
+                                <Button size="small" color="primary" onClick={() => dispatch(deleteBudget(budget._id))}>
+                                    <DeleteIcon fontSize="small" />
+                                    Delete
+                                </Button>
+                            </TableCell>
+                            <TableCell className={classes.tableColumn} >
+                                <Button size="small" color="primary" onClick={() => setCurrentId(budget._id)}>
+                                    <EditIcon fontSize="small" />
+                                    Edit
+                                </Button>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 }
 
