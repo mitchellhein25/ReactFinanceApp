@@ -11,6 +11,7 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
     const [expenseData, setExpenseData] = useState({
         date: moment(Date.now()).format("yyyy-MM-DD"), category: '', amount: '', description: ""
     });
+    const [errors, setErrors] = useState({});
     //Get the current selected expense if currentId has a value
     const expense = useSelector((state) => currentId ? state.expenses.find((x) => x._id === currentId) : null);
     const dispatch = useDispatch();
@@ -31,6 +32,46 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
         return format.toLowerCase()
     });
 
+    const validate = () => {
+        let temp = { ...errors }
+    
+        if ("date" in expenseData)
+          temp.date = expenseData.date ? "" : "Expense date is required."
+    
+        if ("category" in expenseData)
+            temp.category = expenseData.category ? "" : "Expense category is required."
+
+        if ("amount" in expenseData)
+            temp.amount = /^\d*(\.\d{1,2})?$/.test(expenseData.amount)
+            ? ""
+            : "Amount is not valid."
+
+        formIsValid();  
+        setErrors({
+          ...temp
+        });
+      }
+
+    const handleInputValue = (e) => {
+        const { name, value } = e.target;
+        if ([name] == 'category')
+            findBudgetId(e)
+        else {
+            setExpenseData({ ...expenseData, [name]: value });
+        }
+        validate();  
+    }
+
+    const formIsValid = () => {
+        const isValid =
+            expenseData.date &&
+            expenseData.amount &&
+            expenseData.category &&
+            Object.values(errors).every((x) => x === "");
+    
+        return isValid;
+    };
+
     useEffect(() => {
         if(expense) {
             var budget = budgets.find(budget => budget._id === expense.category);
@@ -50,10 +91,14 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(currentId) {
-            dispatch(updateExpense(currentId, { ...expenseData, user: user?.result?._id ? user?.result?._id : user?.result?.googleId }));
-        } else {
-            dispatch(createExpense({ ...expenseData, user: user?.result?._id ? user?.result?._id : user?.result?.googleId}));
+
+        if (formIsValid()) {
+            if(currentId) {
+                dispatch(updateExpense(currentId, { ...expenseData, user: user?.result?._id ? user?.result?._id : user?.result?.googleId }));
+            } else {
+                console.log(expenseData)
+                dispatch(createExpense({ ...expenseData, user: user?.result?._id ? user?.result?._id : user?.result?.googleId}));
+            }
         }
         clear();
     }
@@ -68,31 +113,90 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
         <Container className={classes.paper} style={isMobile ? {paddingLeft: '.5rem'} : {paddingLeft: '2rem'}}>
             <form className={`${classes.root} ${classes.form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Enter' } an Expense</Typography>
-                <TextField size="small"  name="date" variant="outlined" type="date" fullWidth value={expenseData.date}
-                onChange={(e) => setExpenseData({ ...expenseData, date: e.target.value })}
+                <TextField 
+                    key={1}
+                    size="small"  
+                    name="date" 
+                    variant="outlined" 
+                    type="date" 
+                    fullWidth 
+                    value={expenseData.date}
+                    onChange={handleInputValue}
+                    error={errors["date"]}
+                    onBlur={handleInputValue} 
+                    {...(errors["date"] && { 
+                        error: true, 
+                    })}
+                    autoComplete="none"
                 />
                 <FormControl className={classes.margin} size="small" fullWidth variant="outlined">
                         <InputLabel className={classes.inputMargin} id="categoryLabel">Category</InputLabel>
-                        <Select className={classes.inputMargin} MenuProps={{disableScrollLock: true}}size="small" name="category" 
-                            variant="outlined" fullWidth value={category} onChange={findBudgetId}>
-                            {budgetsToRender}
+                        <Select 
+                            key={2}
+                            className={classes.inputMargin} 
+                            MenuProps={{disableScrollLock: true}}
+                            size="small" 
+                            name="category" 
+                            variant="outlined" 
+                            fullWidth 
+                            value={category} 
+                            onChange={handleInputValue}
+                            error={errors["category"]}
+                            onBlur={handleInputValue} 
+                            {...(errors["category"] && { 
+                                error: true, 
+                            })}
+                            autoComplete="none"
+                        >
+                        {budgetsToRender}
                         </Select>
                 </FormControl>
                 <FormControl fullWidth className={classes.margin} variant="outlined">
                     <InputLabel className={classes.inputMargin}>Amount</InputLabel>
-                    <OutlinedInput className={classes.inputMargin} size="small" name="amount" 
-                    variant="outlined" type="number" label="Amount" startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                    fullWidth value={expenseData.amount}  onChange={(e) => setExpenseData({ ...expenseData, amount: e.target.value })} />
+                    <OutlinedInput 
+                        key={3}
+                        className={classes.inputMargin} 
+                        size="small" 
+                        name="amount" 
+                        variant="outlined" 
+                        type="number" 
+                        label="Amount" 
+                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                        fullWidth
+                        value={expenseData.amount}  
+                        onChange={handleInputValue}
+                        error={errors["amount"]}
+                        onBlur={handleInputValue} 
+                        {...(errors["amount"] && { 
+                            error: true, 
+                        })} 
+                        autoComplete="none"
+                    />
                 </FormControl>  
                 <FormControl fullWidth className={classes.margin} variant="outlined">
                     <InputLabel className={classes.inputMargin} >Description</InputLabel>
-                    <OutlinedInput className={classes.inputMargin} size="small" name="description" 
-                    variant="outlined" type="text" label="Description"
-                    fullWidth value={expenseData.description}  onChange={(e) => setExpenseData({ ...expenseData, description: e.target.value })} />
+                    <OutlinedInput 
+                        key={4}
+                        className={classes.inputMargin} 
+                        size="small" 
+                        name="description" 
+                        variant="outlined" 
+                        type="text" 
+                        label="Description"
+                        fullWidth 
+                        value={expenseData.description}  
+                        onChange={handleInputValue}
+                        error={errors["description"]}
+                        onBlur={handleInputValue} 
+                        {...(errors["description"] && { 
+                            error: true, 
+                        })} 
+                        autoComplete="none"
+                    />
                 </FormControl>   
                 <div className={classes.buttonRow} >
                     <div className={classes.formElement} >
-                        <Button variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button> 
+                        <Button variant="contained" color="primary" size="large" type="submit" fullWidth disabled={!formIsValid()}>Submit</Button> 
                     </div>
                     <div className={classes.formElement} >
                         <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button> 
