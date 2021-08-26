@@ -94,7 +94,6 @@ const BudgetTable = ({ setCurrentId, date }) => {
                         (
                             <>
                                 <TableCell style={{ width: '100px', overflowWrap: 'break-word' }} className={classes.tableColumn} component="th" scope="row">{budget.name}</TableCell>
-                                <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >{formatter.format(getExpenseAmount(budget.name))}</TableCell>
                                 <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={getBudgetColor(budget)} >
                                     <b>{formatter.format(getOverUnder(budget.amount, getExpenseAmount(budget.name)))}</b>
                                 </TableCell>
@@ -103,6 +102,7 @@ const BudgetTable = ({ setCurrentId, date }) => {
                             <>
                                 <TableCell  className={classes.tableColumn} component="th" scope="row">{budget.name}</TableCell>
                                 <TableCell className={classes.tableColumn} >{formatter.format(budget.amount)}</TableCell>
+                                <TableCell className={classes.tableColumn} >{formatter.format(getExpenseAmount(budget.name))}</TableCell>
                                 <TableCell  className={getBudgetColor(budget)} >
                                     <b>{formatter.format(getOverUnder(budget.amount, getExpenseAmount(budget.name)))}</b>
                                 </TableCell>
