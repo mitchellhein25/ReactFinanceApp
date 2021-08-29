@@ -141,11 +141,7 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
                             fullWidth 
                             value={category} 
                             onChange={handleInputValue}
-                            error={errors["category"]}
                             onBlur={handleInputValue} 
-                            {...(errors["category"] && { 
-                                error: true, 
-                            })}
                             autoComplete="none"
                         >
                         {budgetsToRender}

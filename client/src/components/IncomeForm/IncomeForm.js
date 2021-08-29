@@ -112,7 +112,13 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
                     type="date" 
                     fullWidth 
                     value={incomeData.date}
-                    onChange={(e) => setIncomeData({ ...incomeData, date: e.target.value })}
+                    onChange={handleInputValue}
+                    error={errors["date"]}
+                    onBlur={handleInputValue} 
+                    {...(errors["date"] && { 
+                        error: true, 
+                    })}
+                    autoComplete="none"
                 />
                 <FormControl size="small" fullWidth variant="outlined">
                     <InputLabel className={classes.inputMargin} id="categoryLabel">Category</InputLabel>
@@ -124,7 +130,9 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
                         variant="outlined" 
                         fullWidth 
                         value={category} 
-                        onChange={findIncomeCatId}
+                        onChange={handleInputValue}
+                        onBlur={handleInputValue} 
+                        autoComplete="none"
                     >
                         {incomeCatsToRender}
                     </Select>
@@ -141,20 +149,34 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
                         fullWidth 
                         startAdornment={<InputAdornment position="start">$</InputAdornment>} 
                         value={incomeData.amount}  
-                        onChange={(e) => setIncomeData({ ...incomeData, amount: e.target.value })} />
+                        onChange={handleInputValue}
+                        error={errors["amount"]}
+                        onBlur={handleInputValue} 
+                        {...(errors["amount"] && { 
+                            error: true, 
+                        })} 
+                        autoComplete="none"
+                    />
                 </FormControl> 
                 <FormControl fullWidth className={classes.margin} variant="outlined">
                     <InputLabel className={classes.inputMargin} >Description</InputLabel>
                     <OutlinedInput 
                         className={classes.inputMargin} 
                         size="small" 
-                        name="amount" 
+                        name="description" 
                         variant="outlined" 
                         type="text" 
                         label="Description" 
                         fullWidth 
                         value={incomeData.description}  
-                        onChange={(e) => setIncomeData({ ...incomeData, description: e.target.value })} />
+                        onChange={handleInputValue}
+                        error={errors["description"]}
+                        onBlur={handleInputValue} 
+                        {...(errors["description"] && { 
+                            error: true, 
+                        })} 
+                        autoComplete="none"
+                    />
                 </FormControl>   
                 <div className={classes.buttonRow} >
                     <div className={classes.formElement} >
