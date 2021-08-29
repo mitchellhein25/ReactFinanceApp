@@ -13,6 +13,20 @@ const AccountNameForm = ({ currentId, setCurrentId }) => {
     const classes = useStyles();
     const user = JSON.parse(localStorage.getItem('profile'));
 
+    const handleInputValue = (e) => {
+        const { name, value } = e.target;
+        setAccountNameData({ ...accountNameData, [name]: value });
+        formIsValid();  
+    }
+
+    const formIsValid = () => {
+        const isValid =
+            accountNameData.name &&
+            accountNameData.allocation;
+    
+        return isValid;
+    };
+
     useEffect(() => {
         if(accountName) setAccountNameData(accountName);
     }, [accountName])
@@ -47,19 +61,38 @@ const AccountNameForm = ({ currentId, setCurrentId }) => {
         <div className={classes.paper}>
             <form className={`${classes.root} ${classes.form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Enter' } an Account Name</Typography>
-                <TextField size="small" name="name" variant="outlined" label="Name" type="name" fullWidth value={accountNameData.name}
-                onChange={(e) => setAccountNameData({ ...accountNameData, name: e.target.value })}
+                <TextField 
+                    size="small" 
+                    name="name" 
+                    variant="outlined" 
+                    label="Name" 
+                    type="name" 
+                    fullWidth 
+                    value={accountNameData.name}
+                    onChange={handleInputValue}
+                    onBlur={handleInputValue}                 
                 />
                 <FormControl className={classes.margin} size="small" fullWidth variant="outlined">
                     <InputLabel className={classes.inputMargin} >Allocation</InputLabel>
-                    <OutlinedInput className={classes.inputMargin} size="small" name="allocation"
-                     variant="outlined" type="number" min="0" max="100" label="Allocation" fullWidth value={accountNameData.allocation}  
-                    endAdornment={<InputAdornment position="end">%</InputAdornment>} 
-                    onChange={(e) => setAccountNameData({ ...accountNameData, allocation: e.target.value })} />
-                </FormControl>
+                    <OutlinedInput 
+                        className={classes.inputMargin} 
+                        size="small" 
+                        name="allocation"
+                        variant="outlined" 
+                        type="number" 
+                        min="0" 
+                        max="100" 
+                        label="Allocation" 
+                        fullWidth 
+                        value={accountNameData.allocation}  
+                        endAdornment={<InputAdornment position="end">%</InputAdornment>} 
+                        onChange={handleInputValue}
+                        onBlur={handleInputValue}   
+                    />
+                        </FormControl>
                 <div className={classes.buttonRow} >
                     <div className={classes.formElement}>
-                        <Button variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button> 
+                        <Button variant="contained" color="primary" size="large" type="submit" fullWidth disabled={!formIsValid()}>Submit</Button> 
                     </div>
                     <div className={classes.formElement}>
                         <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button> 
