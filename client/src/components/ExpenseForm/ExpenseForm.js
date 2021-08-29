@@ -32,26 +32,6 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
         return format.toLowerCase()
     });
 
-    const validate = () => {
-        let temp = { ...errors }
-    
-        if ("date" in expenseData)
-          temp.date = expenseData.date ? "" : "Expense date is required."
-    
-        if ("category" in expenseData)
-            temp.category = expenseData.category ? "" : "Expense category is required."
-
-        if ("amount" in expenseData)
-            temp.amount = /^\d*(\.\d{1,2})?$/.test(expenseData.amount)
-            ? ""
-            : "Amount is not valid."
-
-        formIsValid();  
-        setErrors({
-          ...temp
-        });
-      }
-
     const handleInputValue = (e) => {
         const { name, value } = e.target;
         if ([name] == 'category')
@@ -59,15 +39,15 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
         else {
             setExpenseData({ ...expenseData, [name]: value });
         }
-        validate();  
+        formIsValid();  
     }
 
     const formIsValid = () => {
         const isValid =
             expenseData.date &&
+            /(?=.*?\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?$/.test(expenseData.amount) &&
             expenseData.amount &&
-            expenseData.category &&
-            Object.values(errors).every((x) => x === "");
+            expenseData.category;
     
         return isValid;
     };
@@ -122,12 +102,7 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
                     fullWidth 
                     value={expenseData.date}
                     onChange={handleInputValue}
-                    error={errors["date"]}
                     onBlur={handleInputValue} 
-                    {...(errors["date"] && { 
-                        error: true, 
-                    })}
-                    autoComplete="none"
                 />
                 <FormControl className={classes.margin} size="small" fullWidth variant="outlined">
                         <InputLabel className={classes.inputMargin} id="categoryLabel">Category</InputLabel>
@@ -142,7 +117,6 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
                             value={category} 
                             onChange={handleInputValue}
                             onBlur={handleInputValue} 
-                            autoComplete="none"
                         >
                         {budgetsToRender}
                         </Select>
@@ -161,12 +135,7 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
                         fullWidth
                         value={expenseData.amount}  
                         onChange={handleInputValue}
-                        error={errors["amount"]}
-                        onBlur={handleInputValue} 
-                        {...(errors["amount"] && { 
-                            error: true, 
-                        })} 
-                        autoComplete="none"
+                        onBlur={handleInputValue}  
                     />
                 </FormControl>  
                 <FormControl fullWidth className={classes.margin} variant="outlined">
@@ -182,12 +151,7 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
                         fullWidth 
                         value={expenseData.description}  
                         onChange={handleInputValue}
-                        error={errors["description"]}
                         onBlur={handleInputValue} 
-                        {...(errors["description"] && { 
-                            error: true, 
-                        })} 
-                        autoComplete="none"
                     />
                 </FormControl>   
                 <div className={classes.buttonRow} >

@@ -15,31 +15,16 @@ const BudgetForm = ({ currentId, setCurrentId }) => {
     const user = JSON.parse(localStorage.getItem('profile'));
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
-    const validate = () => {
-        let temp = { ...errors }
-    
-        if ("name" in budgetData)
-          temp.name = budgetData.name ? "" : "Budget Name is required."
-    
-        if ("amount" in budgetData)
-          temp.amount = /^\d*(\.\d{1,2})?$/.test(budgetData.amount)
-          ? ""
-          : "Amount is not valid."
-        formIsValid();  
-        setErrors({
-          ...temp
-        });
-      }
-
     const handleInputValue = (e) => {
         const { name, value } = e.target;
         setBudgetData({ ...budgetData, [name]: value });
-        validate();  
+        formIsValid();   
     }
 
     const formIsValid = () => {
         const isValid =
             budgetData.name &&
+            /(?=.*?\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?$/.test(budgetData.amount) &&
             budgetData.amount &&
             Object.values(errors).every((x) => x === "");
     
@@ -82,12 +67,7 @@ const BudgetForm = ({ currentId, setCurrentId }) => {
                     fullWidth 
                     value={budgetData.name}
                     onChange={handleInputValue}
-                    error={errors["name"]}
                     onBlur={handleInputValue} 
-                    {...(errors["name"] && { 
-                        error: true, 
-                    })}
-                    autoComplete="none"
                 />
                 <FormControl fullWidth className={classes.margin} variant="outlined">
                     <InputLabel  className={classes.inputMargin} >Amount</InputLabel>
@@ -97,7 +77,7 @@ const BudgetForm = ({ currentId, setCurrentId }) => {
                         size="small" 
                         name="amount" 
                         variant="outlined" 
-                        type="text" 
+                        type="number" 
                         label="Amount" 
                         fullWidth 
                         error={errors["amount"]}
@@ -105,10 +85,6 @@ const BudgetForm = ({ currentId, setCurrentId }) => {
                         value={budgetData.amount}  
                         onChange={handleInputValue} 
                         onBlur={handleInputValue} 
-                        {...(errors["amount"] && { 
-                            error: true, 
-                        })}
-                        autoComplete="none"
                     />
                 </FormControl>
                 <div className={classes.buttonRow} >

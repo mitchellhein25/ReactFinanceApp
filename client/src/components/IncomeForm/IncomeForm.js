@@ -28,25 +28,6 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
         format = format || "mm/yyyy";
         return format.toLowerCase()
     });
-    const validate = () => {
-        let temp = { ...errors }
-    
-        if ("date" in incomeData)
-          temp.date = incomeData.date ? "" : "Income date is required."
-    
-        if ("category" in incomeData)
-            temp.category = incomeData.category ? "" : "Income category is required."
-
-        if ("amount" in incomeData)
-            temp.amount = /^\d*(\.\d{1,2})?$/.test(incomeData.amount)
-            ? ""
-            : "Amount is not valid."
-
-        formIsValid();  
-        setErrors({
-          ...temp
-        });
-      }
 
     const handleInputValue = (e) => {
         const { name, value } = e.target;
@@ -55,12 +36,13 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
         else {
             setIncomeData({ ...incomeData, [name]: value });
         }
-        validate();  
+        formIsValid();  
     }
 
     const formIsValid = () => {
         const isValid =
             incomeData.date &&
+            /(?=.*?\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?$/.test(incomeData.amount) &&
             incomeData.amount &&
             incomeData.category &&
             Object.values(errors).every((x) => x === "");
@@ -113,12 +95,7 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
                     fullWidth 
                     value={incomeData.date}
                     onChange={handleInputValue}
-                    error={errors["date"]}
                     onBlur={handleInputValue} 
-                    {...(errors["date"] && { 
-                        error: true, 
-                    })}
-                    autoComplete="none"
                 />
                 <FormControl size="small" fullWidth variant="outlined">
                     <InputLabel className={classes.inputMargin} id="categoryLabel">Category</InputLabel>
@@ -132,7 +109,6 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
                         value={category} 
                         onChange={handleInputValue}
                         onBlur={handleInputValue} 
-                        autoComplete="none"
                     >
                         {incomeCatsToRender}
                     </Select>
@@ -150,12 +126,7 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
                         startAdornment={<InputAdornment position="start">$</InputAdornment>} 
                         value={incomeData.amount}  
                         onChange={handleInputValue}
-                        error={errors["amount"]}
                         onBlur={handleInputValue} 
-                        {...(errors["amount"] && { 
-                            error: true, 
-                        })} 
-                        autoComplete="none"
                     />
                 </FormControl> 
                 <FormControl fullWidth className={classes.margin} variant="outlined">
@@ -170,12 +141,7 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
                         fullWidth 
                         value={incomeData.description}  
                         onChange={handleInputValue}
-                        error={errors["description"]}
                         onBlur={handleInputValue} 
-                        {...(errors["description"] && { 
-                            error: true, 
-                        })} 
-                        autoComplete="none"
                     />
                 </FormControl>   
                 <div className={classes.buttonRow} >

@@ -14,6 +14,17 @@ const IncomeCatForm = ({ currentId, setCurrentId }) => {
     const classes = useStyles();
     const user = JSON.parse(localStorage.getItem('profile'));
 
+    const handleInputValue = (e) => {
+        const { name, value } = e.target;
+        setIncomeCatData({ ...incomeCatData, [name]: value });
+        formIsValid();  
+    }
+
+    const formIsValid = () => {
+        const isValid = incomeCatData.name 
+        return isValid;
+    };
+
     useEffect(() => {
         if(incomeCat) setIncomeCatData(incomeCat);
     }, [incomeCat])
@@ -38,14 +49,20 @@ const IncomeCatForm = ({ currentId, setCurrentId }) => {
         <div className={classes.paper}>
             <form className={`${classes.root} ${classes.form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Enter' } an Income Category</Typography>
-                <TextField size="small" name="name" variant="outlined" label="Name" type="name" fullWidth value={incomeCatData.name}
-                //This ... spreads the data, only changing the property you specify and leaving the others as is
-                //Sets the state using an object
-                onChange={(e) => setIncomeCatData({ ...incomeCatData, name: e.target.value })}
+                <TextField 
+                    size="small" 
+                    name="name" 
+                    variant="outlined" 
+                    label="Name" 
+                    type="name" 
+                    fullWidth 
+                    value={incomeCatData.name}
+                    onChange={handleInputValue}
+                    onBlur={handleInputValue} 
                 />
                 <div className={classes.buttonRow} >
                     <div className={classes.formElement} >
-                        <Button variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button> 
+                        <Button variant="contained" color="primary" size="large" type="submit" fullWidth disabled={!formIsValid()}>Submit</Button> 
                     </div>
                     <div className={classes.formElement} >
                         <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button> 
