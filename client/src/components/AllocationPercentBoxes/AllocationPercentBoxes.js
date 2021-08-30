@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Typography, Grid, Button, TextField, useMediaQuery } from '@material-ui/core';
+import { Typography, Grid, Button, TextField, useMediaQuery, FormControlLabel, Checkbox } from '@material-ui/core';
 import { getAccountNames } from '../../actions/accountNames';
 import { getExpenses } from '../../actions/expenses';
 import { getIncomes } from '../../actions/incomes';
@@ -47,6 +47,16 @@ const AllocationPercentBoxes = ({ date }) => {
     }
     splitAcctsUp();
 
+    const checkboxDict = {}
+    for (var account in accountNames) {
+        checkboxDict[account.name] = false
+    }
+    const [checkboxState, setCheckboxState] = useState(checkboxDict);
+    const handleCheckboxChange = (e) => {
+        console.log(e.target.name);
+        setCheckboxState({ ...checkboxState, [e.target.name]: e.target.checked });
+    }
+
     const handleChange = (account, e) => {
         setId(account._id);
         setAccountData({user: account.user,  name: account.name, allocation: parseFloat(e.target.value)});
@@ -84,11 +94,21 @@ const AllocationPercentBoxes = ({ date }) => {
                     
                         {acct.map((account) => {
                             return (
-                                <Grid className={classes.paddingTop, classes.marginAuto} xs={12} md={(6/acct.length)%6 !== 0 ? 6/acct.length%6 + 1 : 2} item>
-                                <div className={classes.accountBox} >
+                                <Grid className={classes.paddingTop, classes.marginAuto} xs={12} md={(6/acct.length)%6 !== 0 ? 6/acct.length%6 + 1 : 2} 
+                                    style={checkboxState[account.name] ? {backgroundColor: '#ffff00'} : {}}item>
+                                <div className={classes.accountBox}>
                                     <Typography margin="auto" className={classes.accountTitle} textAlign="center" variant="h6">
                                         { account.name }
                                     </Typography>
+                                    <FormControlLabel  
+                                        control={
+                                        <Checkbox
+                                            checked={checkboxState[account.name]} 
+                                            onChange={handleCheckboxChange} 
+                                            name={account.name}
+                                        />
+                                        }
+                                    />
                                 </div>
                                 <form style={isMobile ? {margin:'0'} : {}} className={classes.marginTop} onSubmit={handleSubmit}>
                                     <Typography className={classes.red} align="center" id={account.id} variant="h5">
@@ -96,9 +116,18 @@ const AllocationPercentBoxes = ({ date }) => {
                                     </Typography>
                                     <Typography variant="h6" className={classes.allo}>{account.allocation}%</Typography>
                                     <div className={classes.buttonMarginTop}>
-                                        <TextField variant="outlined" style={{ fontSize: '24px' }} id={"allocation" + account._id} size="small" name="allocation" 
-                                        type="number" InputProps={{ inputProps: { min: 0, max: 100, step: 0.01} }} 
-                                        label="Edit Allocation" fullWidth onChange={(e) => {handleChange(account, e)}} InputLabelProps={{ shrink: true }}/>
+                                        <TextField 
+                                            variant="outlined" 
+                                            style={{ fontSize: '24px' }} 
+                                            id={"allocation" + account._id} 
+                                            size="small" 
+                                            name="allocation" 
+                                            type="number" 
+                                            InputProps={{ inputProps: { min: 0, max: 100, step: 0.01} }} 
+                                            label="Edit Allocation" 
+                                            fullWidth 
+                                            onChange={(e) => {handleChange(account, e)}} 
+                                            InputLabelProps={{ shrink: true }}/>
                                     </div>
                                     <div className={classes.buttonMarginTop}>
                                         <Button variant="contained" color="primary" size="small" type="submit" fullWidth>Edit Allocation</Button>
