@@ -130,19 +130,20 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
                     />
                 </FormControl> 
                 <FormControl fullWidth className={classes.margin} variant="outlined">
-                    <InputLabel className={classes.inputMargin} >Description</InputLabel>
-                    <OutlinedInput 
-                        className={classes.inputMargin} 
-                        size="small" 
-                        name="description" 
-                        variant="outlined" 
-                        type="text" 
-                        label="Description" 
-                        fullWidth 
-                        value={incomeData.description}  
-                        onChange={handleInputValue}
-                        onBlur={handleInputValue} 
-                    />
+                    <div className={classes.inputMargin} >
+                        <TextField 
+                            className={classes.inputMargin} 
+                            size="small" 
+                            name="description" 
+                            variant="outlined" 
+                            type="text" 
+                            label="Description (Optional)" 
+                            fullWidth 
+                            value={incomeData.description}  
+                            onChange={handleInputValue}
+                            onBlur={handleInputValue} 
+                        />
+                    </div>
                 </FormControl>   
                 <div className={classes.buttonRow} >
                     <div className={classes.formElement} >

@@ -123,7 +123,7 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
                 </FormControl>
                 <FormControl fullWidth className={classes.margin} variant="outlined">
                     <InputLabel className={classes.inputMargin}>Amount</InputLabel>
-                    <OutlinedInput 
+                    <OutlinedInput
                         key={3}
                         className={classes.inputMargin} 
                         size="small" 
@@ -139,20 +139,21 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
                     />
                 </FormControl>  
                 <FormControl fullWidth className={classes.margin} variant="outlined">
-                    <InputLabel className={classes.inputMargin} >Description</InputLabel>
-                    <OutlinedInput 
-                        key={4}
-                        className={classes.inputMargin} 
-                        size="small" 
-                        name="description" 
-                        variant="outlined" 
-                        type="text" 
-                        label="Description"
-                        fullWidth 
-                        value={expenseData.description}  
-                        onChange={handleInputValue}
-                        onBlur={handleInputValue} 
-                    />
+                    <div className={classes.inputMargin} >
+                        <TextField 
+                            key={4}
+                            className={classes.inputMargin} 
+                            size="small" 
+                            name="description" 
+                            variant="outlined" 
+                            type="text" 
+                            label="Description (Optional)"
+                            fullWidth 
+                            value={expenseData.description}  
+                            onChange={handleInputValue}
+                            onBlur={handleInputValue} 
+                        />
+                    </div>
                 </FormControl>   
                 <div className={classes.buttonRow} >
                     <div className={classes.formElement} >

@@ -16,6 +16,7 @@ import DatePicker from '../components/DatePicker/DatePicker';
 import NetWorth from '../components/NetWorth/NetWorth';
 import BudgetTotals from '../components/BudgetTotals/BudgetTotals';
 import IncomeDrawer from '../components/IncomeDrawer/IncomeDrawer';
+import InfoModal from '../components/InfoModal/InfoModal';
 
 import { getExpenses } from '../actions/expenses';
 import { getIncomes } from '../actions/incomes';
@@ -113,6 +114,9 @@ function Home() {
                     <Grid item xs={12} md={2}></Grid>
                 </Grid>
                 <TabPanel value={value} index={0}>
+                    <Grid style={{ marginTop: '20px' }} container justifyContent="center">
+                        <InfoModal />
+                    </Grid>
                     <Grid className={classes.appBar} container direction={isMobile ? 'column-reverse' : 'row'} justifyContent="space-between" alignItems="stretch" spacing={1}>
                         <Grid item xs={12} md={7}>
                             <ExpenseTable setCurrentId={setCurrentExpenseId} date={date}/>

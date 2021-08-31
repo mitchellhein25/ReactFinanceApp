@@ -130,7 +130,7 @@ const AccountForm = ({ currentId, setCurrentId }) => {
                         onBlur={handleInputValue} 
                     />
                 </FormControl>
-                <FormControl className={classes.margin} component="fieldset">
+                <FormControl className={classes.margin, classes.inputMargin} component="fieldset">
                     <FormLabel className={classes.inputMargin} component="legend">Debt or Asset?</FormLabel>
                     <RadioGroup 
                         className={classes.inputMargin} 
