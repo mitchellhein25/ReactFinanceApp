@@ -29,11 +29,15 @@ const AccountForm = ({ currentId, setCurrentId }) => {
 
     const handleInputValue = (e) => {
         const { name, value } = e.target;
-        console.log([name], value)
         if ([name] == 'name')
             findAccountNameId(e)
-        else if([name] == 'debtOrAsset')
+        else if ([name] == 'debtOrAsset')
             setAccountData({ ...accountData, debtOrAsset: parseInt(value) });
+        else if ([name] == 'date') {
+            var accountDate = moment(value);
+            var accountDateFormatted = accountDate.format("YYYY-MM-DD");
+            setAccountData({ ...accountData, [name]: accountDateFormatted });
+        }
         else {
             setAccountData({ ...accountData, [name]: value });
         }
@@ -64,13 +68,12 @@ const AccountForm = ({ currentId, setCurrentId }) => {
 
     const findAccountNameId = (e) => {
         const accountName = accountNames.find(accountName => accountName.name === e.target.value);
-        setAccountData({ ...accountData, name: accountName._id });
+        setAccountData({ ...accountData, name: accountName ? accountName._id : '' });
         setName(e.target.value);
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         if(currentId) {
             dispatch(updateAccount(currentId, accountData));
         } else {

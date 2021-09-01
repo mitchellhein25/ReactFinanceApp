@@ -47,7 +47,10 @@ const NetWorthLineGraph = ({accounts, accountNames}) => {
     uniqueMonthYearPairs.forEach((pair, index) => {
         acctNames = []
         accounts.forEach((account, index) => {
-            if (`${moment(account.date).month() + 1}, ${moment(account.date).year()}` === `${pair[0]}, ${pair[1]}`){
+            var accountDate = moment(account.date);
+            accountDate.date(accountDate.date() + 1);
+            accountDate.date(accountDate.month() + 1);
+            if (`${accountDate.month()}, ${moment(account.date).year()}` === `${pair[0]}, ${pair[1]}`){
                 if (acctNames.includes(accountNameFindName(account))) {
                     accts.forEach((acct, indexInner) => {
                         if (accountNameFindName(acct) === accountNameFindName(account)) {

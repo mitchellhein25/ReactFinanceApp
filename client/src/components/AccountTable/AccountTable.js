@@ -31,7 +31,9 @@ const AccountTable = ({ setCurrentId, date }) => {
 
     //Get most recent accounts for current month, 
     accounts.forEach((account, index) => {
-        if (moment(account.date).month() == moment(date).month()) {
+        var accountDate = moment(account.date);
+        accountDate.date(accountDate.date() + 1);
+        if (accountDate.month() == moment(date).month()) {
             if (acctNames.includes(account.name)) {
                 accts.forEach((acct, indexInner) => {
                     if (acct.name === account.name) {

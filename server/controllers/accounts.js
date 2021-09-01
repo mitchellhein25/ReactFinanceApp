@@ -21,7 +21,6 @@ export const getAccounts = async (req, res) => {
 
 export const postAccount = async (req, res) => {
     const account = req.body;
-
     const newAccount = new Account({ ...account, user: req.userId });
 
     try {

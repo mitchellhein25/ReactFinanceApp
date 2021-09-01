@@ -56,6 +56,12 @@ const IncomeTable = ({ setCurrentId, date }) => {
 
     incomes.sort(sortBy("date")); 
 
+    const addOneDate = (income) => {
+      var incomeDate = moment(income.date);
+      incomeDate.date(incomeDate.date() + 1);
+      return incomeDate.month()
+    }
+
     return (
       <>
         <Typography className={classes.tableHeader} variant="h4" component="div">
@@ -96,7 +102,7 @@ const IncomeTable = ({ setCurrentId, date }) => {
             )}
             </TableHead>
             <TableBody>
-                {incomes.filter(income => moment(income.date).month() === momentDate.month()).map((income) => (
+                {incomes.filter(income => addOneDate(income) === momentDate.month()).map((income) => (
                     <TableRow key={income._id}>
                       <div hidden>
                         <TableCell className={classes.tableColumn} component="th" scope="row" hidden>{income._id}</TableCell>
