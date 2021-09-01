@@ -66,6 +66,27 @@ function Home() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+    const expenseModalHeader = "How to Handle Expenses";
+    const expenseInfoButtonText = "How to Handle Expenses";
+    const expenseModalText = ( 
+        <p id="simple-modal-description">
+            <span style={{fontSize:"20px"}}>1. Add your Budget categories using the Budget Form.</span><br></br><br></br>
+            - The Budgets will serve as your categories for any expenses you enter.<br></br><br></br>
+            - Give each Budget a name and a monthly amount.<br></br>
+            <br></br>
+            <span style={{fontSize:"20px"}}>2. Add your Expenses using the Expense Form.</span><br></br><br></br>
+            - Date, Category, and Amount are required.<br></br><br></br>
+        </p>
+        )
+    const incomeModalHeader = "How to Handle Income";
+    const incomeInfoButtonText = "How to Handle Income";
+    const incomeModalText = ( 
+        <p id="simple-modal-description">
+            <span style={{fontSize:"20px"}}>1. Add your Income categories using the Income Category Form.</span><br></br><br></br>
+            <span style={{fontSize:"20px"}}>2. Add your Incomes using the Income Form.</span><br></br><br></br>
+            - Date, Category, and Amount are required.<br></br><br></br>
+        </p>
+        )
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -115,7 +136,11 @@ function Home() {
                 </Grid>
                 <TabPanel value={value} index={0}>
                     <Grid style={{ marginTop: '20px' }} container justifyContent="center">
-                        <InfoModal />
+                        <InfoModal 
+                            modalHeader={expenseModalHeader} 
+                            infoButtonText={expenseInfoButtonText}
+                            modalText={expenseModalText}
+                        />
                     </Grid>
                     <Grid className={classes.appBar} container direction={isMobile ? 'column-reverse' : 'row'} justifyContent="space-between" alignItems="stretch" spacing={1}>
                         <Grid item xs={12} md={7}>
@@ -130,6 +155,13 @@ function Home() {
                     </Grid>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
+                    <Grid style={{ marginTop: '20px' }} container justifyContent="center">
+                        <InfoModal 
+                            modalHeader={incomeModalHeader} 
+                            infoButtonText={incomeInfoButtonText}
+                            modalText={incomeModalText}
+                        />
+                    </Grid>
                     <Grid className={classes.appBar} container direction={isMobile ? 'column-reverse' : 'row'} justifyContent="space-between" alignItems="stretch" spacing={1}>
                         <Grid item xs={12} md={7}>
                             <IncomeTable setCurrentId={setCurrentIncomeId} date={date}/>
