@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { Typography } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
+import { Typography } from '@material-ui/core';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import useStyles from './styles';
 
 import { getAccounts } from '../../actions/accounts';
@@ -63,7 +64,7 @@ const NetWorth = () => {
     return (
 
         <Typography align="center" variant="h2">
-            Net Worth: <span className={classes.yellow}>{formatter.format(calculatedNetWorth())}</span>
+            <InfoOutlinedIcon style={{fontSize:"30px"}} />Net Worth: <span className={classes.yellow}>{formatter.format(calculatedNetWorth())}</span>
         </Typography>
     
     );
