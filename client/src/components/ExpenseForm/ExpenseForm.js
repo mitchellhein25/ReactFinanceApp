@@ -20,10 +20,12 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
     let budgetsToRender;
-    if (budgets) {
+    if (budgets.length > 0) {
         budgetsToRender = budgets.map(budget => {
             return <MenuItem value={budget.name}>{budget.name}</MenuItem>
         });
+    } else {
+        budgetsToRender = <MenuItem value="">Add Categories using the Budget form.</MenuItem>
     }
     
     // eslint-disable-next-line no-extend-native

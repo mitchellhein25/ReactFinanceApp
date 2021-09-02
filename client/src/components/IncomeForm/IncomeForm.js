@@ -19,11 +19,14 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
     let incomeCatsToRender;
-    if (incomeCats) {
+    if (incomeCats.length > 0) {
         incomeCatsToRender = incomeCats.map(incomeCat => {
             return <MenuItem value={incomeCat.name}>{incomeCat.name}</MenuItem>
         });
+    } else {
+        incomeCatsToRender = <MenuItem value="">Add Categories using the Income Categories form.</MenuItem>
     }
+
     Date.prototype.toDateFormat = (function(format) {
         format = format || "mm/yyyy";
         return format.toLowerCase()

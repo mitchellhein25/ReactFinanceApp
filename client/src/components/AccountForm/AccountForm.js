@@ -16,10 +16,12 @@ const AccountForm = ({ currentId, setCurrentId }) => {
     const classes = useStyles();
 
     let accountNamesToRender;
-    if (accountNames) {
+    if (accountNames.length > 0) {
         accountNamesToRender = accountNames.map(accountName => {
             return <MenuItem value={accountName.name}>{accountName.name}</MenuItem>
         });
+    } else {
+        accountNamesToRender = <MenuItem value="">Add Names using the Account Name form.</MenuItem>
     }
     // eslint-disable-next-line no-extend-native
     Date.prototype.toDateFormat = (function(format) {

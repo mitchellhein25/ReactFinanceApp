@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector  } from 'react-redux';
-import { TextField, Button, Typography, Container, FormControl, InputLabel, OutlinedInput, InputAdornment, useMediaQuery } from '@material-ui/core';
+import { TextField, Button, Typography, Container, FormControl, InputLabel, OutlinedInput, InputAdornment, useMediaQuery, Tooltip } from '@material-ui/core';
 import useStyles from './styles';
 import { createBudget, updateBudget } from '../../actions/budgets';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 const BudgetForm = ({ currentId, setCurrentId }) => {
     const [budgetData, setBudgetData] = useState({
@@ -14,6 +15,11 @@ const BudgetForm = ({ currentId, setCurrentId }) => {
     const classes = useStyles();
     const user = JSON.parse(localStorage.getItem('profile'));
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+    const budgetToolTip = (
+        <React.Fragment>
+            <Typography className={classes.tooltip} >Edit Your Budgets using the <b>Budgets</b> tab.</Typography>
+        </React.Fragment>
+   )
 
     const handleInputValue = (e) => {
         const { name, value } = e.target;
@@ -56,7 +62,11 @@ const BudgetForm = ({ currentId, setCurrentId }) => {
     return (
         <Container className={classes.paper} style={isMobile ? {paddingLeft: '.5rem'} : {paddingLeft: '2rem'}}>
             <form autoComplete="off" className={`${classes.root} ${classes.form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
+                
                 <Typography variant="h6">{ currentId ? 'Editing' : 'Enter' } a Budget</Typography>
+                <Tooltip title={budgetToolTip} placement="top">
+                    <InfoOutlinedIcon style={{fontSize:"20px", margin: '6px'}} />
+                </Tooltip>
                 <TextField 
                     key={1}
                     size="small" 

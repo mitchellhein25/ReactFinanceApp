@@ -23,5 +23,12 @@ export default makeStyles((theme) => ({
     },
     buttonRow: {
         marginTop: "7px"
+    },
+    tooltip: {
+        backgroundColor: "white", 
+        fontSize: "20px", 
+        color: 'rgba(0, 0, 0, 0.87)',
+        border: 'None',
+        textAlign: "center",
     }
 }));
