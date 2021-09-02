@@ -8,4 +8,11 @@ export default makeStyles((theme) => ({
         paddingRight: "5px",
         fontWeight: "500"
     },
+    tooltip: {
+        backgroundColor: "white", 
+        fontSize: "20px", 
+        color: 'rgba(0, 0, 0, 0.87)',
+        border: 'None',
+        textAlign: "center"
+    }
 }));

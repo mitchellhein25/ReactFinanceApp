@@ -19,7 +19,13 @@ const BudgetTotals = ({ date }) => {
         return ""
     }
 
-    const currExpenses = expenses.filter(expense => moment(expense.date).month() === momentDate.month());
+    const getOneDayAddedDate = (expense) => {
+        var expenseDate = moment(expense.date);
+        expenseDate.date(expenseDate.date() + 1);
+        return expenseDate;
+    }
+
+    const currExpenses = expenses.filter(expense => getOneDayAddedDate(expense).month() === momentDate.month());
 
     const getExpenseAmount = (budgetName) => {
         var total = 0;

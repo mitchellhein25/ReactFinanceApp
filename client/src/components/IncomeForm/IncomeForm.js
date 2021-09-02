@@ -63,7 +63,7 @@ const IncomeForm = ({ currentId, setCurrentId }) => {
 
     const findIncomeCatId = (e) => {
         const incomeCat = incomeCats.find(incomeCat => incomeCat.name === e.target.value);
-        setIncomeData({ ...incomeData, category: incomeCat._id });
+        setIncomeData({ ...incomeData, category: incomeCat ? incomeCat._id : "" });
         setCategory(e.target.value);
     }
 

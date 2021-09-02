@@ -27,7 +27,9 @@ export default makeStyles((theme) => ({
       marginRight: '15px',
     },
     title: {
-      flexGrow: 1,
+      flexGrow: 2,
+      textDecoration: 'none',
+      color: 'white',
       [theme.breakpoints.down('md')]: {
         fontSize: '1.5rem',
         textAlign: 'center'

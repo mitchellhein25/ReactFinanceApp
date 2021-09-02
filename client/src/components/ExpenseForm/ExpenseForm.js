@@ -65,7 +65,7 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
 
     const findBudgetId = (e) => {
         const budget = budgets.find(budget => budget.name === e.target.value);
-        setExpenseData({ ...expenseData, category: budget._id });
+        setExpenseData({ ...expenseData, category: budget ? budget._id : "" });
         setCategory(e.target.value);
     }
 
@@ -76,7 +76,6 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
             if(currentId) {
                 dispatch(updateExpense(currentId, { ...expenseData, user: user?.result?._id ? user?.result?._id : user?.result?.googleId }));
             } else {
-                console.log(expenseData)
                 dispatch(createExpense({ ...expenseData, user: user?.result?._id ? user?.result?._id : user?.result?.googleId}));
             }
         }

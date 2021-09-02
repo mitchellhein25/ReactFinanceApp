@@ -51,18 +51,18 @@ console.log(user);
           {isMobile ? 
           ( 
             <Toolbar className={classes.mobileToolbar}>
-              <Toolbar className={classes.title}><Typography className={classes.mobileTitle} variant="h3">In Control Finance</Typography></Toolbar>
+              <Toolbar component={Link} to="/"  className={classes.title}><Typography className={classes.mobileTitle} variant="h3">In Control Finance</Typography></Toolbar>
               <MenuIcon onClick={toggleDrawer("right", true)}/>
               <Drawer classes={{paper: classes.paper}} anchor="right" open={state["right"]} onClose={toggleDrawer("right", false)}>
                 <ArrowBackIcon className={classes.backArrow} onClick={toggleDrawer("right", false)}></ArrowBackIcon>
-                <Typography component={Link} to="/" className={classes.navLink} variant="h6">Home</Typography>
-                <Typography component={Link} to="/accounts" className={classes.navLink} variant="h6">Accounts</Typography>
-                <Typography component={Link} to="/allocation" className={classes.navLink} variant="h6">Allocation</Typography>
-                <Typography component={Link} to="/trends" className={classes.navLink} variant="h6">Trends</Typography>
+                <Typography component={Link} to="/" className={classes.navLink} onClick={toggleDrawer("right", false)} variant="h6">Home</Typography>
+                <Typography component={Link} to="/accounts" className={classes.navLink} onClick={toggleDrawer("right", false)} variant="h6">Accounts</Typography>
+                <Typography component={Link} to="/allocation" className={classes.navLink} onClick={toggleDrawer("right", false)} variant="h6">Allocation</Typography>
+                <Typography component={Link} to="/trends" className={classes.navLink} onClick={toggleDrawer("right", false)} variant="h6">Trends</Typography>
                 <Toolbar className={classes.mobileDiv}>{user ? (
                   <div className={classes.userDiv}>
                     <Avatar className={classes.mobileAvatar} alt={user?.result.name} src={user?.result.ImageUrl}>{user?.result.name.charAt(0)}</Avatar> 
-                    <Typography className={classes.mobileUserName} variant="h6">{user?.result.name}</Typography>
+                      <Typography className={classes.mobileUserName} variant="h6">{user?.result.name}</Typography>
                     <Button className={classes.mobileButton} variant="contained" onClick={logout}>Logout</Button>
                   </div>
                 ) : (
@@ -81,7 +81,7 @@ console.log(user);
             <Typography component={Link} to="/allocation" className={classes.navLink} variant="h6">Allocation</Typography>
             <Typography component={Link} to="/trends" className={classes.navLink} variant="h6">Trends</Typography>
           </div>
-          <Toolbar className={classes.title}><Typography className={classes.title} variant="h3">In Control Finance</Typography></Toolbar>
+          <Toolbar component={Link} to="/" className={classes.title}><Typography className={classes.title} variant="h3">In Control Finance</Typography></Toolbar>
           <Toolbar>{user ? (
             <div className={classes.userLinks}>
               <Avatar className={classes.margin} alt={user?.result.name} src={user?.result.ImageUrl}>{user?.result.name.charAt(0)}</Avatar> 

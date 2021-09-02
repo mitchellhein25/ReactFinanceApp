@@ -41,5 +41,10 @@ export default makeStyles((theme) => ({
     },
     fullPanel: {
         flexGrow: 1,
+    },
+    infoModalButton: {
+        margin: 'auto',
+        display: 'flex',
+        justifyContent: 'center'
     }
 }));

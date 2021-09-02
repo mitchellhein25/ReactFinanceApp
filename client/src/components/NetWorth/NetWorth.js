@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Typography } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { Typography, Tooltip } from '@material-ui/core';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import useStyles from './styles';
 
@@ -12,6 +13,11 @@ const NetWorth = () => {
     let accts = [];
     const dispatch = useDispatch();
     const classes = useStyles();
+    const netWorthToolTip = (
+         <React.Fragment><Typography className={classes.tooltip} >Your net worth is calculated by taking the most recent value from each of your accounts.
+         <br></br><br></br>
+         <b>Net Worth = Assets - Debts</b></Typography></React.Fragment>
+    )
 
     const getCurrentAccounts = () => {
         accounts.forEach((account, index) => {
@@ -64,7 +70,10 @@ const NetWorth = () => {
     return (
 
         <Typography align="center" variant="h2">
-            <InfoOutlinedIcon style={{fontSize:"30px"}} />Net Worth: <span className={classes.yellow}>{formatter.format(calculatedNetWorth())}</span>
+            <Tooltip title={netWorthToolTip}>
+                <InfoOutlinedIcon style={{fontSize:"30px"}} />
+            </Tooltip>
+            Net Worth: <span className={classes.yellow}>{formatter.format(calculatedNetWorth())}</span>
         </Typography>
     
     );
