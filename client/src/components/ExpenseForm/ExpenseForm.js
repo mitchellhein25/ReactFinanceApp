@@ -11,7 +11,6 @@ const ExpenseForm = ({ currentId, setCurrentId }) => {
     const [expenseData, setExpenseData] = useState({
         date: moment(Date.now()).format("yyyy-MM-DD"), category: '', amount: '', description: ""
     });
-    const [errors, setErrors] = useState({});
     //Get the current selected expense if currentId has a value
     const expense = useSelector((state) => currentId ? state.expenses.find((x) => x._id === currentId) : null);
     const dispatch = useDispatch();

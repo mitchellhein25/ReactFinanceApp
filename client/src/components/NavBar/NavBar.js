@@ -44,7 +44,7 @@ const NavBar = ({}) => {
     setState({ ...state, [anchor]: open });
 };
 
-console.log(user);
+// console.log(user);
   return (
     <div>
       <AppBar position="static">

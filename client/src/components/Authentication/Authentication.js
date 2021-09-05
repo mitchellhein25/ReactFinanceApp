@@ -19,7 +19,9 @@ const Authentication = () => {
     const [formData, setFormData] = useState(initialState);
     const dispatch = useDispatch();
     const history = createBrowserHistory({forceRefresh:true});
-
+    const [errors, setErrors] = useState({
+        email: "", password: ""
+    })
     const classes = useStyles();
 
     const handleShowPassword = () => {
@@ -29,13 +31,26 @@ const Authentication = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(isSignUp) {
-            dispatch(signup(formData, history));
+            if (formData.password !== formData.confirmPassword) {
+                setErrors({...errors, confirmPassword: "The password's do not match."})
+                return 
+            }
+            dispatch(signup(formData, history))
+            .then(response => setErrors(response));
         } else {    
-            dispatch(signin(formData, history));
+            dispatch(signin(formData, history))
+            .then(response =>{
+                console.log(response)
+                if (response === "Password is not correct.")
+                    setErrors({...errors, password: response})
+                else if (response === "A user with that email was not found")
+                    setErrors({...errors, email: response})
+            });
         }
     }
-
+    
     const handleChange = (e) => {
+        setErrors({...errors, password: "", email: "", confirmPassword: ""})
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
@@ -86,8 +101,15 @@ const Authentication = () => {
                             </>
                         )}
                         <Input name="email" label="Email Address" handleChange={handleChange} type="email"/>
+                            <span style={{color: "red", margin: "auto"}}>{errors["email"]}</span>
                         <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword} />
-                        { isSignUp && <Input name="confirmPassword" label="Repeat Password" handleChange={handleChange} type="password" /> }
+                            <span style={{color: "red", margin: "auto"}}>{errors["password"]}</span>
+                        { isSignUp && (
+                            <>
+                                <Input name="confirmPassword" label="Repeat Password" handleChange={handleChange} type="password" />
+                                <span style={{color: "red", margin: "auto"}}>{errors["confirmPassword"]}</span>
+                            </>
+                          )}
                     </Grid>
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}> 
                         {isSignUp ? "Sign Up" : "Sign In"}

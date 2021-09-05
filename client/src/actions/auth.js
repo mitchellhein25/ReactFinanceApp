@@ -11,7 +11,12 @@ export const signin = (formData, history) => async (dispatch) => {
         //redirect to home page
         history.push('/');
     } catch (error) {
-        console.log(error);
+        if (error.message.includes('400')) 
+            return "Password is not correct."
+        else if (error.message.includes('404')) 
+            return "A user with that email was not found"
+        else return error
+        
     }   
 }
 
