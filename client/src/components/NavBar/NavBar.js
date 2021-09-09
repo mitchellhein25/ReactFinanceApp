@@ -7,7 +7,6 @@ import { Link, useHistory } from "react-router-dom";
 import decode from 'jwt-decode';
 import useStyles from './styles';
 
-
 const NavBar = ({}) => {
   const classes = useStyles();
   const [state, setState] = useState({right: false,});
@@ -15,6 +14,7 @@ const NavBar = ({}) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const imageUrl = "money-icon.ico";
 
   const logout = useCallback(() => {
     dispatch({ type: 'LOGOUT' });
@@ -51,7 +51,10 @@ const NavBar = ({}) => {
           {isMobile ? 
           ( 
             <Toolbar className={classes.mobileToolbar}>
-              <Toolbar component={Link} to="/"  className={classes.title}><Typography className={classes.mobileTitle} variant="h3">In Control Finance</Typography></Toolbar>
+              <Toolbar component={Link} to="/"  className={classes.title}>
+                <img src={imageUrl} alt="logo" className={classes.logo} />
+                <Typography className={classes.mobileTitle} variant="h3">In Control Finance</Typography>
+              </Toolbar>
               <MenuIcon onClick={toggleDrawer("right", true)}/>
               <Drawer classes={{paper: classes.paper}} anchor="right" open={state["right"]} onClose={toggleDrawer("right", false)}>
                 <ArrowBackIcon className={classes.backArrow} onClick={toggleDrawer("right", false)}></ArrowBackIcon>
@@ -75,23 +78,26 @@ const NavBar = ({}) => {
             :
           (
           <Toolbar>
-          <div className={classes.links}>
-            <Typography component={Link} to="/" className={classes.navLink} variant="h6">Home</Typography>
-            <Typography component={Link} to="/accounts" className={classes.navLink} variant="h6">Accounts</Typography>
-            <Typography component={Link} to="/allocation" className={classes.navLink} variant="h6">Allocation</Typography>
-            <Typography component={Link} to="/trends" className={classes.navLink} variant="h6">Trends</Typography>
-          </div>
-          <Toolbar component={Link} to="/" className={classes.title}><Typography className={classes.title} variant="h3">In Control Finance</Typography></Toolbar>
-          <Toolbar>{user ? (
-            <div className={classes.userLinks}>
-              <Avatar className={classes.margin} alt={user?.result.name} src={user?.result.ImageUrl}>{user?.result.name.charAt(0)}</Avatar> 
-              <Typography className={classes.userName} variant="h6">{user?.result.name}</Typography>
-              <Button className={classes.logoutButton} variant="contained" color="inherit" onClick={logout}>Logout</Button>
+            <Toolbar component={Link} to="/" className={classes.title}>
+              <img src={imageUrl} alt="logo" className={classes.logo} />
+              <Typography className={classes.title}>In Control Finance</Typography>
+            </Toolbar>
+            <div className={classes.links}>
+              <Typography component={Link} to="/" className={classes.navLink} variant="h6">Home</Typography>
+              <Typography component={Link} to="/accounts" className={classes.navLink} variant="h6">Accounts</Typography>
+              <Typography component={Link} to="/allocation" className={classes.navLink} variant="h6">Allocation</Typography>
+              <Typography component={Link} to="/trends" className={classes.navLink} variant="h6">Trends</Typography>
             </div>
-          ) : (
-            <Button className={classes.button} color="secondary" component={Link} to="/auth" variant="contained">Login/Sign-Up</Button>
-          )}
-          </Toolbar>
+            <Toolbar>{user ? (
+              <div className={classes.userLinks}>
+                <Avatar className={classes.margin} alt={user?.result.name} src={user?.result.ImageUrl}>{user?.result.name.charAt(0)}</Avatar> 
+                <Typography className={classes.userName} variant="h6">{user?.result.name}</Typography>
+                <Button className={classes.logoutButton} variant="contained" color="inherit" onClick={logout}>Logout</Button>
+              </div>
+            ) : (
+              <Button className={classes.button} color="secondary" component={Link} to="/auth" variant="contained">Login/Sign-Up</Button>
+            )}
+            </Toolbar>
           </Toolbar>
 
           )}

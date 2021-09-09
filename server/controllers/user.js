@@ -34,7 +34,7 @@ export const signup = async (req, res) => {
         //Asynchronous call to User model, find gets all records
         const existingUser = await User.findOne({ email });
 
-        if (existingUser) return res.status(400).json({ message: "A User with that email already exists." });
+        if (existingUser) return res.status(404).json({ message: "A User with that email already exists." });
 
         if (password != confirmPassword) return res.status(400).json({ message: "Passwords do not match." }); 
         

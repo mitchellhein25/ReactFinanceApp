@@ -14,7 +14,7 @@ export const signin = (formData, history) => async (dispatch) => {
         if (error.message.includes('400')) 
             return "Password is not correct."
         else if (error.message.includes('404')) 
-            return "A user with that email was not found"
+            return "A user with that email was not found."
         else return error
         
     }   
@@ -31,6 +31,10 @@ export const signup = (formData, history) => async (dispatch) => {
         history.push('/');
         
     } catch (error) {
-        console.log(error);
+        if (error.message.includes('400')) 
+            return "Passwords do not match."
+        else if (error.message.includes('404')) 
+            return "A user with that email already exists."
+        else return error
     }   
 }

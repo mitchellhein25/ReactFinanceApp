@@ -36,7 +36,10 @@ const Authentication = () => {
                 return 
             }
             dispatch(signup(formData, history))
-            .then(response => setErrors(response));
+            .then(response => {
+                if (response === "A user with that email already exists.")
+                    setErrors({...errors, email: response})            
+            });
         } else {    
             dispatch(signin(formData, history))
             .then(response =>{

@@ -9,7 +9,7 @@ export default makeStyles((theme) => ({
     },
     links: {
       display: 'flex',
-      flexGrow: 1,
+      flexGrow: 2,
     },
     userLinks: {
       display: 'flex',
@@ -27,12 +27,12 @@ export default makeStyles((theme) => ({
       marginRight: '15px',
     },
     title: {
-      flexGrow: 2,
+      flexGrow: 1,
       textDecoration: 'none',
       color: 'white',
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.up('md')]: {
         fontSize: '1.5rem',
-        textAlign: 'center'
+        textAlign: 'left'
       },
       [theme.breakpoints.down('sm')]: {
         fontSize: '1rem',
@@ -98,6 +98,9 @@ export default makeStyles((theme) => ({
     backArrow: {
       color: 'white',
       fontSize: '30px',
+    },
+    logo: {
+      marginRight: "10px"
     }
 
 }));
