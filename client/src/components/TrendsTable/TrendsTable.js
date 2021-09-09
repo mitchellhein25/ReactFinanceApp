@@ -91,6 +91,12 @@ const TrendsTable = ({}) => {
         })
     }); 
 
+    accountsEachMonth.forEach((list, month) => {
+        if (list.length === 0) {
+            delete accountsEachMonth.delete(month);
+        }
+    });
+
     // Sort the Months from earliest to most recent
     var accountsEachMonthAscending = new Map([...accountsEachMonth.entries()].sort((a,b) => {
         var aDate = moment().set({month: a[0].match("(.*?),")[1], year: a[0].match(", (.*)")[1]});

@@ -53,7 +53,6 @@ const AllocationPercentBoxes = ({ date }) => {
     }
     const [checkboxState, setCheckboxState] = useState(checkboxDict);
     const handleCheckboxChange = (e) => {
-        console.log(e.target.name);
         setCheckboxState({ ...checkboxState, [e.target.name]: e.target.checked });
     }
 
