@@ -9,7 +9,7 @@ export default makeStyles((theme) => ({
     },
     links: {
       display: 'flex',
-      flexGrow: 2,
+      flexGrow: 1,
     },
     userLinks: {
       display: 'flex',
