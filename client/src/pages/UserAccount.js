@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Paper, Avatar, Typography, Button, Input  } from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { Container, Paper, Avatar, Typography, Button, TextField, Input  } from '@material-ui/core';
 import useStyles from '../styles';
+import { updateName, updateEmail, updatePassword } from '../actions/userAccount';
 
 function UserAccount() {
     const dispatch = useDispatch();
@@ -10,59 +10,89 @@ function UserAccount() {
     const [editName, setEditName] = useState(false);
     const [editEmail, setEditEmail] = useState(false);
     const [editPassword, setEditPassword] = useState(false);
-
-    useEffect(() => {
-
-    }, [dispatch]);
-
-    const user = JSON.parse(localStorage.getItem('profile'));
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const [errors, setErrors] = useState({
+        email: "", password: ""
+    })
     
     const saveNameChange = () => {
         setEditName(false);
+        dispatch(updateName(user));
     }
 
-    const saveNameEmail = () => {
-        setEditEmail(false)
+    const saveEmailChange = () => {
+        setEditEmail(false);
+        dispatch(updateEmail(user))
+        .then(response =>{
+            if (response === "A user with that email was not found")
+                setErrors({...errors, email: response});
+        })
     }
 
-    // if(!user?.result?._id && !user?.result?.googleId) {
-    //     return (
-    //         <Container>
-    //             <Typography variant="h6" align="center">
-    //                 Sign in to view your trends.
-    //             </Typography>
-    //         </Container>
-    //     )
-    // }  
+    const savePasswordChange = () => {
+        setEditPassword(false)
+    }
 
     return (
         <Container maxWidth="none">
-            <Paper elevation={3} className={classes.userPaper}>
+            <Paper elevation={5} className={classes.userPaper}>
                 <Avatar className={classes.avatar} alt={user?.result.name} src={user?.result.ImageUrl}>{user?.result.name.charAt(0)}</Avatar>
                 {editName ? (
                     <>
-                    <Input>Name: {user.result.name}</Input>
-                    <Button variant="contained" size="small" onClick={saveNameChange} >Save</Button> 
+                        <Typography>New Name:</Typography> 
+                        <TextField 
+                            key={1}
+                            size="small"  
+                            name="name" 
+                            variant="outlined" 
+                            type="text"  
+                            value={user.result.name}
+                            onChange={(e) => setUser({...user, result: {...user.result, name: e.target.value}})}
+                        />
+                        <Button variant="contained" size="small" onClick={saveNameChange} >Save</Button> 
                     </>
                 ) : (
                     <>
-                    <Typography>Name: {user.result.name}</Typography>
-                    <Button variant="contained" size="small" onClick={() => setEditName(true)} >Edit</Button> 
+                        <Typography>Name: {user.result.name}</Typography>
+                        <Button variant="contained" size="small" onClick={() => setEditName(true)} >Edit</Button> 
                     </>
                 )}
                 {editEmail ? (
                     <>
-                    <Input>Name: {user.result.email}</Input>
-                    <Button variant="contained" size="small" onClick={saveNameEmail} >Save</Button> 
+                        <Typography>New Email:</Typography>
+                        <TextField 
+                            key={1}
+                            size="small"  
+                            name="email" 
+                            variant="outlined" 
+                            type="email"  
+                            value={user.result.email}
+                            onChange={(e) => setUser({...user, result: {...user.result, email: e.target.value}})}
+                        />
+                        <span style={{color: "red", margin: "auto"}}>{errors["email"]}</span>
+                        <Button variant="contained" size="small" onClick={saveEmailChange} >Save</Button> 
                     </>
                 ) : (
                     <>
-                    <Typography>Name: {user.result.email}</Typography>
-                    <Button variant="contained" size="small" onClick={() => setEditEmail(true)} >Edit</Button> 
+                        <Typography>Email: {user.result.email}</Typography>
+                        <Button variant="contained" size="small" onClick={() => setEditEmail(true)} >Edit</Button> 
                     </>
                 )}
-                <Typography>Password: &#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</Typography>
-                <Button variant="contained" size="small" onClick={""} >Edit</Button> 
+                {editPassword ? (
+                    <>
+                        <Typography>New Password:</Typography>
+                        <Input> {user.result.password}</Input>
+                        <Typography>Confirm New Password:</Typography>
+                        <Input> {user.result.password}</Input>
+                        <Button variant="contained" size="small" onClick={savePasswordChange} >Save</Button> 
+                    </>
+                ) : (
+                    <>
+                        <Typography>Password: &#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</Typography>
+                        <Button variant="contained" size="small" onClick={() => setEditPassword(true)} >Edit</Button>  
+                    </>
+                )}
+                
             </Paper>
         </Container>
     );

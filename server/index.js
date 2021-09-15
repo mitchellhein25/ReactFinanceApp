@@ -10,6 +10,7 @@ import path from 'path';
 import homeRoutes from './routes/home.js';
 import accountsRoutes from './routes/accounts.js';
 import userRoutes from './routes/users.js';
+import userAccountRoutes from './routes/userAccount.js';
 
 const app = express();
 dotenv.config();
@@ -22,6 +23,7 @@ app.use(cors());
 app.use('/', homeRoutes);
 app.use('/accounts', accountsRoutes);
 app.use('/users', userRoutes);
+app.use('/userAccount', userAccountRoutes);
 
 //http://www.mongodb.com/cloud/atlas
 

@@ -29,3 +29,8 @@ export const DELETE_ACCOUNTNAME = 'DELETE_ACCOUNTNAME';
 //Auth Page constants
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
+
+//User Account constants
+export const UPDATE_NAME = 'UPDATE_NAME';
+export const UPDATE_EMAIL = 'UPDATE_EMAIL';
+export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';

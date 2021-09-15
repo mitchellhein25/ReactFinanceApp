@@ -53,6 +53,8 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
         padding: theme.spacing(2),
+        width: '50%',
+        margin: 'auto',
     },
     avatar: {
         margin: theme.spacing(1),

@@ -43,3 +43,8 @@ export const deleteAccountName = (id) => API.delete(`/accounts/daccountname${id}
 //Auth page Api calls
 export const signin = (formData) => API.post('/users/signin', formData);
 export const signup = (formData) => API.post('/users/signup', formData);
+
+//User Account page Api calls
+export const updateName = (id, user) => API.patch(`/userAccount/updateName${id}`, user);
+export const updateEmail = (id, user) => API.patch(`/userAccount/updateEmail${id}`, user);
+export const updatePassword = (id, updatedPassword) => API.patch(`/userAccount/updatePassword${id}`, updatedPassword);
