@@ -7,6 +7,7 @@ import Allocation from "./pages/Allocation";
 import Auth from "./pages/Auth";
 import Trends from "./pages/Trends";
 import NavBar from "./components/NavBar/NavBar";
+import UserAccount from "./pages/UserAccount";
 
 const theme = createTheme({
   palette: {
@@ -31,6 +32,7 @@ function App() {
             <Route path="/allocation" exact component={Allocation} />
             <Route path="/auth" exact component={Auth} />
             <Route path="/trends" exact component={Trends} />
+            <Route path="/useraccount" exact component={UserAccount} />
           </Switch>
         </Router>
       </ThemeProvider>

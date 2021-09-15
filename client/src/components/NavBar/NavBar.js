@@ -63,7 +63,7 @@ const NavBar = ({}) => {
                 <Typography component={Link} to="/allocation" className={classes.navLink} onClick={toggleDrawer("right", false)} variant="h6">Allocation</Typography>
                 <Typography component={Link} to="/trends" className={classes.navLink} onClick={toggleDrawer("right", false)} variant="h6">Trends</Typography>
                 <Toolbar className={classes.mobileDiv}>{user ? (
-                  <div className={classes.userDiv}>
+                  <div component={Link} to="/useraccount" className={classes.userDiv}>
                     <Avatar className={classes.mobileAvatar} alt={user?.result.name} src={user?.result.ImageUrl}>{user?.result.name.charAt(0)}</Avatar> 
                       <Typography className={classes.mobileUserName} variant="h6">{user?.result.name}</Typography>
                     <Button className={classes.mobileButton} variant="contained" onClick={logout}>Logout</Button>
@@ -90,8 +90,8 @@ const NavBar = ({}) => {
             </div>
             <Toolbar>{user ? (
               <div className={classes.userLinks}>
-                <Avatar className={classes.margin} alt={user?.result.name} src={user?.result.ImageUrl}>{user?.result.name.charAt(0)}</Avatar> 
-                <Typography className={classes.userName} variant="h6">{user?.result.name}</Typography>
+                <Avatar component={Link} to="/useraccount" className={classes.margin} alt={user?.result.name} src={user?.result.ImageUrl}>{user?.result.name.charAt(0)}</Avatar> 
+                <Typography component={Link} to="/useraccount" className={classes.userName} variant="h6">{user?.result.name}</Typography>
                 <Button className={classes.logoutButton} variant="contained" color="inherit" onClick={logout}>Logout</Button>
               </div>
             ) : (

@@ -46,5 +46,16 @@ export default makeStyles((theme) => ({
         margin: 'auto',
         display: 'flex',
         justifyContent: 'center'
+    },
+    userPaper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: theme.spacing(2),
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
     }
 }));
