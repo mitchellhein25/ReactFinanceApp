@@ -88,7 +88,7 @@ function UserAccount() {
                     </>
                 ) : (
                     <>
-                        <Typography>Password: &#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</Typography>
+                        <Typography>Password: &#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</Typography>
                         <Button variant="contained" size="small" onClick={() => setEditPassword(true)} >Edit</Button>  
                     </>
                 )}

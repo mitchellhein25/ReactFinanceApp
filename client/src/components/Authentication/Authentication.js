@@ -43,7 +43,6 @@ const Authentication = () => {
         } else {    
             dispatch(signin(formData, history))
             .then(response =>{
-                console.log(response)
                 if (response === "Password is not correct.")
                     setErrors({...errors, password: response})
                 else if (response === "A user with that email was not found")
