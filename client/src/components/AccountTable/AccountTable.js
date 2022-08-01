@@ -33,7 +33,7 @@ const AccountTable = ({ setCurrentId, date }) => {
     accounts.forEach((account, index) => {
         var accountDate = moment(account.date);
         accountDate.date(accountDate.date() + 1);
-        if (accountDate.month() == moment(date).month()) {
+        if (accountDate.month() == moment(date).month() && accountDate.year() == moment(date).year()) {
             if (acctNames.includes(account.name)) {
                 accts.forEach((acct, indexInner) => {
                     if (acct.name === account.name) {

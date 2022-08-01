@@ -58,7 +58,7 @@ export default function ExpenseTable({ setCurrentId, date }) {
   const addOneDate = (expense) => {
     var expenseDate = moment(expense.date);
     expenseDate.date(expenseDate.date() + 1);
-    return expenseDate.month()
+    return expenseDate
   }
 
   return (
@@ -101,7 +101,7 @@ export default function ExpenseTable({ setCurrentId, date }) {
             )}
           </TableHead>
           <TableBody>
-            {expenses.filter(expense => addOneDate(expense) === momentDate.month()).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((expense) => (
+            {expenses.filter(expense => addOneDate(expense).month() === momentDate.month() && addOneDate(expense).year() === momentDate.year()).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((expense) => (
               <TableRow className={classes.tableRow} key={expense._id}>
                 <div hidden>
                   <TableCell component="th" scope="row">{expense._id}</TableCell>

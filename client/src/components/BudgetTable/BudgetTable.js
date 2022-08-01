@@ -29,10 +29,10 @@ const BudgetTable = ({ setCurrentId, date }) => {
     const addOneDate = (expense) => {
         var expenseDate = moment(expense.date);
         expenseDate.date(expenseDate.date() + 1);
-        return expenseDate.month()
+        return expenseDate
     }
 
-    const currExpenses = expenses.filter(expense => addOneDate(expense) === momentDate.month());
+    const currExpenses = expenses.filter(expense => addOneDate(expense).month() === momentDate.month() && addOneDate(expense).year() === momentDate.year());
 
     const getExpenseAmount = (budgetName) => {
         var total = 0;
