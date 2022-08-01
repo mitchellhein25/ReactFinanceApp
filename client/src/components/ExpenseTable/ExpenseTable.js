@@ -140,7 +140,7 @@ export default function ExpenseTable({ setCurrentId, date }) {
       <TablePagination
         rowsPerPageOptions={[30]}
         component="div"
-        count={expenses.length}
+        count={expenses.filter(expense => addOneDate(expense) === momentDate.month()).length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

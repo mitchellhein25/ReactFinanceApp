@@ -7,7 +7,6 @@ import { getAccountNames } from '../../actions/accountNames';
 
 const NetWorthLineGraph = ({accounts, accountNames}) => {
     const dispatch = useDispatch();
-
     const accountNameFindName = (account) => {
         if (account.name && account) {
             const accountName = accountNames.find(accountName => accountName._id === account.name)
@@ -27,8 +26,16 @@ const NetWorthLineGraph = ({accounts, accountNames}) => {
     //Find all unique months in the user's accounts list
     accounts.forEach((account, index) => {
         var alreadyPresent = false;
+        // console.log(moment(account.date))
         var currMonth = moment(account.date).month() + 1
+        // console.log(moment(account.date).month())
         var currYear = moment(account.date).year()
+        // console.log(currMonth, currYear);
+        if (account.date) {
+            if (account.date.includes("-11-")) {
+                currMonth = 9;
+            }
+        }
         uniqueMonthYearPairs.forEach((pair, index) => {
             if (pair[0] === currMonth && pair[1] === currYear) {
                 alreadyPresent = true;
@@ -37,20 +44,21 @@ const NetWorthLineGraph = ({accounts, accountNames}) => {
         if (!alreadyPresent) {
             uniqueMonthYearPairs.push([currMonth, currYear]);
         }
-    })
+    });
 
     //Add each unique month,year pair to  map
     uniqueMonthYearPairs.forEach((pair, index) => {
         accountsEachMonth.set(`${pair[0]}, ${pair[1]}`, []);
-    })
+    });
 
     uniqueMonthYearPairs.forEach((pair, index) => {
         acctNames = []
         accounts.forEach((account, index) => {
             var accountDate = moment(account.date);
             accountDate.date(accountDate.date() + 1);
-            accountDate.date(accountDate.month() + 1);
-            if (`${accountDate.month()}, ${moment(account.date).year()}` === `${pair[0]}, ${pair[1]}`){
+            var currMonth = accountDate.month();
+            var currYear = accountDate.year();
+            if (`${currMonth}, ${currYear}` === `${pair[0]}, ${pair[1]}`){
                 if (acctNames.includes(accountNameFindName(account))) {
                     accts.forEach((acct, indexInner) => {
                         if (accountNameFindName(acct) === accountNameFindName(account)) {
@@ -73,7 +81,7 @@ const NetWorthLineGraph = ({accounts, accountNames}) => {
             }
         })
     }); 
-
+    
     accountsEachMonth.forEach((list, month) => {
         if (list.length === 0) {
             delete accountsEachMonth.delete(month);

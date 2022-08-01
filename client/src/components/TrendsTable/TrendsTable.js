@@ -22,7 +22,6 @@ const TrendsTable = ({}) => {
     const handleChangeRowsPerPage = (event) => {
         console.log("change rows per");
         setRowsPerPage(+event.target.value);
-        setPage(0);
     };
 
     const accountNameFindName = (account) => {
@@ -46,6 +45,11 @@ const TrendsTable = ({}) => {
         var alreadyPresent = false;
         var currMonth = moment(account.date).month() + 1
         var currYear = moment(account.date).year()
+        if (account.date) {
+            if (account.date.includes("-11-")) {
+                currMonth = 9;
+            }
+        }
         uniqueMonthYearPairs.forEach((pair, index) => {
             if (pair[0] === currMonth && pair[1] === currYear) {
                 alreadyPresent = true;
@@ -105,6 +109,13 @@ const TrendsTable = ({}) => {
             : bDate > aDate ? -1 
             : 0;
     }));
+    var accountsEachMonthDescending = new Map([...accountsEachMonth.entries()].sort((a,b) => {
+        var aDate = moment().set({month: a[0].match("(.*?),")[1], year: a[0].match(", (.*)")[1]});
+        var bDate = moment().set({month: b[0].match("(.*?),")[1], year: b[0].match(", (.*)")[1]});
+        return bDate > aDate ?  1 
+            : bDate < aDate ? -1 
+            : 0;
+    }));
 
     //Calculate Net Worth 
     const calculatedNetWorth = (accts) => {
@@ -134,7 +145,7 @@ const TrendsTable = ({}) => {
             debts: calculatedNetWorth(value)[2]
         })
     ))
-    Array.from(accountsEachMonth).map(([key, value]) => (
+    Array.from(accountsEachMonthDescending).map(([key, value]) => (
         netWorthObjectsDescending.push({
             month: key,
             netWorth: calculatedNetWorth(value)[0],
@@ -147,6 +158,7 @@ const TrendsTable = ({}) => {
         dispatch(getAccounts())
         dispatch(getAccountNames())
     }, [dispatch]);
+
   return ( 
         <>
             <TableContainer>
@@ -163,7 +175,7 @@ const TrendsTable = ({}) => {
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                        {Array.from(accountsEachMonth).map(([key, value]) => (
+                        {Array.from(accountsEachMonthDescending).map(([key, value]) => (
                             <TableRow>
                                 <TableCell align="center">{key}</TableCell>
                                 <TableCell align="center">{formatter.format(calculatedNetWorth(value)[0])}</TableCell>
@@ -175,7 +187,7 @@ const TrendsTable = ({}) => {
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[12]}
+                rowsPerPageOptions={[10]}
                 component="div"
                 count={Array.from(accountsEachMonth).length}
                 rowsPerPage={rowsPerPage}

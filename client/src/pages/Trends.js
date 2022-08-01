@@ -17,7 +17,6 @@ function Trends() {
     }, [dispatch]);
 
     const user = JSON.parse(localStorage.getItem('profile'));
-    console.log(user);
 
     if(!user?.result?._id && !user?.result?.googleId) {
         return (
