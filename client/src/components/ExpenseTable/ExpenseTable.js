@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, useMediaQuery } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import CopyIcon from '@material-ui/icons/FileCopy'
 import useStyles from './styles';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteExpense } from '../../actions/expenses';
+import { deleteExpense, createExpense } from '../../actions/expenses';
 import { formatter } from '../../functions/Formatter';
 import { cleanDate } from '../../functions/CleanDate';
 import { sortBy } from '../../functions/SortBy';
+import { filterListByCurrentMonth } from '../../functions/FilterListByCurrentMonth';
 
 export default function ExpenseTable({ setCurrentId, date }) {
   const classes = useStyles();
@@ -29,9 +31,7 @@ export default function ExpenseTable({ setCurrentId, date }) {
 
   const mobileColumns = [
     { id: 'category', label: 'Category', maxWidth: 30 },
-    // { id: 'description', label: 'Description', maxWidth: 30 },
     { id: 'amount', label: 'Amount', maxWidth: 30 },
-    // { id: 'date', label: 'Date', maxWidth: 30, },
   ];
 
   const handleChangePage = (event, newPage) => {
@@ -55,12 +55,6 @@ export default function ExpenseTable({ setCurrentId, date }) {
 
   expenses.sort(sortBy("date")); 
 
-  const addOneDate = (expense) => {
-    var expenseDate = moment(expense.date);
-    expenseDate.date(expenseDate.date() + 1);
-    return expenseDate
-  }
-
   return (
     <>
       <Typography className={classes.tableHeader} variant="h4" component="div">
@@ -83,6 +77,7 @@ export default function ExpenseTable({ setCurrentId, date }) {
                 ))}
                 <TableCell></TableCell>
                 <TableCell></TableCell>
+                <TableCell></TableCell>
               </TableRow>
             ): (
               <TableRow className={classes.head}>
@@ -97,11 +92,12 @@ export default function ExpenseTable({ setCurrentId, date }) {
                 ))}
                 <TableCell></TableCell>
                 <TableCell></TableCell>
+                <TableCell></TableCell>
               </TableRow>
             )}
           </TableHead>
           <TableBody>
-            {expenses.filter(expense => addOneDate(expense).month() === momentDate.month() && addOneDate(expense).year() === momentDate.year()).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((expense) => (
+            {filterListByCurrentMonth(expenses, momentDate).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((expense) => (
               <TableRow className={classes.tableRow} key={expense._id}>
                 <div hidden>
                   <TableCell component="th" scope="row">{expense._id}</TableCell>
@@ -132,6 +128,18 @@ export default function ExpenseTable({ setCurrentId, date }) {
                           Edit
                       </Button>
                   </TableCell>
+                  <TableCell >
+                      <Button size="small" color="primary" onClick={() => {
+                        var currExpenseDate = moment(expense.date);
+                        var date  = new Date();
+                        currExpenseDate.month(date.getMonth());
+                        var newExpense = {date: currExpenseDate.format("yyyy-MM-DD"), category: expense.category, amount: expense.amount, description: expense.description};
+                        dispatch(createExpense(newExpense));
+                      }}>
+                          <CopyIcon fontSize="small" />
+                          Copy
+                      </Button>
+                  </TableCell>
                 </TableRow>
             ))}
           </TableBody>
@@ -140,7 +148,7 @@ export default function ExpenseTable({ setCurrentId, date }) {
       <TablePagination
         rowsPerPageOptions={[30]}
         component="div"
-        count={expenses.filter(expense => addOneDate(expense) === momentDate.month()).length}
+        count={filterListByCurrentMonth(expenses, momentDate).length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Typography, Grid } from '@material-ui/core';
 import moment from 'moment';
 import { formatter } from '../../functions/Formatter';
+import { filterListByCurrentMonth } from '../../functions/FilterListByCurrentMonth';
 
 const BudgetTotals = ({ date }) => {
     const budgets = useSelector((state) => state.budgets);
@@ -19,13 +20,7 @@ const BudgetTotals = ({ date }) => {
         return ""
     }
 
-    const getOneDayAddedDate = (expense) => {
-        var expenseDate = moment(expense.date);
-        expenseDate.date(expenseDate.date() + 1);
-        return expenseDate;
-    }
-
-    const currExpenses = expenses.filter(expense => getOneDayAddedDate(expense).month() === momentDate.month());
+    const currExpenses = filterListByCurrentMonth(expenses, momentDate);
 
     const getExpenseAmount = (budgetName) => {
         var total = 0;

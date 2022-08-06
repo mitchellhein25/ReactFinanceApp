@@ -9,6 +9,7 @@ import { deleteIncome } from '../../actions/incomes';
 import { formatter } from '../../functions/Formatter';
 import { cleanDate } from '../../functions/CleanDate';
 import { sortBy } from '../../functions/SortBy';
+import { filterListByCurrentMonth } from '../../functions/FilterListByCurrentMonth';
 
 const columns = [
     { id: 'category', label: 'Category', minWidth: 170 },
@@ -102,7 +103,7 @@ const IncomeTable = ({ setCurrentId, date }) => {
             )}
             </TableHead>
             <TableBody>
-                {incomes.filter(income => addOneDate(income).month() === momentDate.month() && addOneDate(income).year() === momentDate.year()).map((income) => (
+                {filterListByCurrentMonth(incomes, momentDate).map((income) => (
                     <TableRow key={income._id}>
                       <div hidden>
                         <TableCell className={classes.tableColumn} component="th" scope="row" hidden>{income._id}</TableCell>
@@ -111,9 +112,7 @@ const IncomeTable = ({ setCurrentId, date }) => {
                         (
                           <>
                             <TableCell className={classes.tableColumn} >{incomeCatFindName(income)}</TableCell>
-                            {/* <TableCell className={classes.tableColumn} >{income.description}</TableCell> */}
                             <TableCell className={classes.tableColumn} >{formatter.format(income.amount)}</TableCell>
-                            {/* <TableCell  className={classes.tableColumn} component="th" scope="row">{cleanDate(income.date)}</TableCell> */}
                           </>
                         ) : (
                           <>
@@ -143,7 +142,7 @@ const IncomeTable = ({ setCurrentId, date }) => {
         <TablePagination
           rowsPerPageOptions={[10]}
           component="div"
-          count={incomes.length}
+          count={filterListByCurrentMonth(incomes, momentDate).length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
