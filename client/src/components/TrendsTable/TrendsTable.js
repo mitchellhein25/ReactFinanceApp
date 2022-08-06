@@ -4,16 +4,21 @@ import { Typography, Table, TableBody, TableCell, TableContainer, TableHead ,Tab
 import useStyles from './styles';
 import moment from 'moment';
 import { getAccounts } from '../../actions/accounts';
+import { getExpenses } from '../../actions/expenses';
+import { getIncomes } from '../../actions/incomes';
 import { getAccountNames } from '../../actions/accountNames';
 import { formatter } from '../../functions/Formatter';
 
-const TrendsTable = ({}) => {
+const TrendsTable = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const accounts = useSelector((state) => state.accounts);
+    const expenses = useSelector((state) => state.expenses);
+    const incomes = useSelector((state) => state.incomes);
     const accountNames = useSelector((state) => state.accountNames)
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const isCashFlow = props.type == "cash_flow";
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -39,6 +44,8 @@ const TrendsTable = ({}) => {
     let uniqueMonthYearPairs = [];
     //key: [month, year], value: [list of accounts]
     let accountsEachMonth = new Map();
+    let expensesEachMonth = new Map();
+    let incomesEachMonth = new Map();
 
     //Find all unique months in the user's accounts list
     accounts.forEach((account, index) => {
@@ -63,6 +70,8 @@ const TrendsTable = ({}) => {
     //Add each unique month,year pair to  map
     uniqueMonthYearPairs.forEach((pair, index) => {
         accountsEachMonth.set(`${pair[0]}, ${pair[1]}`, []);
+        expensesEachMonth.set(`${pair[0]}, ${pair[1]}`, 0);
+        incomesEachMonth.set(`${pair[0]}, ${pair[1]}`, 0);
     })
 
     uniqueMonthYearPairs.forEach((pair, index) => {
@@ -92,8 +101,22 @@ const TrendsTable = ({}) => {
                     acctNames.push(accountNameFindName(account));
                 }
             }
-        })
+        });
+        getMonthTotals(expenses, expensesEachMonth, pair);
+        getMonthTotals(incomes, incomesEachMonth, pair);
     }); 
+
+    function getMonthTotals(list, listEachMonth, pair) {
+        list.forEach((listitem, index) => {
+            var listDate = moment(listitem.date);
+            listDate.date(listDate.date() + 1);
+            listDate.date(listDate.month() + 1);
+            if (`${listDate.month()}, ${moment(listitem.date).year()}` === `${pair[0]}, ${pair[1]}`){
+                var curr = listEachMonth.get(`${pair[0]}, ${pair[1]}`);
+                listEachMonth.set(`${pair[0]}, ${pair[1]}`, curr + listitem.amount);
+            }
+        });
+    }
 
     accountsEachMonth.forEach((list, month) => {
         if (list.length === 0) {
@@ -101,22 +124,53 @@ const TrendsTable = ({}) => {
         }
     });
 
+    expensesEachMonth.forEach((value, month) => {
+        if (value === 0) {
+            delete expensesEachMonth.delete(month);
+        }
+    });
+    
     // Sort the Months from earliest to most recent
-    var accountsEachMonthAscending = new Map([...accountsEachMonth.entries()].sort((a,b) => {
-        var aDate = moment().set({month: a[0].match("(.*?),")[1], year: a[0].match(", (.*)")[1]});
-        var bDate = moment().set({month: b[0].match("(.*?),")[1], year: b[0].match(", (.*)")[1]});
-        return bDate < aDate ?  1 
-            : bDate > aDate ? -1 
-            : 0;
-    }));
-    var accountsEachMonthDescending = new Map([...accountsEachMonth.entries()].sort((a,b) => {
-        var aDate = moment().set({month: a[0].match("(.*?),")[1], year: a[0].match(", (.*)")[1]});
-        var bDate = moment().set({month: b[0].match("(.*?),")[1], year: b[0].match(", (.*)")[1]});
-        return bDate > aDate ?  1 
-            : bDate < aDate ? -1 
-            : 0;
-    }));
+    var accountsEachMonthAscending = sortAscending(accountsEachMonth);
+    var accountsEachMonthDescending = sortDescending(accountsEachMonth);
+    var expensesEachMonthAscending = sortAscending(expensesEachMonth);
+    var expensesEachMonthDescending = sortDescending(expensesEachMonth);
 
+    function sortAscending(listEachMonth) {
+        return new Map([...listEachMonth.entries()].sort((a,b) => {
+            var aDate = moment().set({month: a[0].match("(.*?),")[1], year: a[0].match(", (.*)")[1]});
+            var bDate = moment().set({month: b[0].match("(.*?),")[1], year: b[0].match(", (.*)")[1]});
+            return bDate < aDate ?  1 
+                : bDate > aDate ? -1 
+                : 0;
+        }));
+    }
+
+    function sortDescending(listEachMonth) {
+        return new Map([...listEachMonth.entries()].sort((a,b) => {
+            var aDate = moment().set({month: a[0].match("(.*?),")[1], year: a[0].match(", (.*)")[1]});
+            var bDate = moment().set({month: b[0].match("(.*?),")[1], year: b[0].match(", (.*)")[1]});
+            return bDate > aDate ?  1 
+                : bDate < aDate ? -1 
+                : 0;
+        }));
+    }
+
+    var netWorthObjectsAscending = [];
+    var netWorthObjectsDescending = [];
+    var cashFlowObjectsAscending = [];
+    var cashFlowObjectsDescending = [];
+
+    function getNetWorthArray(listEachMonth, finalArray, calculateFunction) {
+        Array.from(listEachMonth).map(([key, value]) => (
+            finalArray.push({
+                month: key,
+                netWorth: calculateFunction(value)[0],
+                assets: calculateFunction(value)[1],
+                debts: calculateFunction(value)[2]
+            })
+        ))
+    }
     //Calculate Net Worth 
     const calculatedNetWorth = (accts) => {
         var assets = 0;
@@ -134,62 +188,66 @@ const TrendsTable = ({}) => {
         netWorth = assets - debts;
         return [netWorth, assets, debts];
     }
+    
+    function getCashFlowArray(listEachMonth, finalArray) {
+        Array.from(listEachMonth).map(([key, value]) => (
+            finalArray.push({
+                month: key,
+                cashFlow: incomesEachMonth.get(key) - value,
+                incomes: incomesEachMonth.get(key),
+                expenses: value
+            })
+        ))
+    }
 
-    var netWorthObjectsAscending = [];
-    var netWorthObjectsDescending = [];
-    Array.from(accountsEachMonthAscending).map(([key, value]) => (
-        netWorthObjectsAscending.push({
-            month: key,
-            netWorth: calculatedNetWorth(value)[0],
-            assets: calculatedNetWorth(value)[1],
-            debts: calculatedNetWorth(value)[2]
-        })
-    ))
-    Array.from(accountsEachMonthDescending).map(([key, value]) => (
-        netWorthObjectsDescending.push({
-            month: key,
-            netWorth: calculatedNetWorth(value)[0],
-            assets: calculatedNetWorth(value)[1],
-            debts: calculatedNetWorth(value)[2]
-        })
-    ))
+    getNetWorthArray(accountsEachMonthAscending, netWorthObjectsAscending, calculatedNetWorth);
+    getNetWorthArray(accountsEachMonthDescending, netWorthObjectsDescending, calculatedNetWorth);
+    getCashFlowArray(expensesEachMonthAscending, cashFlowObjectsAscending);
+    getCashFlowArray(expensesEachMonthDescending, cashFlowObjectsDescending);
 
+    console.log(cashFlowObjectsDescending)
     useEffect(() => {
-        dispatch(getAccounts())
-        dispatch(getAccountNames())
+        if (isCashFlow) {
+            dispatch(getExpenses())
+            dispatch(getIncomes())
+        }
+        else {
+            dispatch(getAccounts())
+            dispatch(getAccountNames())
+        }
     }, [dispatch]);
 
   return ( 
         <>
             <TableContainer>
                 <Typography className={classes.tableHeader} align="center" variant="h4" component="div">
-                    Wealth Over Time 
+                    {isCashFlow ? "Cash Flow Over Time" : "Wealth Over Time"} 
                 </Typography>
                 <Table padding='none' aria-label="simple table">
                     <TableHead className={classes.head}>
                     <TableRow>
-                        <TableCell align="center" >Time</TableCell>
-                        <TableCell align="center" >Net Worth</TableCell>
-                        <TableCell align="center" >Assets</TableCell>
-                        <TableCell align="center" >Debts</TableCell>
+                        <TableCell align="center" >Month</TableCell>
+                        <TableCell align="center" >{isCashFlow ? "Cash Flow" : "Net Worth"}</TableCell>
+                        <TableCell align="center" >{isCashFlow ? "Incomes" : "Assets"}</TableCell>
+                        <TableCell align="center" >{isCashFlow ? "Expenses" : "Debts"}</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                        {Array.from(accountsEachMonthDescending).map(([key, value]) => (
+                        {(isCashFlow ? cashFlowObjectsDescending : netWorthObjectsDescending).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((element) => (
                             <TableRow>
-                                <TableCell align="center">{key}</TableCell>
-                                <TableCell align="center">{formatter.format(calculatedNetWorth(value)[0])}</TableCell>
-                                <TableCell align="center">{formatter.format(calculatedNetWorth(value)[1])}</TableCell>
-                                <TableCell align="center">{formatter.format(calculatedNetWorth(value)[2])}</TableCell>
+                                <TableCell align="center">{element.month}</TableCell>
+                                <TableCell align="center">{formatter.format(isCashFlow ? element.cashFlow : element.netWorth)}</TableCell>
+                                <TableCell align="center">{formatter.format(isCashFlow ? element.incomes : element.assets)}</TableCell>
+                                <TableCell align="center">{formatter.format(isCashFlow ? element.expenses : element.debts)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10]}
+                rowsPerPageOptions={[12]}
                 component="div"
-                count={Array.from(accountsEachMonth).length}
+                count={isCashFlow ? cashFlowObjectsDescending.length : netWorthObjectsDescending.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

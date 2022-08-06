@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Typography, Grid  } from '@material-ui/core';
+import { Container, Typography, Grid, Button } from '@material-ui/core';
 import { getAccounts } from '../actions/accounts';
 import { getAccountNames } from '../actions/accountNames';
 import TrendsTable from '../components/TrendsTable/TrendsTable';
 import NetWorthLineGraph from '../components/NetWorthLineGraph/NetWorthLineGraph';
+import useStyles from '../styles';
 
 function Trends() {
     const dispatch = useDispatch();
-    const accounts = useSelector((state) => state.accounts);
-    const accountNames = useSelector((state) => state.accountNames)
+    const [cashFlow, setcashFlow] = useState(true);
+    const classes = useStyles();
+
 
     useEffect(() => {
         dispatch(getAccounts())
@@ -30,11 +32,18 @@ function Trends() {
 
     return (
         <Container maxWidth="none">
-            <TrendsTable />
+            <Grid container>
+                <Grid item xs={12} md={4}></Grid>
+                <Grid item xs={12} md={4} align="center">
+                    <Button className={classes.marginTopAndBottom} variant="contained" color="secondary" size="medium" onClick={() => setcashFlow(!cashFlow)}>Toggle Net Worth or Cash Flow</Button> 
+                </Grid>
+                <Grid item xs={12} md={4}></Grid>
+            </Grid>
+            <TrendsTable type={cashFlow ? "cash_flow" : "net_worth"} />
             <Grid container justifyContent="space-between" alignItems="stretch" spacing={1}>
                 <Grid item xs={12} md={4}></Grid>
                 <Grid item xs={12} md={4} align="center">
-                    <NetWorthLineGraph accounts={accounts} accountNames={accountNames}/>
+                    <NetWorthLineGraph/>
                 </Grid>
                 <Grid item xs={12} md={4}></Grid>
             </Grid>

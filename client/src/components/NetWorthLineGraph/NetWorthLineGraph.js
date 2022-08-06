@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { getAccounts } from '../../actions/accounts';
 import { getAccountNames } from '../../actions/accountNames';
 
-const NetWorthLineGraph = ({accounts, accountNames}) => {
+const NetWorthLineGraph = () => {
     const dispatch = useDispatch();
+    const accounts = useSelector((state) => state.accounts);
+    const accountNames = useSelector((state) => state.accountNames)
     const accountNameFindName = (account) => {
         if (account.name && account) {
             const accountName = accountNames.find(accountName => accountName._id === account.name)

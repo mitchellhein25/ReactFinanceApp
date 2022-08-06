@@ -59,5 +59,9 @@ export default makeStyles((theme) => ({
     avatar: {
         margin: theme.spacing(1),
         backgroundColor: theme.palette.secondary.main,
+    },
+    marginTopAndBottom: {
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(2)
     }
 }));
