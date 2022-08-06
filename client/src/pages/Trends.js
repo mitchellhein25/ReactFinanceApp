@@ -43,7 +43,7 @@ function Trends() {
             <Grid container justifyContent="space-between" alignItems="stretch" spacing={1}>
                 <Grid item xs={12} md={4}></Grid>
                 <Grid item xs={12} md={4} align="center">
-                    <NetWorthLineGraph/>
+                    <NetWorthLineGraph type={cashFlow ? "cash_flow" : "net_worth"} />
                 </Grid>
                 <Grid item xs={12} md={4}></Grid>
             </Grid>
