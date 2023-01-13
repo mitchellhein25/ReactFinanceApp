@@ -4,7 +4,7 @@ import { Container, Typography, Grid, Button } from '@material-ui/core';
 import { getAccounts } from '../actions/accounts';
 import { getAccountNames } from '../actions/accountNames';
 import TrendsTable from '../components/TrendsTable/TrendsTable';
-import NetWorthLineGraph from '../components/NetWorthLineGraph/NetWorthLineGraph';
+import NetWorthLineGraph from '../components/TrendsLineGraph/TrendsLineGraph';
 import useStyles from '../styles';
 
 function Trends() {

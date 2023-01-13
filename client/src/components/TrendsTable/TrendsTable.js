@@ -8,8 +8,7 @@ import { getExpenses } from '../../actions/expenses';
 import { getIncomes } from '../../actions/incomes';
 import { getAccountNames } from '../../actions/accountNames';
 import { formatter } from '../../functions/Formatter';
-import { getNetWorthObjects } from '../../functions/NetWorthObjects';
-import { getCashFlowObjects } from '../../functions/CashFlowObjects';
+import { getMonthDataObjects } from '../../functions/MonthDataObjects';
 
 const TrendsTable = (props) => {
     const classes = useStyles();
@@ -19,7 +18,7 @@ const TrendsTable = (props) => {
     const incomes = useSelector((state) => state.incomes);
     const accountNames = useSelector((state) => state.accountNames)
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(12);
     const isCashFlow = props.type == "cash_flow";
 
     const handleChangePage = (event, newPage) => {
@@ -30,18 +29,13 @@ const TrendsTable = (props) => {
         setRowsPerPage(+event.target.value);
     };
 
-    var netWorthObjectsDescending = getNetWorthObjects(accounts, accountNames, true);
-    var cashFlowObjectsDescending = getCashFlowObjects(expenses, incomes, true);
+    var monthDataObjectsDescending = getMonthDataObjects(accounts, expenses, incomes, accountNames, true);
 
     useEffect(() => {
-        if (isCashFlow) {
-            dispatch(getExpenses())
-            dispatch(getIncomes())
-        }
-        else {
-            dispatch(getAccounts())
-            dispatch(getAccountNames())
-        }
+        dispatch(getExpenses())
+        dispatch(getIncomes())
+        dispatch(getAccounts())
+        dispatch(getAccountNames())
     }, [dispatch]);
 
   return ( 
@@ -60,21 +54,21 @@ const TrendsTable = (props) => {
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                        {(isCashFlow ? cashFlowObjectsDescending : netWorthObjectsDescending).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((element) => (
+                        {(monthDataObjectsDescending).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((element) => (
                             <TableRow>
                                 <TableCell align="center">{element.month}</TableCell>
                                 <TableCell align="center">{formatter.format(isCashFlow ? element.cashFlow : element.netWorth)}</TableCell>
-                                <TableCell align="center">{formatter.format(isCashFlow ? element.incomes : element.assets)}</TableCell>
-                                <TableCell align="center">{formatter.format(isCashFlow ? element.expenses : element.debts)}</TableCell>
+                                <TableCell align="center">{formatter.format(isCashFlow ? element.totalIncome : element.assets)}</TableCell>
+                                <TableCell align="center">{formatter.format(isCashFlow ? element.totalExpenses : element.debts)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[12]}
+                rowsPerPageOptions={[rowsPerPage]}
                 component="div"
-                count={isCashFlow ? cashFlowObjectsDescending.length : netWorthObjectsDescending.length}
+                count={monthDataObjectsDescending.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
