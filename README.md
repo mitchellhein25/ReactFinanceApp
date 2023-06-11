@@ -1,4 +1,4 @@
-https://incontrolfinance.herokuapp.com/
+https://www.youtube.com/embed/wUC-pz49dm4
 
 • In need of a finance application to suit my needs for my own budget and finance tracking, I decided to build my own.
 
