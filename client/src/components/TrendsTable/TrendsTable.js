@@ -31,6 +31,17 @@ const TrendsTable = (props) => {
 
     var monthDataObjectsDescending = getMonthDataObjects(accounts, expenses, incomes, accountNames, true);
 
+    const getValueSumStringForYear = (monthList, valueString) => 
+        formatter.format((monthList)
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .reduce((accumulator, month) => accumulator + month[valueString], 0));
+    
+    const getDiffBetweenFirstAndLastMonth = (monthList, valueString) => {
+        const currentYear = (monthList).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+        return formatter.format(
+            currentYear[0][valueString] - currentYear[currentYear.length - 1][valueString]);
+    };
+
     useEffect(() => {
         dispatch(getExpenses())
         dispatch(getIncomes())
@@ -46,12 +57,12 @@ const TrendsTable = (props) => {
                 </Typography>
                 <Table padding='none' aria-label="simple table">
                     <TableHead className={classes.head}>
-                    <TableRow>
-                        <TableCell align="center" >Month</TableCell>
-                        <TableCell align="center" >{isCashFlow ? "Cash Flow" : "Net Worth"}</TableCell>
-                        <TableCell align="center" >{isCashFlow ? "Incomes" : "Assets"}</TableCell>
-                        <TableCell align="center" >{isCashFlow ? "Expenses" : "Debts"}</TableCell>
-                    </TableRow>
+                        <TableRow>
+                            <TableCell align="center" >Month</TableCell>
+                            <TableCell align="center" >{isCashFlow ? "Cash Flow" : "Net Worth"}</TableCell>
+                            <TableCell align="center" >{isCashFlow ? "Incomes" : "Assets"}</TableCell>
+                            <TableCell align="center" >{isCashFlow ? "Expenses" : "Debts"}</TableCell>
+                        </TableRow>
                     </TableHead>
                     <TableBody>
                         {(monthDataObjectsDescending).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((element) => (
@@ -62,6 +73,27 @@ const TrendsTable = (props) => {
                                 <TableCell align="center">{formatter.format(isCashFlow ? element.totalExpenses : element.debts)}</TableCell>
                             </TableRow>
                         ))}
+                        {/* { isCashFlow ?  */}
+                            <TableRow>
+                                <TableCell className={classes.foot} align="center" >12 Month Totals</TableCell>
+                                <TableCell className={classes.foot} align="center" >
+                                    {isCashFlow 
+                                        ? getValueSumStringForYear(monthDataObjectsDescending, 'cashFlow') 
+                                        : getDiffBetweenFirstAndLastMonth(monthDataObjectsDescending, 'netWorth')}
+                                </TableCell>
+                                <TableCell className={classes.foot} align="center" >
+                                    {isCashFlow 
+                                        ? getValueSumStringForYear(monthDataObjectsDescending, 'totalIncome')
+                                        : getDiffBetweenFirstAndLastMonth(monthDataObjectsDescending, 'assets')}
+                                </TableCell>
+                                <TableCell className={classes.foot} align="center" >
+                                    {isCashFlow 
+                                        ? getValueSumStringForYear(monthDataObjectsDescending, 'totalExpenses')
+                                        : getDiffBetweenFirstAndLastMonth(monthDataObjectsDescending, 'debts')}
+                                </TableCell>
+                            </TableRow> 
+                        : <></> 
+                        {/* } */}
                     </TableBody>
                 </Table>
             </TableContainer>
