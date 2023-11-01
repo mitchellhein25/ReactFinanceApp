@@ -3,9 +3,10 @@ import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Table
 import { useSelector, useDispatch } from 'react-redux';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import CopyIcon from '@material-ui/icons/FileCopy'
 import useStyles from './styles';
 import moment from 'moment';
-import { deleteIncome } from '../../actions/incomes';
+import { deleteIncome, createIncome } from '../../actions/incomes';
 import { formatter } from '../../functions/Formatter';
 import { cleanDate } from '../../functions/CleanDate';
 import { sortBy } from '../../functions/SortBy';
@@ -132,6 +133,19 @@ const IncomeTable = ({ setCurrentId, date }) => {
                             <Button size="small" color="primary" onClick={() => setCurrentId(income._id)}>
                                 <EditIcon fontSize="small" />
                                 Edit
+                            </Button>
+                        </TableCell>
+                        <TableCell >
+                            <Button size="small" color="primary" onClick={() => {
+                              var currIncomeDate = moment(income.date);
+                              var date  = new Date();
+                              currIncomeDate.month(date.getMonth());
+                              currIncomeDate.date(1);
+                              var newIncome = {date: currIncomeDate.format("yyyy-MM-DD"), category: income.category, amount: income.amount, description: income.description};
+                              dispatch(createIncome(newIncome));
+                            }}>
+                                <CopyIcon fontSize="small" />
+                                Copy
                             </Button>
                         </TableCell>
                     </TableRow>

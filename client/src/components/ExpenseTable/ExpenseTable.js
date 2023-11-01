@@ -133,6 +133,7 @@ export default function ExpenseTable({ setCurrentId, date }) {
                         var currExpenseDate = moment(expense.date);
                         var date  = new Date();
                         currExpenseDate.month(date.getMonth());
+                        currExpenseDate.date(1);
                         var newExpense = {date: currExpenseDate.format("yyyy-MM-DD"), category: expense.category, amount: expense.amount, description: expense.description};
                         dispatch(createExpense(newExpense));
                       }}>
