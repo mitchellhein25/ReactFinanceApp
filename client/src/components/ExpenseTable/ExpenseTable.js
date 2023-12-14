@@ -31,7 +31,9 @@ export default function ExpenseTable({ setCurrentId, date }) {
 
   const mobileColumns = [
     { id: 'category', label: 'Category', maxWidth: 30 },
+    { id: 'description', label: 'Description', minWidth: 30 },
     { id: 'amount', label: 'Amount', maxWidth: 30 },
+    { id: 'date', label: 'Date', minWidth: 30, },
   ];
 
   const handleChangePage = (event, newPage) => {

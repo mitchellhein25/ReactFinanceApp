@@ -6,6 +6,7 @@ import Accounts from "./pages/Accounts";
 import Allocation from "./pages/Allocation";
 import Auth from "./pages/Auth";
 import Trends from "./pages/Trends";
+import BudgetTrends from "./pages/BudgetTrends";
 import NavBar from "./components/NavBar/NavBar";
 import UserAccount from "./pages/UserAccount";
 
@@ -32,6 +33,7 @@ function App() {
             <Route path="/allocation" exact component={Allocation} />
             <Route path="/auth" exact component={Auth} />
             <Route path="/trends" exact component={Trends} />
+            <Route path="/budget-trends" exact component={BudgetTrends} />
             <Route path="/useraccount" exact component={UserAccount} />
           </Switch>
         </Router>

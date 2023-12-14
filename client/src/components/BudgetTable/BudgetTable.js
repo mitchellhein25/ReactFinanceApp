@@ -75,6 +75,8 @@ const BudgetTable = ({ setCurrentId, date }) => {
                         (
                         <>
                             <TableCell style={{ width: '100px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Name</TableCell>
+                            <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Amount</TableCell>
+                            <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Amount Spent</TableCell>
                             <TableCell style={{ width: '80px', overflowWrap: 'break-word' }} className={classes.tableColumn} >Remaining Budget</TableCell>
                         </>
                     ): (

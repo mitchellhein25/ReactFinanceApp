@@ -62,6 +62,7 @@ const NavBar = ({}) => {
                 <Typography component={Link} to="/accounts" className={classes.navLink} onClick={toggleDrawer("right", false)} variant="h6">Accounts</Typography>
                 <Typography component={Link} to="/allocation" className={classes.navLink} onClick={toggleDrawer("right", false)} variant="h6">Allocation</Typography>
                 <Typography component={Link} to="/trends" className={classes.navLink} onClick={toggleDrawer("right", false)} variant="h6">Trends</Typography>
+                <Typography component={Link} to="/budget-trends" className={classes.navLink} onClick={toggleDrawer("right", false)} variant="h6">Budget Trends</Typography>
                 <Toolbar className={classes.mobileDiv}>{user ? (
                   <div component={Link} to="/useraccount" className={classes.userDiv}>
                     <Avatar className={classes.mobileAvatar} alt={user?.result.name} src={user?.result.ImageUrl}>{user?.result.name.charAt(0)}</Avatar> 
@@ -87,6 +88,7 @@ const NavBar = ({}) => {
               <Typography component={Link} to="/accounts" className={classes.navLink} variant="h6">Accounts</Typography>
               <Typography component={Link} to="/allocation" className={classes.navLink} variant="h6">Allocation</Typography>
               <Typography component={Link} to="/trends" className={classes.navLink} variant="h6">Trends</Typography>
+              <Typography component={Link} to="/budget-trends" className={classes.navLink} variant="h6">Budget Trends</Typography>
             </div>
             <Toolbar>{user ? (
               <div className={classes.userLinks}>

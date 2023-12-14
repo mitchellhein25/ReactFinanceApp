@@ -21,9 +21,9 @@ const columns = [
 
 const mobileColumns = [
   { id: 'category', label: 'Category', minWidth: 30 },
-  // { id: 'description', label: 'Description', minWidth: 170 },
+  { id: 'description', label: 'Description', minWidth: 30 },
   { id: 'amount', label: 'Amount', minWidth: 30 },
-  // { id: 'date', label: 'Date', minWidth: 100, },
+  { id: 'date', label: 'Date', minWidth: 30, },
 ];
 
 const IncomeTable = ({ setCurrentId, date }) => {
