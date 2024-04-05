@@ -4,7 +4,6 @@ import { Table, TableBody, TableCell, TableContainer, TableHead ,TableRow, Butto
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './styles';
-import moment from 'moment';
 import { deleteAccount } from '../../actions/accounts';
 import { cleanDate } from '../../functions/CleanDate';
 import { formatter } from '../../functions/Formatter';
@@ -15,7 +14,6 @@ const AccountTable = ({ setCurrentId, date }) => {
     const dispatch = useDispatch();
     const accountNames = useSelector((state) => state.accountNames)
     const accounts = useSelector((state) => state.accounts);
-    let acctNames = [];
     let accts = [];
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
@@ -29,25 +27,17 @@ const AccountTable = ({ setCurrentId, date }) => {
         return ""
     }
 
-    //Get most recent accounts for current month, 
     accounts.forEach((account, index) => {
-        var accountDate = moment(account.date);
-        accountDate.date(accountDate.date() + 1);
-        if (accountDate.month() == moment(date).month() && accountDate.year() == moment(date).year()) {
-            if (acctNames.includes(account.name)) {
-                accts.forEach((acct, indexInner) => {
-                    if (acct.name === account.name) {
-                        if (account.date > acct.date) {
-                            accts[indexInner] = account;
-                            acctNames[indexInner] = account.name;
-                        } 
-                    }
-                })
-            } else {
-                accts.push(account);
-                acctNames.push(account.name);
-            }
-        }
+        var accountNameMatches = accts.filter(acct => acct.name === account.name);
+        if (accountNameMatches.length > 0) {
+            accts.forEach((acct, indexInner) => {
+                if (acct.name === account.name) {
+                    if (account.date > acct.date)
+                        accts[indexInner] = account;
+                }
+            })
+        } else 
+            accts.push(account);
     });
 
     const cleanDebtOrAsset = (debtOrAsset) => {

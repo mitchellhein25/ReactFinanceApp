@@ -36,6 +36,11 @@ const TrendsTable = (props) => {
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .reduce((accumulator, month) => accumulator + month[valueString], 0));
     
+    const getAverageStringForYear = (monthList, valueString) => 
+        formatter.format((monthList)
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .reduce((accumulator, month) => accumulator + month[valueString], 0) / 12);
+    
     const getDiffBetweenFirstAndLastMonth = (monthList, valueString) => {
         const currentYear = (monthList).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
         return formatter.format(
@@ -73,27 +78,40 @@ const TrendsTable = (props) => {
                                 <TableCell align="center">{formatter.format(isCashFlow ? element.totalExpenses : element.debts)}</TableCell>
                             </TableRow>
                         ))}
-                        {/* { isCashFlow ?  */}
+                        <TableRow>
+                            <TableCell className={classes.foot} align="center" >{ isCashFlow ? "12 Month Totals" : "12 Month Change" }</TableCell>
+                            <TableCell className={classes.foot} align="center" >
+                                {isCashFlow 
+                                    ? getValueSumStringForYear(monthDataObjectsDescending, 'cashFlow') 
+                                    : getDiffBetweenFirstAndLastMonth(monthDataObjectsDescending, 'netWorth')}
+                            </TableCell>
+                            <TableCell className={classes.foot} align="center" >
+                                {isCashFlow 
+                                    ? getValueSumStringForYear(monthDataObjectsDescending, 'totalIncome')
+                                    : getDiffBetweenFirstAndLastMonth(monthDataObjectsDescending, 'assets')}
+                            </TableCell>
+                            <TableCell className={classes.foot} align="center" >
+                                {isCashFlow 
+                                    ? getValueSumStringForYear(monthDataObjectsDescending, 'totalExpenses')
+                                    : getDiffBetweenFirstAndLastMonth(monthDataObjectsDescending, 'debts')}
+                            </TableCell>
+                        </TableRow> 
+                        {
+                            isCashFlow ? 
                             <TableRow>
-                                <TableCell className={classes.foot} align="center" >12 Month Totals</TableCell>
+                                <TableCell className={classes.foot} align="center" >Monthly Average</TableCell>
                                 <TableCell className={classes.foot} align="center" >
-                                    {isCashFlow 
-                                        ? getValueSumStringForYear(monthDataObjectsDescending, 'cashFlow') 
-                                        : getDiffBetweenFirstAndLastMonth(monthDataObjectsDescending, 'netWorth')}
+                                    { getAverageStringForYear(monthDataObjectsDescending, 'cashFlow') }
                                 </TableCell>
                                 <TableCell className={classes.foot} align="center" >
-                                    {isCashFlow 
-                                        ? getValueSumStringForYear(monthDataObjectsDescending, 'totalIncome')
-                                        : getDiffBetweenFirstAndLastMonth(monthDataObjectsDescending, 'assets')}
+                                    { getAverageStringForYear(monthDataObjectsDescending, 'totalIncome') }
                                 </TableCell>
                                 <TableCell className={classes.foot} align="center" >
-                                    {isCashFlow 
-                                        ? getValueSumStringForYear(monthDataObjectsDescending, 'totalExpenses')
-                                        : getDiffBetweenFirstAndLastMonth(monthDataObjectsDescending, 'debts')}
+                                    { getAverageStringForYear(monthDataObjectsDescending, 'totalExpenses') }
                                 </TableCell>
                             </TableRow> 
-                        : <></> 
-                        {/* } */}
+                            : <></>
+                        }
                     </TableBody>
                 </Table>
             </TableContainer>
